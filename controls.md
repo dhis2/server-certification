@@ -19,6 +19,10 @@ Legend
 - SA-ID: Server Assessment Control Identifier
 - CIS ID: CIS v8 Safeguard reference (when applicable)
 - Status (Yes/No): Assessor result
+- IG: Implementation Group
+  - IG1: Basic controls for all organizations
+  - IG2: For organizations with sensitive info and dedicated IT staff
+  - IG3: For organizations with highly sensitive/regulatory data and advanced security needs
 
 Note
 
@@ -64,7 +68,7 @@ Note
 | OS-12 | 13.2                | Host-based intrusion detection system is deployed                 |                 | IG3 | Deploy HIDS/EDR with alerting and response playbooks.                             | CHANGED  |
 | OS-13 | 13.3                | Network-based intrusion detection system is deployed              |                 | IG3 | Monitor network traffic with NIDS sensors and tuned signatures.                   | NEW      |
 
-## Application
+## DHIS2 Application
 
 | SA-ID | CIS ID | Name                                                       | Status (Yes/No) | IG  | Guidance                                                                  | Comments |
 | ----- | ------ | ---------------------------------------------------------- | --------------- | --- | ------------------------------------------------------------------------- | -------- |
@@ -88,20 +92,12 @@ Note
 | ----- | ------ | ------------------------------------------------------- | --------------- | --- | -------------------------------------------------------------------- | -------- |
 | FW-01 | 9.1    | Firewall setup (perimeter, host based, container based) |                 | IG1 | Implement layered firewalls; default-deny; change control for rules. |          |
 
-## Device
-
-| SA-ID | CIS ID | Name                                                     | Status (Yes/No) | IG  | Guidance                                                            | Comments |
-| ----- | ------ | -------------------------------------------------------- | --------------- | --- | ------------------------------------------------------------------- | -------- |
-| DV-01 | 9.1    | Devices to access DHIS2 are up to date with OS patches   |                 | IG3 | Enforce endpoint patch management for all administrative devices.   |          |
-| DV-02 | 9.1    | Browsers to access DHIS2 are up to date                  |                 | IG3 | Require supported, auto-updating browsers with enterprise policies. |          |
-| DV-03 | 9.4    | Minimum browser plugins are enabled when accessing DHIS2 |                 | IG3 | Disable unnecessary plugins/extensions; enforce allow-lists.        |          |
-
 ## Process
 
 | SA-ID | CIS ID      | Name                                                    | Status (Yes/No) | IG  | Guidance                                                                  | Comments |
 | ----- | ----------- | ------------------------------------------------------- | --------------- | --- | ------------------------------------------------------------------------- | -------- |
-| PS-01 |             | Security manager appointed                              |                 | IG1 | Assign accountable security lead with clear responsibilities.             |          |
-| PS-02 |             | Developed a security program                            |                 | IG1 | Define policies, standards, procedures, and training plan.                |          |
+| PS-01 |             | Security manager appointed                              |                 | IG3 | Assign accountable security lead with clear responsibilities.             |          |
+| PS-02 |             | Developed a security program                            |                 | IG3 | Define policies, standards, procedures, and training plan.                |          |
 | PS-03 | 1.1         | Asset inventory performed                               |                 | IG1 | Maintain inventory of enterprise assets and owners.                       |          |
 | PS-04 | 17.1 - 17.9 | Incident response plan developed                        |                 | IG1 | Document roles, runbooks, communications, and legal considerations.       |          |
 | PS-05 |             | Data sharing agreement/NDA in place                     |                 | IG1 | Formalize data sharing with contractual safeguards and retention clauses. |          |
