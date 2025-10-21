@@ -2,17 +2,17 @@
 
 ## Purpose
 
-Define the scope for assessing DHIS2 Server Certification Program (DSCP) controls, ensuring clear boundaries, inclusions, exclusions, and methods aligned to industry standards.
+Define the scope for assessing DHIS2 Server Certification Program (DSCP) controls, ensuring clear boundaries, inclusions, exclusions, and methods aligned to industry standards. The scope of this assessment is restricted to a particular instance of DHIS2.
 
 ## In-Scope Components
 
 - DHIS2 application (production) and supporting services
 - Pre-production environments used for deployment validation and backup/restore testing
-- Application server (Tomcat) hosting DHIS2
-- Database platform (e.g., PostgreSQL), configurations, backups, and recovery procedures
+- Application server hosting DHIS2
+- PostgreSQL database configurations, backups, and recovery procedures
 - Operating systems hosting DHIS2 components
-- Reverse proxy/WAF and TLS termination for DHIS2
-- Network security controls protecting DHIS2 (perimeter/host/container firewalls, segmentation)
+- Reverse proxy and TLS termination for DHIS2
+- Network security controls protecting DHIS2 (host/container firewalls, segmentation)
 - Security monitoring and detection: centralized logging/SIEM, HIDS/EDR, NIDS
 - Identity and access controls for OS, SSH, and DHIS2 administrative access
 - Governance/process controls directly supporting the environment (e.g., IR, vulnerability management, asset inventory, offboarding)
@@ -29,8 +29,8 @@ Define the scope for assessing DHIS2 Server Certification Program (DSCP) control
 
 ## Assessment Boundaries and Period
 
-- Point-in-time assessment as of the assessment date, with evidence sampling windows per control (typically 3–12 months).
-- Configuration/state validation for production; pre-production reviewed where required for restore/deployment tests.
+- Point-in-time assessment as of the assessment date.
+- Configuration/state validation for production.
 
 ## Methods and Evidence
 

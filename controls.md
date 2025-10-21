@@ -49,7 +49,7 @@ Each control is listed together with
 
 ## Control Domains
 
-### 1. DATABASE SECURITY
+### 1. POSTGRESQLDATABASE CONTROLS
 
 | Control ID               | Control Name                                                                                                                                      | Type      | IG Level | CIS v8 Mapping |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
@@ -69,32 +69,23 @@ Each control is listed together with
 | **Evidence/Findings**    |                                                                                                                                                |
 | **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                                 |
 
-| Control ID               | Control Name                                                                                                                        | Type      | IG Level | CIS v8 Mapping |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
-| **DB-03**                | Off-Site Backup Storage                                                                                                             | Technical | IG2      | 11.4           |
-| **Description**          | Encrypted backup copies must be stored off-site or in a separate region/account to protect against site-wide disasters.             |
-| **Verification Method**  | Verify off-site backup location; confirm encryption at rest; review geographic separation; validate recovery time objectives (RTO). |
-| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                                     |
-| **Evidence/Findings**    |                                                                                                                                     |
-| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                      |
+| Control ID               | Control Name                                                                                                   | Type      | IG Level | CIS v8 Mapping |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
+| **DB-03**                | Off-Site Backup Storage                                                                                        | Technical | IG2      | 11.4           |
+| **Description**          | Backup copies must be stored off-site or in a separate region/account to protect against site-wide disasters.  |
+| **Verification Method**  | Verify off-site backup location.                                                                               |
+| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                |
+| **Evidence/Findings**    |                                                                                                                |
+| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\*** |
 
 | Control ID               | Control Name                                                                                                                                          | Type      | IG Level | CIS v8 Mapping |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
-| **DB-04**                | Database Least Privilege Access                                                                                                                       | Technical | IG1      | 5.4            |
+| **DB-04**                | Database Least Privilege Access (move)                                                                                                                | Technical | IG1      | 5.4            |
 | **Description**          | Database users must be assigned minimum necessary privileges; administrative and service accounts must be separated; regular access reviews required. |
-| **Verification Method**  | Review database user roles and permissions; verify separation of admin/service accounts; check access review logs from past quarter.                  |
+| **Verification Method**  | Review database user roles and permissions; verify the DHIS2 user only has access to the reuired DHIS2 database, and from the DHIS2 IP address.       |
 | **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                                                       |
 | **Evidence/Findings**    |                                                                                                                                                       |
 | **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                                        |
-
-| Control ID               | Control Name                                                                                                                | Type      | IG Level | CIS v8 Mapping |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
-| **DB-05**                | Database File Permissions                                                                                                   | Technical | IG1      | —              |
-| **Description**          | Database data directories and files must be restricted to database user and group ownership with Unix mode 660 (rw-rw----). |
-| **Verification Method**  | Execute file permission audit on database directories; verify umask settings; confirm only database user/group have access. |
-| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                             |
-| **Evidence/Findings**    |                                                                                                                             |
-| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***              |
 
 | Control ID               | Control Name                                                                                                                    | Type      | IG Level | CIS v8 Mapping |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
@@ -105,14 +96,14 @@ Each control is listed together with
 | **Evidence/Findings**    |                                                                                                                                 |
 | **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                  |
 
-| Control ID               | Control Name                                                                                                                      | Type      | IG Level | CIS v8 Mapping |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
-| **DB-07**                | Database Encryption at Rest                                                                                                       | Technical | IG3      | 3.11           |
-| **Description**          | Full-disk or tablespace encryption must be enabled with secure key management practices separate from data storage.               |
-| **Verification Method**  | Verify encryption configuration; review key management procedures; confirm encryption status of all database tablespaces/volumes. |
-| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                                   |
-| **Evidence/Findings**    |                                                                                                                                   |
-| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                    |
+| Control ID               | Control Name                                                                                                          | Type      | IG Level | CIS v8 Mapping |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
+| **DB-07**                | Database Encryption at Rest                                                                                           | Technical | IG3      | 3.11           |
+| **Description**          | Full-disk encryption must be enabled with secure key management practices separate from data storage.                 |
+| **Verification Method**  | Verify encryption configuration; review key management procedures; confirm encryption status of all database volumes. |
+| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                       |
+| **Evidence/Findings**    |                                                                                                                       |
+| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***        |
 
 | Control ID               | Control Name                                                                                                     | Type      | IG Level | CIS v8 Mapping |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
@@ -123,27 +114,14 @@ Each control is listed together with
 | **Evidence/Findings**    |                                                                                                                  |
 | **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***   |
 
-| Control ID               | Control Name                                                                                                         | Type      | IG Level | CIS v8 Mapping |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
-| **DB-09**                | PostgreSQL Host-Based Access Control                                                                                 | Technical | IG1      | 5.1            |
-| **Description**          | pg_hba.conf must restrict host-based access, enforce TLS connections, and use SCRAM-SHA-256 authentication over MD5. |
-| **Verification Method**  | Review pg_hba.conf file; verify TLS enforcement; confirm SCRAM authentication enabled; check for MD5 usage.          |
-| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                      |
-| **Evidence/Findings**    |                                                                                                                      |
-| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***       |
-
----
-
-### 2. DEPLOYMENT ARCHITECTURE
-
-| Control ID               | Control Name                                                                                                                       | Type      | IG Level | CIS v8 Mapping |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
-| **DT-01**                | Reverse Proxy Protection                                                                                                           | Technical | IG1      | 13.1           |
-| **Description**          | DHIS2 must be exposed through a reverse proxy or web application firewall (WAF); direct access to Tomcat must be blocked.          |
-| **Verification Method**  | Verify reverse proxy configuration; attempt direct Tomcat access; review firewall rules blocking direct application server access. |
-| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                                    |
-| **Evidence/Findings**    |                                                                                                                                    |
-| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                     |
+| Control ID               | Control Name                                                                                                                                                                                                     | Type      | IG Level | CIS v8 Mapping |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
+| **DB-09**                | PostgreSQL Host-Based Access Control                                                                                                                                                                             | Technical | IG1      | 5.1            |
+| **Description**          | pg_hba.conf must restrict host-based access, enforce TLS connections, and use SCRAM-SHA-256 authentication over MD5.                                                                                             |
+| **Verification Method**  | Review pg_hba.conf file; ensure the DHIS2 instance user only has access to the DHIS2 database, and from the DHIS2 IP address. Verify TLS enforcement; confirm SCRAM authentication enabled; check for MD5 usage. |
+| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                                                                                                                  |
+| **Evidence/Findings**    |                                                                                                                                                                                                                  |
+| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                                                                                                   |
 
 | Control ID               | Control Name                                                                                                      | Type      | IG Level | CIS v8 Mapping |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
@@ -157,7 +135,7 @@ Each control is listed together with
 | Control ID               | Control Name                                                                                                            | Type           | IG Level | CIS v8 Mapping |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- | -------------- | -------- | -------------- |
 | **DT-03**                | Pre-Production Testing Environment                                                                                      | Organizational | IG1      | —              |
-| **Description**          | Staging/test environments and release checklists must be used before production deployments.                            |
+| **Description**          |                                                                                                                         |
 | **Verification Method**  | Review deployment procedures; verify staging environment exists; examine release checklist documentation and sign-offs. |
 | **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                         |
 | **Evidence/Findings**    |                                                                                                                         |
@@ -509,27 +487,17 @@ Each control is listed together with
 | **Evidence/Findings**    |                                                                                                                                       |
 | **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                        |
 
-| Control ID               | Control Name                                                                                                                        | Type           | IG Level | CIS v8 Mapping |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------- | -------------- |
-| **PS-11**                | Incident Response Testing                                                                                                           | Organizational | IG2      | 17.1-17.9      |
-| **Description**          | Annual incident response plan testing through tabletop exercises or live simulations with documented lessons learned.               |
-| **Verification Method**  | Review IR test documentation from past year; verify participation; check lessons learned and plan updates; confirm annual schedule. |
-| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                                     |
-| **Evidence/Findings**    |                                                                                                                                     |
-| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                      |
-
-| Control ID               | Control Name                                                                                                                     | Type           | IG Level | CIS v8 Mapping |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------- | -------------- |
-| **PS-12**                | Vulnerability Management Program                                                                                                 | Organizational | IG2      | 7.1            |
-| **Description**          | Formal vulnerability management process with regular scanning, defined triage SLAs, and patch verification.                      |
-| **Verification Method**  | Review vulnerability management procedures; verify scanning frequency; check SLA compliance; confirm patch verification process. |
-| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                                  |
-| **Evidence/Findings**    |                                                                                                                                  |
-| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***                   |
+| Control ID               | Control Name                                                                                                   | Type           | IG Level | CIS v8 Mapping |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------- | -------------- | -------- | -------------- |
+| **PS-11**                | Incident Response Plan                                                                                         | Organizational | IG2      | 17.1-17.9      |
+| **Description**          | Incident response plan in place                                                                                |
+| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                |
+| **Evidence/Findings**    |                                                                                                                |
+| **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\*** |
 
 | Control ID               | Control Name                                                                                                      | Type           | IG Level | CIS v8 Mapping |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------- | -------------- | -------- | -------------- |
-| **PS-13**                | Security Metrics and KPIs                                                                                         | Organizational | IG3      | —              |
+| **PS-12**                | Security Metrics and KPIs                                                                                         | Organizational | IG3      | —              |
 | **Description**          | Key security and compliance metrics tracked and reported to management at least quarterly.                        |
 | **Verification Method**  | Review KPI dashboard; verify metrics definition; check reporting frequency to leadership; confirm trend analysis. |
 | **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                   |
