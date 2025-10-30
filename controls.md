@@ -47,9 +47,101 @@ Each control is listed together with
 
 ---
 
+### How to Interpret Implementation Groups
+
+- IG1 is the baseline for certification. Subjects must satisfy all IG1 technical controls to achieve the base DSCP certificate. Organizational controls inform risk posture unless explicitly marked normative.
+- IG2 introduces additional technical controls for environments handling sensitive data with moderate complexity. Certification at this level requires IG1 + IG2 technical controls.
+- IG3 adds advanced/defense‑in‑depth controls for high‑maturity or highly regulated environments. Certification at this level requires IG1 + IG2 + IG3 technical controls.
+
+---
+
+## IG1 Baseline Controls (Base Certification)
+
+The following controls constitute the minimum technical baseline required for certification. They are grouped by domain for clarity and reference the detailed criteria below.
+
+- Database (PostgreSQL)
+  - DB-01 Regular Automated Database Backup
+  - DB-02 Database Backup Restore Testing
+  - DB-04 Database Least Privilege Access
+  - DB-06 Database Backup File Permissions
+  - DB-09 PostgreSQL Host-Based Access Control
+  - DB-10 Supported PostgreSQL Version (Non‑EOL)
+  - DB-11 PostgreSQL Tuning Baseline (JIT off; max_locks_per_transaction=128)
+- Deployment/TLS
+  - DT-02 TLS/SSL Configuration
+  - DT-03 Pre-Production Testing Environment (informative)
+- Operating System Security
+  - OS-01 Disable Direct Root SSH Access
+  - OS-02 SSH Key-Based Authentication
+  - OS-03 SSH Password Authentication Disabled
+  - OS-04 SSH Configuration File Permissions
+  - OS-05 Automated Security Patching
+  - OS-06 DHIS2 Application File Permissions
+  - OS-07 System Monitoring and Alerting
+  - OS-09 Operating System Least Privilege
+  - OS-10 Network Service Exposure Control
+  - OS-14 Minimal Service Footprint
+- DHIS2 Application Security
+  - AP-01 Default Admin Account Security
+  - AP-02 Administrative Access Limitation
+  - AP-03 Multi-Factor Authentication (Admins)
+- Network Security
+  - FW-01 Layered Firewall Architecture
+- Access Control
+  - AC-01 Multiple Administrative Accounts
+  - AC-02 Individual SSH Account Accountability
+  - AC-03 User Home Directory Hygiene
+- Security Governance & Processes (informative unless otherwise noted)
+  - PS-03 Enterprise Asset Inventory
+  - PS-04 Incident Response Plan
+  - PS-05 Data Sharing Agreements
+  - PS-06 DHIS2 User Offboarding Procedure
+  - PS-07 OS User Offboarding Procedure
+
+---
+
+## IG2 Additional Controls
+
+These controls extend the baseline and are required for IG2 certification in addition to all IG1 controls.
+
+- Database (PostgreSQL)
+  - DB-03 Off-Site Backup Storage
+- DHIS2 Application Security
+  - AP-04 Multi-Factor Authentication (Users)
+- Tomcat/Application Server
+  - TC-02 Tomcat Shutdown Port Security
+  - TC-03 Application Auto-Deployment Disabled
+- Operating System / Logging
+  - OS-11 Centralized Security Event Logging
+- Governance & Risk (informative unless otherwise marked)
+  - PS-08 Risk Assessment Program
+  - PS-09 Internal Security Audits
+  - PS-11 Incident Response Plan
+
+---
+
+## IG3 Advanced Controls
+
+These advanced controls address higher assurance scenarios. They are required for IG3 certification in addition to IG1 and IG2.
+
+- Database and Backup Encryption
+  - DB-07 Database Encryption at Rest
+  - DB-08 Backup Encryption at Rest
+- Operating System / Detection
+  - OS-08 Operating System Encryption at Rest
+  - OS-12 Host-Based Intrusion Detection
+  - OS-13 Network-Based Intrusion Detection
+- Security Governance (informative unless otherwise marked)
+  - PS-01 Security Leadership Accountability
+  - PS-02 Security Program Development
+  - PS-10 External Security Audits
+  - PS-12 Security Metrics and KPIs
+
+---
+
 ## Control Domains
 
-### 1. POSTGRESQLDATABASE CONTROLS
+### 1. POSTGRESQL DATABASE CONTROLS
 
 | Control ID               | Control Name                                                                                                                                      | Type      | IG Level | CIS v8 Mapping |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
@@ -140,6 +232,24 @@ Each control is listed together with
 | **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                         |
 | **Evidence/Findings**    |                                                                                                                         |
 | **Remediation Required** | ☐ Yes ☐ No &nbsp;&nbsp;&nbsp; **Target Date:** \***\*\_\_\*\*** &nbsp;&nbsp;&nbsp; **Owner:** \***\*\_\_\*\***          |
+
+| Control ID               | Control Name                                                                                                                                        | Type      | IG Level | CIS v8 Mapping |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
+| **DB-10**                | Supported PostgreSQL Version (Non‑EOL)                                                                                                              | Technical | IG1      | —              |
+| **Description**          | PostgreSQL must be a supported version that is not past end‑of‑life as per the official PostgreSQL support schedule at the time of assessment.      |
+| **Verification Method**  | Run `SELECT version();` and capture output; compare against the PostgreSQL version support/EOL matrix; review OS package source and pinned version. |
+| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                                                     |
+| **Evidence/Findings**    |                                                                                                                                                     |
+| **Remediation Required** | ☐ Yes ☐ No **Target Date:** **\_\_\_\_** **Owner:** **\_\_\_\_**                                                                                    |
+
+| Control ID               | Control Name                                                                                                                                                              | Type      | IG Level | CIS v8 Mapping |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------------- |
+| **DB-11**                | PostgreSQL Tuning Baseline (JIT off; max_locks_per_transaction=128)                                                                                                       | Technical | IG1      | —              |
+| **Description**          | PostgreSQL must have JIT disabled and `max_locks_per_transaction` set to 128 to support DHIS2 workload characteristics and reduce query planning overhead.                |
+| **Verification Method**  | Run `SHOW jit;` (expect `off`) and `SHOW max_locks_per_transaction;` (expect `128`); verify corresponding entries in `postgresql.conf` and effective reload/restart logs. |
+| **Assessment Result**    | ☐ Compliant ☐ Partially Compliant ☐ Non-Compliant ☐ Not Applicable ☐ Not Tested                                                                                           |
+| **Evidence/Findings**    |                                                                                                                                                                           |
+| **Remediation Required** | ☐ Yes ☐ No **Target Date:** **\_\_\_\_** **Owner:** **\_\_\_\_**                                                                                                          |
 
 ---
 

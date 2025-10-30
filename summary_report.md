@@ -22,6 +22,8 @@
 | **IG2**  |          |           |                     |               |     |              |
 | **IG3**  |          |           |                     |               |     |              |
 
+Note: IG1 constitutes the base certification. Passing IG2 or IG3 requires passing all IG1 controls plus the additional controls at that level. See `controls.md` for the grouped IG1/IG2/IG3 indexes and `method.md` for certification thresholds.
+
 ### Critical Findings
 
 _List any critical or high-severity findings that require immediate attention:_

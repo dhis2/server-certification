@@ -4,6 +4,17 @@
 
 Define the scope for assessing DHIS2 Server Certification Program (DSCP) controls, ensuring clear boundaries, inclusions, exclusions, and methods aligned to industry standards. The scope of this assessment is restricted to a particular instance of DHIS2.
 
+## Target Users and Environments
+
+This scope applies to organizations operating DHIS2 in production, whether self‑hosted on‑premises, hosted by a national/regional data center, or managed in a cloud environment. Typical deployments include:
+
+- Reverse proxy/TLS termination (e.g., NGINX or equivalent)
+- Application server running DHIS2 (e.g., Tomcat or equivalent Java application runtime)
+- PostgreSQL database server with regular backups and restore procedures
+- Optional centralized logging/monitoring and security controls (SIEM, HIDS/EDR, NIDS)
+
+Both single‑server and multi‑tier architectures (separate app and DB servers, or containerized) are supported by this scope.
+
 ## In-Scope Components
 
 - DHIS2 application (production) and supporting services
@@ -31,6 +42,7 @@ Define the scope for assessing DHIS2 Server Certification Program (DSCP) control
 
 - Point-in-time assessment as of the assessment date.
 - Configuration/state validation for production.
+- Pre‑production/staging is in‑scope where used for deployment validation and restore testing.
 
 ## Methods and Evidence
 
@@ -39,6 +51,12 @@ Define the scope for assessing DHIS2 Server Certification Program (DSCP) control
 - Automated scans (e.g., TLS configuration), and restore/deployment test evidence
 - Interviews with responsible personnel
 - Sampling based on risk and Implementation Group (IG) level
+
+## Access Expectations
+
+- Two assessors will be assigned by the assessing organization. Each assessor will use an individual, named account.
+- SSH key‑based access with sudo rights is expected for configuration verification (or custodian‑run commands where sudo cannot be granted).
+- Evidence will be exchanged via a secure, pre‑agreed channel per the method in `method.md`.
 
 ## Control Framework Alignment
 
@@ -50,7 +68,7 @@ Define the scope for assessing DHIS2 Server Certification Program (DSCP) control
 - Scoring per controls.md: technical controls are normative; organizational controls are informative.
 - Certification decisions and thresholds are defined in the assessment method and applied to in-scope components only.
 
-## Assumptions and Dependencies
+## Dependencies and Assumptions
 
 - Timely access to environments, documentation, and personnel
 - Accurate asset inventories and network/service lists
