@@ -1,30 +1,35 @@
 # DSCP Assessment Method
 
-## Objective
+An organisation seeking to have their system assessed should reach out by email to <xxxx@dhis2.org> or complete the online form at https://...  
 
-Provide a direct, practical method for assessing DHIS2 environments against the DSCP control catalog in `controls.md`, aligned to CIS v8, NIST CSF, and ISO/IEC 27001.
+The process from there will follow the following steps:
+- inception meeting/call to explain the process and requirements
+- Access Agreement signed by both assessors and the System Owner
+- Secure channel agreed for sharing results
+- contacts shared for co-ordinating access and addressing queries
+- online assessment is carried out by HISP UIO assessors
+- detailed and summary results shared via secure channel
+- meeting/call covened to discuss results and potential mitigations in the event of certification standard not achieved
+- either certificate issued or
+  - a period agreed (not more than one month) to address deficiencies
+  - follow up assessment is carried out
+  - certificate is issued
+## Assessment
+
+The assessment will be carried out remotely, requiring that the assessors have full ssh access to the system for the assessment period (typically less than 1 week)
+
+The assessment will be guided by the list of controls in `controls.md`.  Though this is primarily a box-ticking execise, the assessors will also be required and expected to make subjective observations based on their experience. They may also reach out for additional clarifying information, documents etc as required.
 
 ## Who Performs the Assessment
 
 - The assessing organization assigns two qualified assessors (primary and peer reviewer) with DHIS2 infrastructure and security expertise.
 - Assessors work independently from implementation teams and coordinate with the System Owner’s appointed point of contact (POC).
 
-## Pre‑Engagement Requirements (Must Be Completed Before Access)
-
-1. Contracting and Access Agreements
-   - Access Agreement and Confidentiality/NDA signed by both assessors and the System Owner.
-   - Data protection addendum and evidence handling rules agreed (see Evidence Handling).
-2. Scope Lock
-   - Confirm instance(s), environments, and IP ranges in scope; name systems and owners.
-   - Declare assessment window; declare change freeze or provide complete change logs.
-3. Access Provisioning
+## Access Provisioning
    - Named user accounts for each assessor on in-scope servers (no shared accounts).
-   - SSH key–based access only; password authentication disabled.
+   - SSH key–based access only
    - Sudo rights required for read/verify operations (e.g., service status, file permissions, config reads). Where prohibited, a custodian must run commands live with screen-share and provide artifacts.
    - Network allow‑listing or VPN/bastion access, with MFA where available.
-   - Read‑only database access or custodian‑run SQL for configuration queries.
-4. Evidence Transfer Channel
-   - Agreed secure channel (e.g., encrypted file share) with retention period and access controls.
 
 ## What We Will Access
 
@@ -33,7 +38,7 @@ Provide a direct, practical method for assessing DHIS2 environments against the 
 - Reverse proxy/TLS termination and relevant network controls.
 - Central logging/monitoring (where in scope) and governance documents.
 
-## Assessment Phases (Concrete Activities)
+## Detailed assessment concrete activities
 
 1. Planning (1–3 days)
 
@@ -113,10 +118,9 @@ Provide a direct, practical method for assessing DHIS2 environments against the 
 ## Remediation and Reassessment
 
 - Gaps require an action plan with owners and target dates.
-- Limited revalidation may be performed within 30–60 days for minor gaps.
+- Limited revalidation may be performed within 30 days for minor gaps.
 - Significant changes or critical gaps trigger full reassessment.
 
 ## References
 
 - `controls.md` (authoritative catalog and verification methods)
-- CIS Controls v8, NIST CSF, ISO/IEC 27001
