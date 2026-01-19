@@ -1,48 +1,42 @@
 # DSCP Assessment Scope
-
 ## Purpose
 
-Define the scope for assessing DHIS2 Server Certification Program (DSCP) controls, ensuring clear boundaries, inclusions, exclusions, and methods aligned to industry standards. The scope of this assessment is restricted to a particular instance of DHIS2.
+The purpose of the DHIS2 Server Certification Program (DSCP) is for implementors to demonstrate that their DHIS2 server has been installed in a way which meets reasonable standards of good practice. This assurance is intended to be valuable to donors and system owners. It is not designed to be a comprehensive security assessment - there are other tools and standards for that, for example CIS benchmarks and NIST frameworks.  There are three main drivers for this program:
+- it is focussed on DHIS2 server installations in particular, rather than generic systems
+- it is based on many years experience and understanding of common mistakes or deficiencies found in the field
+- the scope is intentionally limited to allow for rapid, low cost and remote assessment
 
-## Target Users and Environments
+Importantly, what is being certified is an installed system rather than the organisation which owns or installed the system.
+
+The assessment is targetted at minimum requirements for an acceptable DHIS2 production system.  An aim of the program is to ensure that all systems can reach this minimum standard.  
+
+The assessment is linked to a particular point in time.  There is no sense of a validity period.  The certificate is awarded based on the state of the system at the time it is assessed.  Typically we expect this assessment to be sought soon after installation as well as periodically afterwards.
+## Target Environments
 
 This scope applies to organizations operating DHIS2 in production, whether self‑hosted on‑premises, hosted by a national/regional data center, or managed in a cloud environment. Typical deployments include:
 
 - Reverse proxy/TLS termination (e.g., NGINX or equivalent)
 - Application server running DHIS2 (e.g., Tomcat or equivalent Java application runtime)
 - PostgreSQL database server with regular backups and restore procedures
-- Optional centralized logging/monitoring and security controls (SIEM, HIDS/EDR, NIDS)
+- System monitoring
 
-Both single‑server and multi‑tier architectures (separate app and DB servers, or containerized) are supported by this scope.
+Currently the scope is limited to systems running on linux using physical hardware, virtual machines and/or containers.
 
 ## In-Scope Components
 
-- DHIS2 application (production) and supporting services
-- Pre-production environments used for deployment validation and backup/restore testing
-- Application server hosting DHIS2
-- PostgreSQL database configurations, backups, and recovery procedures
 - Operating systems hosting DHIS2 components
+- DHIS2 application service (typically apache tomcat) 
+- PostgreSQL database configurations, backups, and recovery procedures
 - Reverse proxy and TLS termination for DHIS2
 - Network security controls protecting DHIS2 (host/container firewalls, segmentation)
-- Security monitoring and detection: centralized logging/SIEM, HIDS/EDR, NIDS
-- Identity and access controls for OS, SSH, and DHIS2 administrative access
 - Governance/process controls directly supporting the environment (e.g., IR, vulnerability management, asset inventory, offboarding)
-- Backup storage (including off-site) and key management related to DHIS2 data
+- Backup process (including off-site) related to DHIS2 data
 
 ## Out of Scope
 
-- DHIS2 business functionality, data quality/semantics, and application feature validation
-- Enterprise systems not providing services to the DHIS2 environment
-- Third-party vendor internal controls beyond contractual assurances and integration points
-- End-user devices except as covered by Device controls DV-01 to DV-03
-- Physical facility security unless explicitly included by engagement
-- Network infrastructure not involved in DHIS2 traffic paths
-
-## Assessment Boundaries and Period
-
-- Point-in-time assessment as of the assessment date.
-- Configuration/state validation for production.
-- Pre‑production/staging is in‑scope where used for deployment validation and restore testing.
+- DHIS2 application level configuration
+- End-user devices used to access the application on the server
+- Physical facility controls and data centre management 
 
 ## Methods and Evidence
 
