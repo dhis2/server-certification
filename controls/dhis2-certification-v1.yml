@@ -1,14 +1,14 @@
-name: DHIS2 Server Certification Program
+templateName: DHIS2 Server Certification Program (DSCP)
+templateDescription: >
+  Assessment template/checklist for assessing DHIS2 server implementations against
+  security, performance, and deployment best practices. This template can be used by
+  DHIS2 implementers and hosting providers to validate their DHIS2 server setups for compliance.
 version: 1
-description: >
-  Assessment template for certifying DHIS2 server implementations against
-  security, performance, and deployment best practices.
 
 categories:
-  - name: PostgreSQL Database Controls
+  - name: PostgreSQL Database
     description: Database security, backup, and configuration controls for PostgreSQL
     weight: 0.15
-    sortOrder: 1
     criteria:
       - code: DB-01
         name: Regular Automated Database Backup
@@ -18,12 +18,9 @@ categories:
         verificationMethod: >
           Review backup configuration files; verify backup logs from past 30 days;
           confirm retention policy documentation; test backup integrity checksums.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "11.2"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Backup configuration files, backup logs, retention policy documentation
 
       - code: DB-02
         name: Database Backup Restore Testing
@@ -31,14 +28,11 @@ categories:
           Periodic restore tests must be performed to a non-production environment
           to validate backup integrity and recovery procedures.
         verificationMethod: >
-          Review restore test documentation from past 6 months; verify test results
+          Review restore test documentation or logs from past 3 months; verify test results
           and lessons learned; confirm non-production test environment exists.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "11.5"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Restore test documentation, test results, lessons learned
 
       - code: DB-03
         name: Off-Site Backup Storage
@@ -46,12 +40,9 @@ categories:
           Backup copies must be stored off-site or in a separate region/account
           to protect against site-wide disasters.
         verificationMethod: Verify off-site backup location and access controls.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "11.4"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Off-site backup configuration, storage location details
 
       - code: DB-04
         name: Database Least Privilege Access
@@ -61,14 +52,11 @@ categories:
         verificationMethod: >
           Review database user roles and permissions; verify the DHIS2 user only
           has access to the required DHIS2 database, and from the DHIS2 IP address.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "5.4"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Database user roles listing, permission matrix
 
-      - code: DB-06
+      - code: DB-05
         name: Database Backup File Permissions
         description: >
           Backup artifacts must inherit restrictive permissions (Unix mode 660)
@@ -76,28 +64,26 @@ categories:
         verificationMethod: >
           Audit backup file permissions; verify backup scripts include proper
           permission settings; check for world-readable backup files.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
+        cisMapping: null
         isMandatory: true
         evidenceRequired: true
         evidenceDescription: ls -la output of backup directory
 
-      - code: DB-07
+      - code: DB-06
         name: Database Encryption at Rest
         description: >
-          Full-disk encryption must be enabled with secure key management
+          Full-disk encryption is enabled with secure key management
           practices separate from data storage.
         verificationMethod: >
           Verify encryption configuration; review key management procedures;
           confirm encryption status of all database volumes.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "3.11"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Encryption configuration, key management documentation
 
-      - code: DB-08
+      - code: DB-07
         name: Backup Encryption at Rest
         description: >
           Backups must be encrypted at rest with encryption keys managed
@@ -105,14 +91,11 @@ categories:
         verificationMethod: >
           Verify backup encryption configuration; confirm key storage separation;
           test encrypted backup restore procedure.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "3.11"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Backup encryption settings, key storage location
 
-      - code: DB-09
+      - code: DB-08
         name: PostgreSQL Host-Based Access Control
         description: >
           pg_hba.conf must restrict host-based access, enforce TLS connections,
@@ -121,14 +104,11 @@ categories:
           Review pg_hba.conf file; ensure the DHIS2 instance user only has access
           to the DHIS2 database, and from the DHIS2 IP address. Verify TLS
           enforcement; confirm SCRAM authentication enabled; check for MD5 usage.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "5.1"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: pg_hba.conf contents, postgresql.conf TLS settings
 
-      - code: DB-10
+      - code: DB-09
         name: Supported PostgreSQL Version (Non-EOL)
         description: >
           PostgreSQL must be a supported version that is not past end-of-life
@@ -136,64 +116,113 @@ categories:
         verificationMethod: >
           Run SELECT version(); and capture output; compare against the PostgreSQL
           version support/EOL matrix; review OS package source and pinned version.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: PostgreSQL version output, EOL matrix comparison
+        cisMapping: null
 
-      - code: DB-11
+      - code: DB-10
         name: PostgreSQL Tuning Baseline
         description: >
-          PostgreSQL must have JIT disabled and max_locks_per_transaction set to 128
-          to support DHIS2 workload characteristics and reduce query planning overhead.
+          PostgreSQL configuration must be optimized with the following set max_connections,
+          shared_buffers, work_mem, maintenance_work_mem, effective_cache_size,
+          max_locks_per_transaction set to reasonable values based on the server capacity.
         verificationMethod: >
-          Run SHOW jit; (expect off) and SHOW max_locks_per_transaction; (expect 128);
-          verify corresponding entries in postgresql.conf and effective reload/restart logs.
+          Run SHOW jit; (expect off) and verify corresponding entries in postgresql.conf
+          and effective reload/restart logs.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: SHOW jit and SHOW max_locks_per_transaction output
+        cisMapping: null
 
-  - name: Deployment and TLS Controls
-    description: TLS/SSL configuration and deployment environment controls
+  - name: Reverse Proxy
+    description: Reverse Proxy configuration
     weight: 0.1
-    sortOrder: 2
     criteria:
-      - code: DT-02
+      - code: DP-01
+        name: Reverse Proxy Deployment
+        description: >
+          A reverse proxy (e.g., Nginx, Apache, HAProxy) must be deployed in front of
+          the DHIS2 application server (tomcat) to handle incoming traffic.
+        verificationMethod: >
+          Review network architecture documentation (if any); verify reverse proxy
+          installation and configuration; confirm traffic routing through proxy.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: null
+
+      - code: DP-02
         name: TLS/SSL Configuration
         description: >
           TLS 1.2 or higher with modern cipher suites must be enforced;
           HSTS enabled; SSL Labs rating of A or A+ required.
         verificationMethod: >
           Run SSL Labs scan; verify TLS version and cipher configuration;
-          confirm HSTS header; review certificate validity.
+          review certificate validity.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "3.1"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: SSL Labs scan results, HSTS header verification
 
-      - code: DT-03
-        name: Pre-Production Testing Environment
+      - code: DP-03
+        name: Reverse Proxy Access Control
         description: >
-          A staging or test environment should exist for validating changes
-          before production deployment.
+          Reverse proxy must restrict access to only required DHIS2 services
+          and endpoints; default-deny policy enforced.
         verificationMethod: >
-          Review deployment procedures; verify staging environment exists;
-          examine release checklist documentation and sign-offs.
-        controlType: organizational
-        implementationGroup: DSCP1
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Staging environment documentation, deployment procedures
+          Review reverse proxy configuration; perform external port scan;
+          verify only necessary endpoints accessible; check default-deny rules.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "4.4"
+
+      - code: DP-04
+        name: Reverse Proxy Access Logging
+        description: >
+          Comprehensive access logging must be enabled on the reverse proxy
+          with log retention and integrity protection.
+        verificationMethod: >
+          Review logging configuration; verify log retention policy;
+          check log integrity mechanisms; confirm log review procedures.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "8.1"
+
+      - code: DP-05
+        name: Reverse Proxy Least Privilege
+        description: >
+          Reverse proxy service must run under a dedicated non-root user
+          with minimal privileges.
+        verificationMethod: >
+          Check reverse proxy process ownership; verify service account configuration;
+          confirm absence of root privileges.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.4"
+
+      - code: DP-06
+        name: Reverse Proxy Security Updates
+        description: >
+          Reverse proxy software must be kept up-to-date with security patches;
+          version must not be end-of-life.
+        verificationMethod: >
+          Check reverse proxy version; compare against vendor EOL schedule.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: null
+
+      - code: DP-07
+        name: Reverse Proxy Security Headers
+        description: >
+          Security headers such as X-Frame-Options, X-Content-Type-Options,
+          HSTS and Referrer-Policy must be configured (if not set on the DHIS2 backend).
+        verificationMethod: >
+          Review reverse proxy configuration for security headers; test header presence
+          using browser developer tools; verify correct values.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: null
 
   - name: Operating System Security
-    description: Linux server hardening, SSH configuration, patching, and monitoring controls
+    description: Linux server hardening, SSH configuration, patching, and monitoring
     weight: 0.2
-    sortOrder: 3
     criteria:
       - code: OS-01
         name: Disable Direct Root SSH Access
@@ -203,12 +232,9 @@ categories:
         verificationMethod: >
           Review sshd_config for PermitRootLogin setting; verify sudo configuration;
           check for individual admin accounts.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "5.4"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: sshd_config PermitRootLogin setting
 
       - code: OS-02
         name: SSH Key-Based Authentication
@@ -218,12 +244,9 @@ categories:
         verificationMethod: >
           Verify SSH key configuration; check for password authentication disabled;
           review authorized_keys; confirm algorithm restrictions.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "5.2.17"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: SSH configuration showing key-based auth
 
       - code: OS-03
         name: SSH Password Authentication Disabled
@@ -233,12 +256,9 @@ categories:
         verificationMethod: >
           Review sshd_config for PasswordAuthentication, KexAlgorithms, and MACs
           settings; test password login attempt (should fail).
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "5.2.8"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: sshd_config PasswordAuthentication setting
 
       - code: OS-04
         name: SSH Configuration File Permissions
@@ -248,43 +268,82 @@ categories:
         verificationMethod: >
           Audit permissions on /etc/ssh/sshd_config, private keys, authorized_keys;
           verify ownership; check umask.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "5.3.1, 5.3.2, 5.3.3"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: ls -la output of SSH config and key files
 
       - code: OS-05
-        name: Automated Security Patching
+        name: Multiple Administrative Accounts
         description: >
-          Unattended security updates must be enabled with defined reboot strategy;
-          patch status monitoring required.
+          Multiple break-glass admin accounts required (2-3 not more than 4);
+          usage must be monitored and logged.
         verificationMethod: >
-          Verify unattended-upgrades or equivalent service; review patch logs;
-          confirm reboot policy; check patch compliance dashboard.
+          Verify number of admin accounts; review admin account usage logs;
+          confirm monitoring and alerting on admin activity.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
-        cisMapping: "7.3"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Unattended-upgrades configuration, patch logs
+        cisMapping: "5.4"
 
       - code: OS-06
-        name: DHIS2 Application File Permissions
+        name: Individual SSH Account Accountability
         description: >
-          DHIS2 configuration files and logs must be owned by service accounts
-          with non-world-readable permissions.
+          Each SSH user must have a unique, named account; shared credentials
+          prohibited; MFA enforced where possible.
         verificationMethod: >
-          Audit DHIS2 conf/ and logs/ directories; verify ownership and permissions;
-          confirm no world-readable sensitive files.
+          Review /etc/passwd for user accounts; verify no shared accounts exist;
+          check SSH authentication methods and MFA status.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: ls -la of DHIS2 directories
+        cisMapping: "5.2"
 
       - code: OS-07
+        name: OS User Offboarding Procedure
+        description: >
+          System access revocation upon termination; prompt removal
+          from sudoers and privileged groups.
+        verificationMethod: >
+          Review OS offboarding procedures; verify timeline compliance;
+          check removal from groups/sudoers.
+        controlGroup: DSCP1
+        controlType: organizational
+        cisMapping: "5.3"
+
+      - code: OS-08
+        name: User Home Directory Hygiene
+        description: >
+          User home directories must not contain sensitive data or unprotected
+          keys; proper permissions enforced.
+        verificationMethod: >
+          Audit home directories for sensitive files; check for SSH keys,
+          credentials, configs; verify directory permissions.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "6.1"
+
+      - code: OS-09
+        name: Automated Security Patching
+        description: >
+          Unattended security updates must be enabled; patch status monitoring required.
+        verificationMethod: >
+          Verify unattended-upgrades or equivalent service; review patch logs;
+          confirm reboot policy.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "7.3"
+
+      - code: OS-10
+        name: User Home Directory Hygiene
+        description: >
+          User home directories must not contain sensitive data or unprotected
+          keys; proper permissions enforced.
+        verificationMethod: >
+          Audit home directories for sensitive files; check for SSH keys,
+          credentials, configs; verify directory permissions.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "6.1"
+
+      - code: OS-11
         name: System Monitoring and Alerting
         description: >
           Host and service monitoring must be implemented for CPU, memory, disk,
@@ -292,43 +351,34 @@ categories:
         verificationMethod: >
           Review monitoring platform configuration; verify alert rules and thresholds;
           confirm notification channels; test alert delivery.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Monitoring configuration, alert rules
+        cisMapping: null
 
-      - code: OS-08
+      - code: OS-12
         name: Operating System Encryption at Rest
         description: >
-          Full-disk encryption must be enabled on servers and volumes
+          Full-disk encryption is enabled on servers and volumes
           (LUKS/FileVault/BitLocker or equivalent).
         verificationMethod: >
           Verify encryption status of system volumes; review key management
           procedures; confirm encryption is active at boot.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "3.11"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Disk encryption status output
 
-      - code: OS-09
+      - code: OS-13
         name: Operating System Least Privilege
         description: >
           OS users must be assigned minimum necessary privileges with role
           separation; periodic access reviews required.
         verificationMethod: >
-          Review user accounts and group memberships; verify sudo configurations;
-          check access review documentation from past quarter.
+          Review user accounts and group memberships; verify sudo configurations.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "5.4"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: User account listing, sudo configuration
 
-      - code: OS-10
+      - code: OS-14
         name: Network Service Exposure Control
         description: >
           Host and network firewalls must implement default-deny ingress;
@@ -336,138 +386,64 @@ categories:
         verificationMethod: >
           Review firewall rules; perform port scan from external network;
           verify only necessary ports accessible; check default policies.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "4.4"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Firewall rules, external port scan results
 
-      - code: OS-11
-        name: Centralized Security Event Logging
-        description: >
-          Security alerts and logs must be forwarded to SIEM with accurate
-          timestamps and integrity protection.
-        verificationMethod: >
-          Verify log forwarding configuration; confirm SIEM receiving logs;
-          check timestamp synchronization; review log integrity mechanisms.
-        controlType: technical
-        implementationGroup: DSCP1
-        cisMapping: "13.1"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Log forwarding configuration, SIEM dashboard
-
-      - code: OS-12
-        name: Host-Based Intrusion Detection
-        description: >
-          HIDS/EDR must be deployed with alerting enabled and documented
-          response playbooks.
-        verificationMethod: >
-          Verify HIDS/EDR agent installation and status; review alert configuration;
-          confirm response playbooks exist and are current.
-        controlType: technical
-        implementationGroup: DSCP1
-        cisMapping: "13.2"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: HIDS/EDR status, response playbooks
-
-      - code: OS-13
-        name: Network-Based Intrusion Detection
-        description: >
-          NIDS sensors must monitor network traffic with tuned signatures
-          and alerting capabilities.
-        verificationMethod: >
-          Verify NIDS deployment and coverage; review signature updates;
-          check alert tuning documentation; confirm monitoring scope.
-        controlType: technical
-        implementationGroup: DSCP1
-        cisMapping: "13.3"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: NIDS configuration, signature update logs
-
-      - code: OS-14
+      - code: OS-15
         name: Minimal Service Footprint
         description: >
           Only required services and daemons must be active; unnecessary
           services removed/disabled; validation after system updates.
         verificationMethod: >
           List running services; compare against approved baseline;
-          verify service necessity; check post-update validation procedures.
+          verify service necessity.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "2.2"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Running services list, approved baseline
 
-  - name: DHIS2 Application Security
+  - name: DHIS2 Application
     description: DHIS2-specific application security controls including admin access and MFA
     weight: 0.15
-    sortOrder: 4
     criteria:
       - code: AP-01
         name: Default Admin Account Security
         description: >
           DHIS2 default 'admin' account must be disabled/renamed; unique
-          administrator credentials with strong authentication required.
+          superuser credentials with strong authentication required.
         verificationMethod: >
-          Verify default admin account status; confirm unique admin usernames;
+          Verify default admin account status; confirm unique superuser usernames;
           review password complexity requirements.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Admin account configuration screenshot
+        cisMapping: null
 
       - code: AP-02
-        name: Administrative Access Limitation
+        name: Superuser Access Limitation
         description: >
-          DHIS2 administrative users must be limited to approximately 1%
+          DHIS2 superusers users must be limited to approximately 1%
           of total user population; quarterly access reviews required.
         verificationMethod: >
-          Query admin role assignments; calculate percentage of admin users;
-          review quarterly access review documentation.
+          Query superuser role assignments; calculate percentage of superusers.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Admin user count, total user count, access review records
+        cisMapping: null
 
       - code: AP-03
-        name: Multi-Factor Authentication (Admins)
+        name: Multi-Factor Authentication (Superusr accounts)
         description: >
-          MFA must be enforced for all DHIS2 administrative accounts;
+          MFA must be enforced for all DHIS2 superuser accounts;
           hardware or app-based tokens preferred.
         verificationMethod: >
           Verify MFA configuration for admin accounts; review MFA enrollment
           status; test MFA enforcement at login.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: MFA configuration, enrollment status
+        cisMapping: null
 
-      - code: AP-04
-        name: Multi-Factor Authentication (Users)
-        description: >
-          MFA should be offered/enforced for all DHIS2 users where feasible;
-          risk-based authentication policies recommended.
-        verificationMethod: >
-          Review MFA availability and adoption rates; verify risk-based
-          authentication policies; check MFA user documentation.
-        controlType: technical
-        implementationGroup: DSCP1
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: MFA adoption metrics, policy documentation
-
-  - name: Tomcat Application Server
-    description: Tomcat/application server security configuration controls
+  - name: DHIS2 Tomcat Application Server
+    description: DHIS2 Tomcat/application server security configuration
     weight: 0.1
-    sortOrder: 5
     criteria:
       - code: TC-01
         name: Tomcat Service Account
@@ -477,12 +453,9 @@ categories:
         verificationMethod: >
           Check Tomcat process ownership; verify service account configuration;
           confirm absence of root privileges.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "10.17"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: ps aux output showing Tomcat process owner
 
       - code: TC-02
         name: Tomcat Shutdown Port Security
@@ -492,23 +465,17 @@ categories:
         verificationMethod: >
           Review server.xml for SHUTDOWN port configuration;
           verify firewall rules; test external accessibility.
+        controlGroup: IG2
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "3.2"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: server.xml SHUTDOWN port configuration
 
       - code: TC-03
         name: Application Auto-Deployment Disabled
         description: Tomcat auto-deployment must be disabled.
-        verificationMethod: Review server.xml and Host configuration for autoDeploy setting
+        verificationMethod: Review server.xml and Host configuration for autoDeploy setting.
+        controlGroup: IG2
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "9.2"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: server.xml autoDeploy setting
 
       - code: TC-04
         name: Webapp Modification Prevention
@@ -518,257 +485,68 @@ categories:
         verificationMethod: >
           Audit webapps directory permissions; verify Tomcat user cannot
           write to deployment directories.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "4.7"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: ls -la of webapps directory
 
   - name: Network Security
-    description: Network architecture and firewall controls
+    description: Network architecture and firewall
     weight: 0.1
-    sortOrder: 6
     criteria:
       - code: FW-01
         name: Layered Firewall Architecture
         description: >
           Defense-in-depth firewall strategy required: perimeter, host-based,
-          and container-based; default-deny with change control.
+          and container-based; default-deny.
         verificationMethod: >
           Review firewall architecture documentation; verify multiple firewall
-          layers; confirm default-deny policies; check change management process.
+          layers; confirm default-deny policies.
+        controlGroup: DSCP1
         controlType: technical
-        implementationGroup: DSCP1
         cisMapping: "9.1"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Firewall architecture diagram, rule sets
 
-  - name: Access Control
-    description: Administrative access and account management controls
-    weight: 0.1
-    sortOrder: 7
-    criteria:
-      - code: AC-01
-        name: Multiple Administrative Accounts
-        description: >
-          Multiple break-glass admin accounts required (2-4 recommended);
-          usage must be monitored and logged.
-        verificationMethod: >
-          Verify number of admin accounts; review admin account usage logs;
-          confirm monitoring and alerting on admin activity.
-        controlType: technical
-        implementationGroup: DSCP1
-        cisMapping: "5.4"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Admin account listing, usage logs
-
-      - code: AC-02
-        name: Individual SSH Account Accountability
-        description: >
-          Each SSH user must have a unique, named account; shared credentials
-          prohibited; MFA enforced where possible.
-        verificationMethod: >
-          Review /etc/passwd for user accounts; verify no shared accounts exist;
-          check SSH authentication methods and MFA status.
-        controlType: technical
-        implementationGroup: DSCP1
-        cisMapping: "5.2"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: /etc/passwd listing, SSH auth configuration
-
-      - code: AC-03
-        name: User Home Directory Hygiene
-        description: >
-          User home directories must not contain sensitive data or unprotected
-          keys; proper permissions enforced.
-        verificationMethod: >
-          Audit home directories for sensitive files; check for SSH keys,
-          credentials, configs; verify directory permissions.
-        controlType: technical
-        implementationGroup: DSCP1
-        cisMapping: "6.1"
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: Home directory audit results
-
-  - name: Security Governance & Processes
-    description: Organizational security policies, procedures, and governance controls
+  - name: Governance & Processes
+    description: Organizational security policies, procedures, and governance
     weight: 0.1
     sortOrder: 8
     criteria:
       - code: PS-01
-        name: Security Leadership Accountability
-        description: >
-          Designated security manager with defined responsibilities
-          and authority must be appointed.
-        verificationMethod: >
-          Review organizational chart; verify security manager job description
-          and responsibilities; confirm active engagement.
-        controlType: organizational
-        implementationGroup: DSCP1
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Org chart, security manager job description
-
-      - code: PS-02
-        name: Security Program Development
-        description: >
-          Formal security program with documented policies, standards,
-          procedures, and training plan required.
-        verificationMethod: >
-          Review security program documentation; verify policies are current
-          and approved; check training records; confirm awareness activities.
-        controlType: organizational
-        implementationGroup: DSCP1
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Security program documentation
-
-      - code: PS-03
-        name: Enterprise Asset Inventory
-        description: >
-          Current inventory of enterprise assets with owners, locations,
-          and configurations must be maintained.
-        verificationMethod: >
-          Review asset inventory system; verify completeness and accuracy;
-          confirm owner assignments; check update frequency.
-        controlType: organizational
-        implementationGroup: DSCP1
-        cisMapping: "1.1"
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Asset inventory
-
-      - code: PS-04
         name: Incident Response Plan
         description: >
           Documented incident response plan with defined roles, runbooks,
-          communication procedures, and legal considerations.
+          communication procedures.
         verificationMethod: >
           Review IR plan documentation; verify contact lists current;
-          check runbooks for common scenarios; confirm legal review.
+          check runbooks for common scenarios.
+        controlGroup: DSCP1
         controlType: organizational
-        implementationGroup: DSCP1
         cisMapping: "17.1-17.9"
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Incident response plan
 
-      - code: PS-05
+      - code: PS-02
         name: Data Sharing Agreements
         description: >
           Formal data sharing agreements and NDAs with contractual safeguards
           and retention clauses required for external parties.
         verificationMethod: >
           Review executed data sharing agreements; verify NDA coverage;
-          confirm retention and destruction clauses; check legal approval.
+          confirm retention and destruction clauses
+        controlGroup: DSCP1
         controlType: organizational
-        implementationGroup: DSCP1
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Data sharing agreements
+        cisMapping: null
 
-      - code: PS-06
+      - code: PS-03
         name: DHIS2 User Offboarding Procedure
         description: >
-          Immediate deprovisioning workflow for departing users integrated
-          with HR offboarding process.
+          Immediate deprovisioning workflow for departing users.
         verificationMethod: >
-          Review offboarding procedures; verify integration with HR;
-          test deprovisioning timeline; check recent offboarding tickets.
+          Review offboarding procedures.
+        controlGroup: DSCP1
         controlType: organizational
-        implementationGroup: DSCP1
         cisMapping: "5.3"
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Offboarding procedures
 
-      - code: PS-07
-        name: OS User Offboarding Procedure
-        description: >
-          System access revocation upon termination; prompt removal
-          from sudoers and privileged groups.
-        verificationMethod: >
-          Review OS offboarding procedures; verify timeline compliance;
-          check removal from groups/sudoers; audit recent offboardings.
-        controlType: organizational
-        implementationGroup: DSCP1
-        cisMapping: "5.3"
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: OS offboarding procedures
-
-      - code: PS-08
-        name: Risk Assessment Program
-        description: >
-          Periodic risk assessments conducted with documented findings
-          and mitigation tracking.
-        verificationMethod: >
-          Review most recent risk assessment; verify assessment methodology;
-          check mitigation plan and status; confirm periodic schedule.
-        controlType: organizational
-        implementationGroup: DSCP1
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Risk assessment report
-
-      - code: PS-09
-        name: Internal Security Audits
-        description: >
-          Scheduled internal security audits with documented findings,
-          assigned owners, and remediation deadlines.
-        verificationMethod: >
-          Review internal audit schedule and reports; verify finding closure
-          tracking; confirm owner assignments; check remediation status.
-        controlType: organizational
-        implementationGroup: DSCP1
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Internal audit reports
-
-      - code: PS-10
-        name: External Security Audits
-        description: >
-          Periodic third-party security audits and penetration testing
-          conducted by qualified assessors.
-        verificationMethod: >
-          Review external audit reports from past 12 months; verify assessor
-          qualifications; check remediation of findings; confirm test scope.
-        controlType: organizational
-        implementationGroup: DSCP1
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: External audit reports, penetration test results
-
-      - code: PS-11
-        name: Incident Response Testing
-        description: >
-          Regular testing and exercises of incident response procedures
-          to ensure readiness.
-        verificationMethod: >
-          Review IR exercise documentation; verify lessons learned;
-          confirm plan updates based on exercises.
-        controlType: organizational
-        implementationGroup: DSCP1
-        cisMapping: "17.1-17.9"
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: IR exercise documentation
-
-      - code: PS-12
-        name: Security Metrics and KPIs
-        description: >
-          Key security and compliance metrics tracked and reported
-          to management at least quarterly.
-        verificationMethod: >
-          Review KPI dashboard; verify metrics definition;
-          check reporting frequency to leadership; confirm trend analysis.
-        controlType: organizational
-        implementationGroup: DSCP1
-        isMandatory: false
-        evidenceRequired: false
-        evidenceDescription: Security metrics dashboard
+complianceStatusScoring:
+  compliant: 100
+  partially_compliant: 50
+  non_compliant: 0
+  not_applicable: null
+  not_tested: 0
