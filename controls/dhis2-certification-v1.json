@@ -1,0 +1,713 @@
+{
+  "templateName": "DHIS2 Server Certification Program (DSCP)",
+  "templateDescription": "Assessment template for certifying DHIS2 server implementations against security, performance, and deployment best practices.",
+  "version": 1,
+  "categories": [
+    {
+      "name": "PostgreSQL Database Controls",
+      "description": "Database security, backup, and configuration controls for PostgreSQL",
+      "weight": 0.15,
+      "sortOrder": 1,
+      "criteria": [
+        {
+          "code": "DB-01",
+          "name": "Regular Automated Database Backup",
+          "description": "Automated daily backups must be configured with defined retention policies and integrity verification mechanisms.",
+          "verificationMethod": "Review backup configuration files; verify backup logs from past 30 days; confirm retention policy documentation; test backup integrity checksums.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "11.2",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Backup configuration files, backup logs, retention policy documentation"
+        },
+        {
+          "code": "DB-02",
+          "name": "Database Backup Restore Testing",
+          "description": "Periodic restore tests must be performed to a non-production environment to validate backup integrity and recovery procedures.",
+          "verificationMethod": "Review restore test documentation from past 6 months; verify test results and lessons learned; confirm non-production test environment exists.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "11.5",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Restore test documentation, test results, lessons learned"
+        },
+        {
+          "code": "DB-03",
+          "name": "Off-Site Backup Storage",
+          "description": "Backup copies must be stored off-site or in a separate region/account to protect against site-wide disasters.",
+          "verificationMethod": "Verify off-site backup location and access controls.",
+          "implementationGroup": "IG2",
+          "controlType": "technical",
+          "cisMapping": "11.4",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Off-site backup configuration, storage location details"
+        },
+        {
+          "code": "DB-04",
+          "name": "Database Least Privilege Access",
+          "description": "Database users must be assigned minimum necessary privileges; administrative and service accounts must be separated; regular access reviews required.",
+          "verificationMethod": "Review database user roles and permissions; verify the DHIS2 user only has access to the required DHIS2 database, and from the DHIS2 IP address.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "5.4",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Database user roles listing, permission matrix"
+        },
+        {
+          "code": "DB-06",
+          "name": "Database Backup File Permissions",
+          "description": "Backup artifacts must inherit restrictive permissions (Unix mode 660) and must not be world-readable.",
+          "verificationMethod": "Audit backup file permissions; verify backup scripts include proper permission settings; check for world-readable backup files.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": null,
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "ls -la output of backup directory"
+        },
+        {
+          "code": "DB-07",
+          "name": "Database Encryption at Rest",
+          "description": "Full-disk encryption must be enabled with secure key management practices separate from data storage.",
+          "verificationMethod": "Verify encryption configuration; review key management procedures; confirm encryption status of all database volumes.",
+          "implementationGroup": "IG3",
+          "controlType": "technical",
+          "cisMapping": "3.11",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Encryption configuration, key management documentation"
+        },
+        {
+          "code": "DB-08",
+          "name": "Backup Encryption at Rest",
+          "description": "Backups must be encrypted at rest with encryption keys managed separately from the backup storage location.",
+          "verificationMethod": "Verify backup encryption configuration; confirm key storage separation; test encrypted backup restore procedure.",
+          "implementationGroup": "IG3",
+          "controlType": "technical",
+          "cisMapping": "3.11",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Backup encryption settings, key storage location"
+        },
+        {
+          "code": "DB-09",
+          "name": "PostgreSQL Host-Based Access Control",
+          "description": "pg_hba.conf must restrict host-based access, enforce TLS connections, and use SCRAM-SHA-256 authentication over MD5.",
+          "verificationMethod": "Review pg_hba.conf file; ensure the DHIS2 instance user only has access to the DHIS2 database, and from the DHIS2 IP address. Verify TLS enforcement; confirm SCRAM authentication enabled; check for MD5 usage.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "5.1",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "pg_hba.conf contents, postgresql.conf TLS settings"
+        },
+        {
+          "code": "DB-10",
+          "name": "Supported PostgreSQL Version (Non-EOL)",
+          "description": "PostgreSQL must be a supported version that is not past end-of-life as per the official PostgreSQL support schedule at the time of assessment.",
+          "verificationMethod": "Run SELECT version(); and capture output; compare against the PostgreSQL version support/EOL matrix; review OS package source and pinned version.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": null,
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "PostgreSQL version output, EOL matrix comparison"
+        },
+        {
+          "code": "DB-11",
+          "name": "PostgreSQL Tuning Baseline",
+          "description": "PostgreSQL must have JIT disabled and max_locks_per_transaction set to 128 to support DHIS2 workload characteristics and reduce query planning overhead.",
+          "verificationMethod": "Run SHOW jit; (expect off) and SHOW max_locks_per_transaction; (expect 128); verify corresponding entries in postgresql.conf and effective reload/restart logs.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": null,
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "SHOW jit and SHOW max_locks_per_transaction output"
+        }
+      ]
+    },
+    {
+      "name": "Deployment and TLS Controls",
+      "description": "TLS/SSL configuration and deployment environment controls",
+      "weight": 0.1,
+      "sortOrder": 2,
+      "criteria": [
+        {
+          "code": "DT-02",
+          "name": "TLS/SSL Configuration",
+          "description": "TLS 1.2 or higher with modern cipher suites must be enforced; HSTS enabled; SSL Labs rating of A or A+ required.",
+          "verificationMethod": "Run SSL Labs scan; verify TLS version and cipher configuration; confirm HSTS header; review certificate validity.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "3.1",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "SSL Labs scan results, HSTS header verification"
+        },
+        {
+          "code": "DT-03",
+          "name": "Pre-Production Testing Environment",
+          "description": "A staging or test environment should exist for validating changes before production deployment.",
+          "verificationMethod": "Review deployment procedures; verify staging environment exists; examine release checklist documentation and sign-offs.",
+          "implementationGroup": "IG1",
+          "controlType": "organizational",
+          "cisMapping": null,
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Staging environment documentation, deployment procedures"
+        }
+      ]
+    },
+    {
+      "name": "Operating System Security",
+      "description": "Linux server hardening, SSH configuration, patching, and monitoring controls",
+      "weight": 0.2,
+      "sortOrder": 3,
+      "criteria": [
+        {
+          "code": "OS-01",
+          "name": "Disable Direct Root SSH Access",
+          "description": "Direct root login via SSH must be disabled; sudo with individual named accounts required for administrative access.",
+          "verificationMethod": "Review sshd_config for PermitRootLogin setting; verify sudo configuration; check for individual admin accounts.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "5.4",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "sshd_config PermitRootLogin setting"
+        },
+        {
+          "code": "OS-02",
+          "name": "SSH Key-Based Authentication",
+          "description": "SSH key-based authentication must be enforced; keys must be rotated regularly; weak algorithms disabled.",
+          "verificationMethod": "Verify SSH key configuration; check for password authentication disabled; review authorized_keys; confirm algorithm restrictions.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "5.2.17",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "SSH configuration showing key-based auth"
+        },
+        {
+          "code": "OS-03",
+          "name": "SSH Password Authentication Disabled",
+          "description": "SSH password authentication must be disabled (PasswordAuthentication no); strong key exchange and MAC algorithms enforced.",
+          "verificationMethod": "Review sshd_config for PasswordAuthentication, KexAlgorithms, and MACs settings; test password login attempt (should fail).",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "5.2.8",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "sshd_config PasswordAuthentication setting"
+        },
+        {
+          "code": "OS-04",
+          "name": "SSH Configuration File Permissions",
+          "description": "SSH configuration and key files must have restrictive permissions (600/640/660) with proper ownership.",
+          "verificationMethod": "Audit permissions on /etc/ssh/sshd_config, private keys, authorized_keys; verify ownership; check umask.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "5.3.1, 5.3.2, 5.3.3",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "ls -la output of SSH config and key files"
+        },
+        {
+          "code": "OS-05",
+          "name": "Automated Security Patching",
+          "description": "Unattended security updates must be enabled with defined reboot strategy; patch status monitoring required.",
+          "verificationMethod": "Verify unattended-upgrades or equivalent service; review patch logs; confirm reboot policy; check patch compliance dashboard.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "7.3",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Unattended-upgrades configuration, patch logs"
+        },
+        {
+          "code": "OS-06",
+          "name": "DHIS2 Application File Permissions",
+          "description": "DHIS2 configuration files and logs must be owned by service accounts with non-world-readable permissions.",
+          "verificationMethod": "Audit DHIS2 conf/ and logs/ directories; verify ownership and permissions; confirm no world-readable sensitive files.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": null,
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "ls -la of DHIS2 directories"
+        },
+        {
+          "code": "OS-07",
+          "name": "System Monitoring and Alerting",
+          "description": "Host and service monitoring must be implemented for CPU, memory, disk, web proxy, and database with alerting thresholds.",
+          "verificationMethod": "Review monitoring platform configuration; verify alert rules and thresholds; confirm notification channels; test alert delivery.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": null,
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Monitoring configuration, alert rules"
+        },
+        {
+          "code": "OS-08",
+          "name": "Operating System Encryption at Rest",
+          "description": "Full-disk encryption must be enabled on servers and volumes (LUKS/FileVault/BitLocker or equivalent).",
+          "verificationMethod": "Verify encryption status of system volumes; review key management procedures; confirm encryption is active at boot.",
+          "implementationGroup": "IG3",
+          "controlType": "technical",
+          "cisMapping": "3.11",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Disk encryption status output"
+        },
+        {
+          "code": "OS-09",
+          "name": "Operating System Least Privilege",
+          "description": "OS users must be assigned minimum necessary privileges with role separation; periodic access reviews required.",
+          "verificationMethod": "Review user accounts and group memberships; verify sudo configurations; check access review documentation from past quarter.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "5.4",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "User account listing, sudo configuration"
+        },
+        {
+          "code": "OS-10",
+          "name": "Network Service Exposure Control",
+          "description": "Host and network firewalls must implement default-deny ingress; only required services/ports exposed to internet.",
+          "verificationMethod": "Review firewall rules; perform port scan from external network; verify only necessary ports accessible; check default policies.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "4.4",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Firewall rules, external port scan results"
+        },
+        {
+          "code": "OS-11",
+          "name": "Centralized Security Event Logging",
+          "description": "Security alerts and logs must be forwarded to SIEM with accurate timestamps and integrity protection.",
+          "verificationMethod": "Verify log forwarding configuration; confirm SIEM receiving logs; check timestamp synchronization; review log integrity mechanisms.",
+          "implementationGroup": "IG2",
+          "controlType": "technical",
+          "cisMapping": "13.1",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Log forwarding configuration, SIEM dashboard"
+        },
+        {
+          "code": "OS-12",
+          "name": "Host-Based Intrusion Detection",
+          "description": "HIDS/EDR must be deployed with alerting enabled and documented response playbooks.",
+          "verificationMethod": "Verify HIDS/EDR agent installation and status; review alert configuration; confirm response playbooks exist and are current.",
+          "implementationGroup": "IG3",
+          "controlType": "technical",
+          "cisMapping": "13.2",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "HIDS/EDR status, response playbooks"
+        },
+        {
+          "code": "OS-13",
+          "name": "Network-Based Intrusion Detection",
+          "description": "NIDS sensors must monitor network traffic with tuned signatures and alerting capabilities.",
+          "verificationMethod": "Verify NIDS deployment and coverage; review signature updates; check alert tuning documentation; confirm monitoring scope.",
+          "implementationGroup": "IG3",
+          "controlType": "technical",
+          "cisMapping": "13.3",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "NIDS configuration, signature update logs"
+        },
+        {
+          "code": "OS-14",
+          "name": "Minimal Service Footprint",
+          "description": "Only required services and daemons must be active; unnecessary services removed/disabled; validation after system updates.",
+          "verificationMethod": "List running services; compare against approved baseline; verify service necessity; check post-update validation procedures.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "2.2",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Running services list, approved baseline"
+        }
+      ]
+    },
+    {
+      "name": "DHIS2 Application Security",
+      "description": "DHIS2-specific application security controls including admin access and MFA",
+      "weight": 0.15,
+      "sortOrder": 4,
+      "criteria": [
+        {
+          "code": "AP-01",
+          "name": "Default Admin Account Security",
+          "description": "DHIS2 default 'admin' account must be disabled/renamed; unique administrator credentials with strong authentication required.",
+          "verificationMethod": "Verify default admin account status; confirm unique admin usernames; review password complexity requirements.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": null,
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Admin account configuration screenshot"
+        },
+        {
+          "code": "AP-02",
+          "name": "Administrative Access Limitation",
+          "description": "DHIS2 administrative users must be limited to approximately 1% of total user population; quarterly access reviews required.",
+          "verificationMethod": "Query admin role assignments; calculate percentage of admin users; review quarterly access review documentation.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": null,
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Admin user count, total user count, access review records"
+        },
+        {
+          "code": "AP-03",
+          "name": "Multi-Factor Authentication (Admins)",
+          "description": "MFA must be enforced for all DHIS2 administrative accounts; hardware or app-based tokens preferred.",
+          "verificationMethod": "Verify MFA configuration for admin accounts; review MFA enrollment status; test MFA enforcement at login.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": null,
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "MFA configuration, enrollment status"
+        },
+        {
+          "code": "AP-04",
+          "name": "Multi-Factor Authentication (Users)",
+          "description": "MFA should be offered/enforced for all DHIS2 users where feasible; risk-based authentication policies recommended.",
+          "verificationMethod": "Review MFA availability and adoption rates; verify risk-based authentication policies; check MFA user documentation.",
+          "implementationGroup": "IG2",
+          "controlType": "technical",
+          "cisMapping": null,
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "MFA adoption metrics, policy documentation"
+        }
+      ]
+    },
+    {
+      "name": "Tomcat Application Server",
+      "description": "Tomcat/application server security configuration controls",
+      "weight": 0.1,
+      "sortOrder": 5,
+      "criteria": [
+        {
+          "code": "TC-01",
+          "name": "Tomcat Service Account",
+          "description": "Tomcat must run under a dedicated service account with minimal privileges; must not run as root.",
+          "verificationMethod": "Check Tomcat process ownership; verify service account configuration; confirm absence of root privileges.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "10.17",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "ps aux output showing Tomcat process owner"
+        },
+        {
+          "code": "TC-02",
+          "name": "Tomcat Shutdown Port Security",
+          "description": "Tomcat SHUTDOWN port must be disabled or firewalled; if required, restrict to localhost only.",
+          "verificationMethod": "Review server.xml for SHUTDOWN port configuration; verify firewall rules; test external accessibility.",
+          "implementationGroup": "IG2",
+          "controlType": "technical",
+          "cisMapping": "3.2",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "server.xml SHUTDOWN port configuration"
+        },
+        {
+          "code": "TC-03",
+          "name": "Application Auto-Deployment Disabled",
+          "description": "Tomcat auto-deployment must be disabled.",
+          "verificationMethod": "Review server.xml and Host configuration for autoDeploy setting.",
+          "implementationGroup": "IG2",
+          "controlType": "technical",
+          "cisMapping": "9.2",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "server.xml autoDeploy setting"
+        },
+        {
+          "code": "TC-04",
+          "name": "Webapp Modification Prevention",
+          "description": "File permissions must prevent Tomcat runtime from modifying deployed application artifacts (webapps directory).",
+          "verificationMethod": "Audit webapps directory permissions; verify Tomcat user cannot write to deployment directories.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "4.7",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "ls -la of webapps directory"
+        }
+      ]
+    },
+    {
+      "name": "Network Security",
+      "description": "Network architecture and firewall controls",
+      "weight": 0.1,
+      "sortOrder": 6,
+      "criteria": [
+        {
+          "code": "FW-01",
+          "name": "Layered Firewall Architecture",
+          "description": "Defense-in-depth firewall strategy required: perimeter, host-based, and container-based; default-deny with change control.",
+          "verificationMethod": "Review firewall architecture documentation; verify multiple firewall layers; confirm default-deny policies; check change management process.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "9.1",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Firewall architecture diagram, rule sets"
+        }
+      ]
+    },
+    {
+      "name": "Access Control",
+      "description": "Administrative access and account management controls",
+      "weight": 0.1,
+      "sortOrder": 7,
+      "criteria": [
+        {
+          "code": "AC-01",
+          "name": "Multiple Administrative Accounts",
+          "description": "Multiple break-glass admin accounts required (2-4 recommended); usage must be monitored and logged.",
+          "verificationMethod": "Verify number of admin accounts; review admin account usage logs; confirm monitoring and alerting on admin activity.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "5.4",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Admin account listing, usage logs"
+        },
+        {
+          "code": "AC-02",
+          "name": "Individual SSH Account Accountability",
+          "description": "Each SSH user must have a unique, named account; shared credentials prohibited; MFA enforced where possible.",
+          "verificationMethod": "Review /etc/passwd for user accounts; verify no shared accounts exist; check SSH authentication methods and MFA status.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "5.2",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "/etc/passwd listing, SSH auth configuration"
+        },
+        {
+          "code": "AC-03",
+          "name": "User Home Directory Hygiene",
+          "description": "User home directories must not contain sensitive data or unprotected keys; proper permissions enforced.",
+          "verificationMethod": "Audit home directories for sensitive files; check for SSH keys, credentials, configs; verify directory permissions.",
+          "implementationGroup": "IG1",
+          "controlType": "technical",
+          "cisMapping": "6.1",
+          "isMandatory": true,
+          "evidenceRequired": true,
+          "evidenceDescription": "Home directory audit results"
+        }
+      ]
+    },
+    {
+      "name": "Security Governance & Processes",
+      "description": "Organizational security policies, procedures, and governance controls",
+      "weight": 0.1,
+      "sortOrder": 8,
+      "criteria": [
+        {
+          "code": "PS-01",
+          "name": "Security Leadership Accountability",
+          "description": "Designated security manager with defined responsibilities and authority must be appointed.",
+          "verificationMethod": "Review organizational chart; verify security manager job description and responsibilities; confirm active engagement.",
+          "implementationGroup": "IG3",
+          "controlType": "organizational",
+          "cisMapping": null,
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Org chart, security manager job description"
+        },
+        {
+          "code": "PS-02",
+          "name": "Security Program Development",
+          "description": "Formal security program with documented policies, standards, procedures, and training plan required.",
+          "verificationMethod": "Review security program documentation; verify policies are current and approved; check training records; confirm awareness activities.",
+          "implementationGroup": "IG3",
+          "controlType": "organizational",
+          "cisMapping": null,
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Security program documentation"
+        },
+        {
+          "code": "PS-03",
+          "name": "Enterprise Asset Inventory",
+          "description": "Current inventory of enterprise assets with owners, locations, and configurations must be maintained.",
+          "verificationMethod": "Review asset inventory system; verify completeness and accuracy; confirm owner assignments; check update frequency.",
+          "implementationGroup": "IG1",
+          "controlType": "organizational",
+          "cisMapping": "1.1",
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Asset inventory"
+        },
+        {
+          "code": "PS-04",
+          "name": "Incident Response Plan",
+          "description": "Documented incident response plan with defined roles, runbooks, communication procedures, and legal considerations.",
+          "verificationMethod": "Review IR plan documentation; verify contact lists current; check runbooks for common scenarios; confirm legal review.",
+          "implementationGroup": "IG1",
+          "controlType": "organizational",
+          "cisMapping": "17.1-17.9",
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Incident response plan"
+        },
+        {
+          "code": "PS-05",
+          "name": "Data Sharing Agreements",
+          "description": "Formal data sharing agreements and NDAs with contractual safeguards and retention clauses required for external parties.",
+          "verificationMethod": "Review executed data sharing agreements; verify NDA coverage; confirm retention and destruction clauses; check legal approval.",
+          "implementationGroup": "IG1",
+          "controlType": "organizational",
+          "cisMapping": null,
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Data sharing agreements"
+        },
+        {
+          "code": "PS-06",
+          "name": "DHIS2 User Offboarding Procedure",
+          "description": "Immediate deprovisioning workflow for departing users integrated with HR offboarding process.",
+          "verificationMethod": "Review offboarding procedures; verify integration with HR; test deprovisioning timeline; check recent offboarding tickets.",
+          "implementationGroup": "IG1",
+          "controlType": "organizational",
+          "cisMapping": "5.3",
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Offboarding procedures"
+        },
+        {
+          "code": "PS-07",
+          "name": "OS User Offboarding Procedure",
+          "description": "System access revocation upon termination; prompt removal from sudoers and privileged groups.",
+          "verificationMethod": "Review OS offboarding procedures; verify timeline compliance; check removal from groups/sudoers; audit recent offboardings.",
+          "implementationGroup": "IG1",
+          "controlType": "organizational",
+          "cisMapping": "5.3",
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "OS offboarding procedures"
+        },
+        {
+          "code": "PS-08",
+          "name": "Risk Assessment Program",
+          "description": "Periodic risk assessments conducted with documented findings and mitigation tracking.",
+          "verificationMethod": "Review most recent risk assessment; verify assessment methodology; check mitigation plan and status; confirm periodic schedule.",
+          "implementationGroup": "IG2",
+          "controlType": "organizational",
+          "cisMapping": null,
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Risk assessment report"
+        },
+        {
+          "code": "PS-09",
+          "name": "Internal Security Audits",
+          "description": "Scheduled internal security audits with documented findings, assigned owners, and remediation deadlines.",
+          "verificationMethod": "Review internal audit schedule and reports; verify finding closure tracking; confirm owner assignments; check remediation status.",
+          "implementationGroup": "IG2",
+          "controlType": "organizational",
+          "cisMapping": null,
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Internal audit reports"
+        },
+        {
+          "code": "PS-10",
+          "name": "External Security Audits",
+          "description": "Periodic third-party security audits and penetration testing conducted by qualified assessors.",
+          "verificationMethod": "Review external audit reports from past 12 months; verify assessor qualifications; check remediation of findings; confirm test scope.",
+          "implementationGroup": "IG3",
+          "controlType": "organizational",
+          "cisMapping": null,
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "External audit reports, penetration test results"
+        },
+        {
+          "code": "PS-11",
+          "name": "Incident Response Testing",
+          "description": "Regular testing and exercises of incident response procedures to ensure readiness.",
+          "verificationMethod": "Review IR exercise documentation; verify lessons learned; confirm plan updates based on exercises.",
+          "implementationGroup": "IG2",
+          "controlType": "organizational",
+          "cisMapping": "17.1-17.9",
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "IR exercise documentation"
+        },
+        {
+          "code": "PS-12",
+          "name": "Security Metrics and KPIs",
+          "description": "Key security and compliance metrics tracked and reported to management at least quarterly.",
+          "verificationMethod": "Review KPI dashboard; verify metrics definition; check reporting frequency to leadership; confirm trend analysis.",
+          "implementationGroup": "IG3",
+          "controlType": "organizational",
+          "cisMapping": null,
+          "isMandatory": false,
+          "evidenceRequired": false,
+          "evidenceDescription": "Security metrics dashboard"
+        }
+      ]
+    }
+  ],
+  "certificationModel": {
+    "type": "pass_fail",
+    "description": "Binary certification outcome based on target Implementation Group compliance",
+    "outcomes": {
+      "pass": {
+        "description": "All required Technical controls for target IG are COMPLIANT",
+        "action": "Issue W3C Verifiable Credential",
+        "validityYears": 2
+      },
+      "fail": {
+        "description": "One or more required Technical controls are NON_COMPLIANT or NOT_TESTED",
+        "action": "No certificate issued; assessment can be resumed after remediation"
+      }
+    },
+    "implementationGroups": {
+      "IG1": {
+        "name": "Essential Cyber Hygiene",
+        "description": "Foundational security controls for basic cyber defense",
+        "targetProfile": "All organizations",
+        "passRequirement": "All IG1 Technical controls must be COMPLIANT"
+      },
+      "IG2": {
+        "name": "Intermediate Security",
+        "description": "Additional controls for organizations managing sensitive data",
+        "targetProfile": "Organizations with IT resources managing sensitive data",
+        "passRequirement": "All IG1 + IG2 Technical controls must be COMPLIANT"
+      },
+      "IG3": {
+        "name": "Advanced Security",
+        "description": "Defense-in-depth controls for high-maturity environments",
+        "targetProfile": "Highly regulated environments with significant cybersecurity expertise",
+        "passRequirement": "All IG1 + IG2 + IG3 Technical controls must be COMPLIANT"
+      }
+    }
+  },
+  "complianceStatusScoring": {
+    "compliant": 100,
+    "partially_compliant": 50,
+    "non_compliant": 0,
+    "not_applicable": null,
+    "not_tested": 0
+  }
+}
