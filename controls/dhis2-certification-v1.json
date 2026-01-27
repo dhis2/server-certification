@@ -51,10 +51,7 @@
           "verificationMethod": "Audit backup file permissions; verify backup scripts include proper permission settings; check for world-readable backup files.",
           "controlGroup": "DSCP1",
           "controlType": "technical",
-          "cisMapping": null,
-          "isMandatory": true,
-          "evidenceRequired": true,
-          "evidenceDescription": "ls -la output of backup directory"
+          "cisMapping": null
         },
         {
           "code": "DB-06",

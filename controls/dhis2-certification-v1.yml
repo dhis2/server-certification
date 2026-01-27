@@ -67,9 +67,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        isMandatory: true
-        evidenceRequired: true
-        evidenceDescription: ls -la output of backup directory
 
       - code: DB-06
         name: Database Encryption at Rest
