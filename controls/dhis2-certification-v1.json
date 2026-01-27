@@ -1,0 +1,451 @@
+{
+  "templateName": "DHIS2 Server Certification Program (DSCP)",
+  "templateDescription": "Assessment template/checklist for assessing DHIS2 server implementations against security, performance, and deployment best practices. This template can be used by DHIS2 implementers and hosting providers to validate their DHIS2 server setups for compliance.",
+  "version": 1,
+  "categories": [
+    {
+      "name": "PostgreSQL Database",
+      "description": "Database security, backup, and configuration controls for PostgreSQL",
+      "weight": 0.15,
+      "criteria": [
+        {
+          "code": "DB-01",
+          "name": "Regular Automated Database Backup",
+          "description": "Automated daily backups must be configured with defined retention policies and integrity verification mechanisms.",
+          "verificationMethod": "Review backup configuration files; verify backup logs from past 30 days; confirm retention policy documentation; test backup integrity checksums.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "11.2"
+        },
+        {
+          "code": "DB-02",
+          "name": "Database Backup Restore Testing",
+          "description": "Periodic restore tests must be performed to a non-production environment to validate backup integrity and recovery procedures.",
+          "verificationMethod": "Review restore test documentation or logs from past 3 months; verify test results and lessons learned; confirm non-production test environment exists.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "11.5"
+        },
+        {
+          "code": "DB-03",
+          "name": "Off-Site Backup Storage",
+          "description": "Backup copies must be stored off-site or in a separate region/account to protect against site-wide disasters.",
+          "verificationMethod": "Verify off-site backup location and access controls.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "11.4"
+        },
+        {
+          "code": "DB-04",
+          "name": "Database Least Privilege Access",
+          "description": "Database users must be assigned minimum necessary privileges; administrative and service accounts must be separated; regular access reviews required.",
+          "verificationMethod": "Review database user roles and permissions; verify the DHIS2 user only has access to the required DHIS2 database, and from the DHIS2 IP address.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.4"
+        },
+        {
+          "code": "DB-05",
+          "name": "Database Backup File Permissions",
+          "description": "Backup artifacts must inherit restrictive permissions (Unix mode 660) and must not be world-readable.",
+          "verificationMethod": "Audit backup file permissions; verify backup scripts include proper permission settings; check for world-readable backup files.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        },
+        {
+          "code": "DB-06",
+          "name": "Database Encryption at Rest",
+          "description": "Full-disk encryption is enabled with secure key management practices separate from data storage.",
+          "verificationMethod": "Verify encryption configuration; review key management procedures; confirm encryption status of all database volumes.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "3.11"
+        },
+        {
+          "code": "DB-07",
+          "name": "Backup Encryption at Rest",
+          "description": "Backups must be encrypted at rest with encryption keys managed separately from the backup storage location.",
+          "verificationMethod": "Verify backup encryption configuration; confirm key storage separation; test encrypted backup restore procedure.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "3.11"
+        },
+        {
+          "code": "DB-08",
+          "name": "PostgreSQL Host-Based Access Control",
+          "description": "pg_hba.conf must restrict host-based access, enforce TLS connections, and use SCRAM-SHA-256 authentication over MD5.",
+          "verificationMethod": "Review pg_hba.conf file; ensure the DHIS2 instance user only has access to the DHIS2 database, and from the DHIS2 IP address. Verify TLS enforcement; confirm SCRAM authentication enabled; check for MD5 usage.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.1"
+        },
+        {
+          "code": "DB-09",
+          "name": "Supported PostgreSQL Version (Non-EOL)",
+          "description": "PostgreSQL must be a supported version that is not past end-of-life as per the official PostgreSQL support schedule at the time of assessment.",
+          "verificationMethod": "Run SELECT version(); and capture output; compare against the PostgreSQL version support/EOL matrix; review OS package source and pinned version.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        },
+        {
+          "code": "DB-10",
+          "name": "PostgreSQL Tuning Baseline",
+          "description": "PostgreSQL configuration must be optimized with the following set max_connections, shared_buffers, work_mem, maintenance_work_mem, effective_cache_size, max_locks_per_transaction set to reasonable values based on the server capacity.",
+          "verificationMethod": "Run SHOW jit; (expect off) and verify corresponding entries in postgresql.conf and effective reload/restart logs.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        }
+      ]
+    },
+    {
+      "name": "Reverse Proxy",
+      "description": "Reverse Proxy configuration",
+      "weight": 0.1,
+      "criteria": [
+        {
+          "code": "DP-01",
+          "name": "Reverse Proxy Deployment",
+          "description": "A reverse proxy (e.g., Nginx, Apache, HAProxy) must be deployed in front of the DHIS2 application server (tomcat) to handle incoming traffic.",
+          "verificationMethod": "Review network architecture documentation (if any); verify reverse proxy installation and configuration; confirm traffic routing through proxy.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        },
+        {
+          "code": "DP-02",
+          "name": "TLS/SSL Configuration",
+          "description": "TLS 1.2 or higher with modern cipher suites must be enforced; HSTS enabled; SSL Labs rating of A or A+ required.",
+          "verificationMethod": "Run SSL Labs scan; verify TLS version and cipher configuration; review certificate validity.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "3.1"
+        },
+        {
+          "code": "DP-03",
+          "name": "Reverse Proxy Access Control",
+          "description": "Reverse proxy must restrict access to only required DHIS2 services and endpoints; default-deny policy enforced.",
+          "verificationMethod": "Review reverse proxy configuration; perform external port scan; verify only necessary endpoints accessible; check default-deny rules.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "4.4"
+        },
+        {
+          "code": "DP-04",
+          "name": "Reverse Proxy Access Logging",
+          "description": "Comprehensive access logging must be enabled on the reverse proxy with log retention and integrity protection.",
+          "verificationMethod": "Review logging configuration; verify log retention policy; check log integrity mechanisms; confirm log review procedures.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "8.1"
+        },
+        {
+          "code": "DP-05",
+          "name": "Reverse Proxy Least Privilege",
+          "description": "Reverse proxy service must run under a dedicated non-root user with minimal privileges.",
+          "verificationMethod": "Check reverse proxy process ownership; verify service account configuration; confirm absence of root privileges.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.4"
+        },
+        {
+          "code": "DP-06",
+          "name": "Reverse Proxy Security Updates",
+          "description": "Reverse proxy software must be kept up-to-date with security patches; version must not be end-of-life.",
+          "verificationMethod": "Check reverse proxy version; compare against vendor EOL schedule.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        },
+        {
+          "code": "DP-07",
+          "name": "Reverse Proxy Security Headers",
+          "description": "Security headers such as X-Frame-Options, X-Content-Type-Options, HSTS and Referrer-Policy must be configured (if not set on the DHIS2 backend).",
+          "verificationMethod": "Review reverse proxy configuration for security headers; test header presence using browser developer tools; verify correct values.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        }
+      ]
+    },
+    {
+      "name": "Operating System Security",
+      "description": "Linux server hardening, SSH configuration, patching, and monitoring",
+      "weight": 0.2,
+      "criteria": [
+        {
+          "code": "OS-01",
+          "name": "Disable Direct Root SSH Access",
+          "description": "Direct root login via SSH must be disabled; sudo with individual named accounts required for administrative access.",
+          "verificationMethod": "Review sshd_config for PermitRootLogin setting; verify sudo configuration; check for individual admin accounts.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.4"
+        },
+        {
+          "code": "OS-02",
+          "name": "SSH Key-Based Authentication",
+          "description": "SSH key-based authentication must be enforced; keys must be rotated regularly; weak algorithms disabled.",
+          "verificationMethod": "Verify SSH key configuration; check for password authentication disabled; review authorized_keys; confirm algorithm restrictions.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.2.17"
+        },
+        {
+          "code": "OS-03",
+          "name": "SSH Password Authentication Disabled",
+          "description": "SSH password authentication must be disabled (PasswordAuthentication no); strong key exchange and MAC algorithms enforced.",
+          "verificationMethod": "Review sshd_config for PasswordAuthentication, KexAlgorithms, and MACs settings; test password login attempt (should fail).",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.2.8"
+        },
+        {
+          "code": "OS-04",
+          "name": "SSH Configuration File Permissions",
+          "description": "SSH configuration and key files must have restrictive permissions (600/640/660) with proper ownership.",
+          "verificationMethod": "Audit permissions on /etc/ssh/sshd_config, private keys, authorized_keys; verify ownership; check umask.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.3.1, 5.3.2, 5.3.3"
+        },
+        {
+          "code": "OS-05",
+          "name": "Multiple Administrative Accounts",
+          "description": "Multiple break-glass admin accounts required (2-3 not more than 4); usage must be monitored and logged.",
+          "verificationMethod": "Verify number of admin accounts; review admin account usage logs; confirm monitoring and alerting on admin activity.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.4"
+        },
+        {
+          "code": "OS-06",
+          "name": "Individual SSH Account Accountability",
+          "description": "Each SSH user must have a unique, named account; shared credentials prohibited; MFA enforced where possible.",
+          "verificationMethod": "Review /etc/passwd for user accounts; verify no shared accounts exist; check SSH authentication methods and MFA status.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.2"
+        },
+        {
+          "code": "OS-07",
+          "name": "OS User Offboarding Procedure",
+          "description": "System access revocation upon termination; prompt removal from sudoers and privileged groups.",
+          "verificationMethod": "Review OS offboarding procedures; verify timeline compliance; check removal from groups/sudoers.",
+          "controlGroup": "DSCP1",
+          "controlType": "organizational",
+          "cisMapping": "5.3"
+        },
+        {
+          "code": "OS-08",
+          "name": "User Home Directory Hygiene",
+          "description": "User home directories must not contain sensitive data or unprotected keys; proper permissions enforced.",
+          "verificationMethod": "Audit home directories for sensitive files; check for SSH keys, credentials, configs; verify directory permissions.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "6.1"
+        },
+        {
+          "code": "OS-09",
+          "name": "Automated Security Patching",
+          "description": "Unattended security updates must be enabled; patch status monitoring required.",
+          "verificationMethod": "Verify unattended-upgrades or equivalent service; review patch logs; confirm reboot policy.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "7.3"
+        },
+        {
+          "code": "OS-10",
+          "name": "User Home Directory Hygiene",
+          "description": "User home directories must not contain sensitive data or unprotected keys; proper permissions enforced.",
+          "verificationMethod": "Audit home directories for sensitive files; check for SSH keys, credentials, configs; verify directory permissions.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "6.1"
+        },
+        {
+          "code": "OS-11",
+          "name": "System Monitoring and Alerting",
+          "description": "Host and service monitoring must be implemented for CPU, memory, disk, web proxy, and database with alerting thresholds.",
+          "verificationMethod": "Review monitoring platform configuration; verify alert rules and thresholds; confirm notification channels; test alert delivery.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        },
+        {
+          "code": "OS-12",
+          "name": "Operating System Encryption at Rest",
+          "description": "Full-disk encryption is enabled on servers and volumes (LUKS/FileVault/BitLocker or equivalent).",
+          "verificationMethod": "Verify encryption status of system volumes; review key management procedures; confirm encryption is active at boot.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "3.11"
+        },
+        {
+          "code": "OS-13",
+          "name": "Operating System Least Privilege",
+          "description": "OS users must be assigned minimum necessary privileges with role separation; periodic access reviews required.",
+          "verificationMethod": "Review user accounts and group memberships; verify sudo configurations.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "5.4"
+        },
+        {
+          "code": "OS-14",
+          "name": "Network Service Exposure Control",
+          "description": "Host and network firewalls must implement default-deny ingress; only required services/ports exposed to internet.",
+          "verificationMethod": "Review firewall rules; perform port scan from external network; verify only necessary ports accessible; check default policies.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "4.4"
+        },
+        {
+          "code": "OS-15",
+          "name": "Minimal Service Footprint",
+          "description": "Only required services and daemons must be active; unnecessary services removed/disabled; validation after system updates.",
+          "verificationMethod": "List running services; compare against approved baseline; verify service necessity.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "2.2"
+        }
+      ]
+    },
+    {
+      "name": "DHIS2 Application",
+      "description": "DHIS2-specific application security controls including admin access and MFA",
+      "weight": 0.15,
+      "criteria": [
+        {
+          "code": "AP-01",
+          "name": "Default Admin Account Security",
+          "description": "DHIS2 default 'admin' account must be disabled/renamed; unique superuser credentials with strong authentication required.",
+          "verificationMethod": "Verify default admin account status; confirm unique superuser usernames; review password complexity requirements.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        },
+        {
+          "code": "AP-02",
+          "name": "Superuser Access Limitation",
+          "description": "DHIS2 superusers users must be limited to approximately 1% of total user population; quarterly access reviews required.",
+          "verificationMethod": "Query superuser role assignments; calculate percentage of superusers.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        },
+        {
+          "code": "AP-03",
+          "name": "Multi-Factor Authentication (Superusr accounts)",
+          "description": "MFA must be enforced for all DHIS2 superuser accounts; hardware or app-based tokens preferred.",
+          "verificationMethod": "Verify MFA configuration for admin accounts; review MFA enrollment status; test MFA enforcement at login.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": null
+        }
+      ]
+    },
+    {
+      "name": "DHIS2 Tomcat Application Server",
+      "description": "DHIS2 Tomcat/application server security configuration",
+      "weight": 0.1,
+      "criteria": [
+        {
+          "code": "TC-01",
+          "name": "Tomcat Service Account",
+          "description": "Tomcat must run under a dedicated service account with minimal privileges; must not run as root.",
+          "verificationMethod": "Check Tomcat process ownership; verify service account configuration; confirm absence of root privileges.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "10.17"
+        },
+        {
+          "code": "TC-02",
+          "name": "Tomcat Shutdown Port Security",
+          "description": "Tomcat SHUTDOWN port must be disabled or firewalled; if required, restrict to localhost only.",
+          "verificationMethod": "Review server.xml for SHUTDOWN port configuration; verify firewall rules; test external accessibility.",
+          "controlGroup": "IG2",
+          "controlType": "technical",
+          "cisMapping": "3.2"
+        },
+        {
+          "code": "TC-03",
+          "name": "Application Auto-Deployment Disabled",
+          "description": "Tomcat auto-deployment must be disabled.",
+          "verificationMethod": "Review server.xml and Host configuration for autoDeploy setting.",
+          "controlGroup": "IG2",
+          "controlType": "technical",
+          "cisMapping": "9.2"
+        },
+        {
+          "code": "TC-04",
+          "name": "Webapp Modification Prevention",
+          "description": "File permissions must prevent Tomcat runtime from modifying deployed application artifacts (webapps directory).",
+          "verificationMethod": "Audit webapps directory permissions; verify Tomcat user cannot write to deployment directories.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "4.7"
+        }
+      ]
+    },
+    {
+      "name": "Network Security",
+      "description": "Network architecture and firewall",
+      "weight": 0.1,
+      "criteria": [
+        {
+          "code": "FW-01",
+          "name": "Layered Firewall Architecture",
+          "description": "Defense-in-depth firewall strategy required: perimeter, host-based, and container-based; default-deny.",
+          "verificationMethod": "Review firewall architecture documentation; verify multiple firewall layers; confirm default-deny policies.",
+          "controlGroup": "DSCP1",
+          "controlType": "technical",
+          "cisMapping": "9.1"
+        }
+      ]
+    },
+    {
+      "name": "Governance & Processes",
+      "description": "Organizational security policies, procedures, and governance",
+      "weight": 0.1,
+      "sortOrder": 8,
+      "criteria": [
+        {
+          "code": "PS-01",
+          "name": "Incident Response Plan",
+          "description": "Documented incident response plan with defined roles, runbooks, communication procedures.",
+          "verificationMethod": "Review IR plan documentation; verify contact lists current; check runbooks for common scenarios.",
+          "controlGroup": "DSCP1",
+          "controlType": "organizational",
+          "cisMapping": "17.1-17.9"
+        },
+        {
+          "code": "PS-02",
+          "name": "Data Sharing Agreements",
+          "description": "Formal data sharing agreements and NDAs with contractual safeguards and retention clauses required for external parties.",
+          "verificationMethod": "Review executed data sharing agreements; verify NDA coverage; confirm retention and destruction clauses",
+          "controlGroup": "DSCP1",
+          "controlType": "organizational",
+          "cisMapping": null
+        },
+        {
+          "code": "PS-03",
+          "name": "DHIS2 User Offboarding Procedure",
+          "description": "Immediate deprovisioning workflow for departing users.",
+          "verificationMethod": "Review offboarding procedures.",
+          "controlGroup": "DSCP1",
+          "controlType": "organizational",
+          "cisMapping": "5.3"
+        }
+      ]
+    }
+  ],
+  "complianceStatusScoring": {
+    "compliant": 100,
+    "partially_compliant": 50,
+    "non_compliant": 0,
+    "not_applicable": null,
+    "not_tested": 0
+  }
+}
