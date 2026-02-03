@@ -427,7 +427,7 @@ categories:
         cisMapping: null
 
       - code: AP-03
-        name: Multi-Factor Authentication (Superusr accounts)
+        name: Multi-Factor Authentication (Superuser accounts)
         description: >
           MFA must be enforced for all DHIS2 superuser accounts;
           hardware or app-based tokens preferred.
@@ -462,7 +462,7 @@ categories:
         verificationMethod: >
           Review server.xml for SHUTDOWN port configuration;
           verify firewall rules; test external accessibility.
-        controlGroup: IG2
+        controlGroup: DSCP1
         controlType: technical
         cisMapping: "3.2"
 
@@ -470,7 +470,7 @@ categories:
         name: Application Auto-Deployment Disabled
         description: Tomcat auto-deployment must be disabled.
         verificationMethod: Review server.xml and Host configuration for autoDeploy setting.
-        controlGroup: IG2
+        controlGroup: DSCP1
         controlType: technical
         cisMapping: "9.2"
 
