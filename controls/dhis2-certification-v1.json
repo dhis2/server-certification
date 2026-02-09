@@ -365,7 +365,7 @@
           "name": "Tomcat Shutdown Port Security",
           "description": "Tomcat SHUTDOWN port must be disabled or firewalled; if required, restrict to localhost only.",
           "verificationMethod": "Review server.xml for SHUTDOWN port configuration; verify firewall rules; test external accessibility.",
-          "controlGroup": "IG2",
+          "controlGroup": "DSCP1",
           "controlType": "technical",
           "cisMapping": "3.2"
         },
@@ -374,7 +374,7 @@
           "name": "Application Auto-Deployment Disabled",
           "description": "Tomcat auto-deployment must be disabled.",
           "verificationMethod": "Review server.xml and Host configuration for autoDeploy setting.",
-          "controlGroup": "IG2",
+          "controlGroup": "DSCP1",
           "controlType": "technical",
           "cisMapping": "9.2"
         },
