@@ -4,7 +4,7 @@ The yml can be converted to json using the yq program (`apt install yq` on debia
 
 
 ```
-yq -Y dhis2controls.yml > dhis2controls.json
+yq -Y dhis2-certification-v1.yml > dhis2-certification-v1.json
 ```
 
 The resulting json file is expected to conform to the [schema](controls.schema.json)
