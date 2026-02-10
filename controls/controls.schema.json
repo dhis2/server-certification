@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "templateName": {
+      "type": "string"
+    },
+    "templateDescription": {
+      "type": "string"
+    },
+    "version": {
+      "type": "number"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "criteria": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "verificationMethod": {
+                  "type": "string"
+                },
+                "justification": {
+                  "type": "string"
+                },
+                "controlGroup": {
+                  "type": "string"
+                },
+                "controlType": {
+                  "type": "string"
+                },
+                "cisMapping": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "name",
+                "description",
+                "verificationMethod",
+                "justification",
+                "controlGroup",
+                "controlType"
+              ]
+            }
+          },
+          "sortOrder": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "weight",
+          "criteria"
+        ]
+      }
+    },
+    "complianceStatusScoring": {
+      "type": "object",
+      "properties": {
+        "compliant": {
+          "type": "number"
+        },
+        "partially_compliant": {
+          "type": "number"
+        },
+        "non_compliant": {
+          "type": "number"
+        },
+        "not_applicable": {},
+        "not_tested": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "compliant",
+        "partially_compliant",
+        "non_compliant",
+        "not_applicable",
+        "not_tested"
+      ]
+    }
+  },
+  "required": [
+    "templateName",
+    "templateDescription",
+    "version",
+    "categories",
+    "complianceStatusScoring"
+  ]
+}
