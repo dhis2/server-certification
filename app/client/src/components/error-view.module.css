@@ -1,0 +1,11 @@
+.container {
+    padding: var(--spacers-dp24);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacers-dp16);
+}
+
+.container .noticebox {
+    width: 100%;
+}

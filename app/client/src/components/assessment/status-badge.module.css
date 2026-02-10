@@ -1,0 +1,67 @@
+/* Status colors */
+.positive {
+    background-color: var(--colors-green100) !important;
+    color: var(--colors-green800) !important;
+    border: 1px solid var(--colors-green300) !important;
+}
+
+.warning {
+    background-color: var(--colors-yellow100) !important;
+    color: var(--colors-yellow900) !important;
+    border: 1px solid var(--colors-yellow300) !important;
+}
+
+.negative {
+    background-color: var(--colors-red100) !important;
+    color: var(--colors-red800) !important;
+    border: 1px solid var(--colors-red300) !important;
+}
+
+.default {
+    background-color: var(--colors-grey100) !important;
+    color: var(--colors-grey800) !important;
+    border: 1px solid var(--colors-grey300) !important;
+}
+
+.info {
+    background-color: var(--colors-blue100) !important;
+    color: var(--colors-blue800) !important;
+    border: 1px solid var(--colors-blue300) !important;
+}
+
+/* Control Group badges */
+.cgBadge {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--spacers-dp4);
+    padding: var(--spacers-dp4) var(--spacers-dp8);
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.igLabel {
+    font-weight: 600;
+}
+
+.igDescription {
+    font-weight: 400;
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.dscp1 {
+    background-color: var(--colors-blue100);
+    color: var(--colors-blue800);
+    border: 1px solid var(--colors-blue300);
+}
+
+/* Control type badges */
+.technical {
+    background-color: var(--colors-grey200) !important;
+    color: var(--colors-grey800) !important;
+}
+
+.organizational {
+    background-color: var(--colors-yellow100) !important;
+    color: var(--colors-yellow900) !important;
+}

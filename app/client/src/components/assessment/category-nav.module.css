@@ -1,0 +1,133 @@
+.container {
+    background: var(--colors-white);
+    border-radius: 4px;
+    border: 1px solid var(--colors-grey200);
+    padding: var(--spacers-dp16);
+}
+
+.title {
+    margin: 0 0 var(--spacers-dp16) 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--colors-grey800);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp4);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--spacers-dp12);
+    background: var(--colors-grey050);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+}
+
+.item:hover:not(.disabled) {
+    background: var(--colors-grey100);
+    border-color: var(--colors-grey300);
+}
+
+.item.active {
+    background: var(--colors-blue050);
+    border-color: var(--colors-blue500);
+}
+
+.item.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.itemContent {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp12);
+    flex: 1;
+    min-width: 0;
+}
+
+.itemNumber {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--colors-grey200);
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--colors-grey700);
+    flex-shrink: 0;
+}
+
+.active .itemNumber {
+    background: var(--colors-blue500);
+    color: var(--colors-white);
+}
+
+.itemInfo {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.itemName {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--colors-grey900);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.itemProgress {
+    font-size: 12px;
+    color: var(--colors-grey600);
+    margin-top: 2px;
+}
+
+.itemStatus {
+    flex-shrink: 0;
+    margin-left: var(--spacers-dp8);
+}
+
+.completeIcon {
+    color: var(--colors-green600);
+}
+
+.issueIcon {
+    color: var(--colors-red600);
+}
+
+.progressRing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ring {
+    transform: rotate(-90deg);
+}
+
+.ringBg {
+    stroke: var(--colors-grey200);
+}
+
+.ringProgress {
+    stroke: var(--colors-blue500);
+    transition: stroke-dashoffset 0.3s ease;
+}

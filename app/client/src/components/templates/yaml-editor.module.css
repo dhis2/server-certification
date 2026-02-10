@@ -1,0 +1,67 @@
+.container {
+    display: flex;
+    border: 1px solid var(--colors-grey300);
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', monospace;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.lineNumbers {
+    flex-shrink: 0;
+    padding: var(--spacers-dp12) var(--spacers-dp8);
+    background: var(--colors-grey100);
+    border-right: 1px solid var(--colors-grey300);
+    text-align: right;
+    user-select: none;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.lineNumber {
+    color: var(--colors-grey500);
+    min-width: 2.5em;
+    padding-right: var(--spacers-dp4);
+}
+
+.lineNumber.errorLine {
+    color: var(--colors-red600);
+    font-weight: 600;
+    background: var(--colors-red050);
+}
+
+.editor {
+    flex: 1;
+    padding: var(--spacers-dp12);
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    background: var(--colors-white);
+    color: var(--colors-grey900);
+    min-height: 200px;
+    overflow: auto;
+}
+
+.editor:focus {
+    box-shadow: inset 0 0 0 2px var(--colors-blue600);
+}
+
+.editor::placeholder {
+    color: var(--colors-grey400);
+}
+
+.editor[readonly] {
+    background: var(--colors-grey050);
+    cursor: default;
+}
+
+/* Tab handling */
+.editor {
+    tab-size: 2;
+    -moz-tab-size: 2;
+}

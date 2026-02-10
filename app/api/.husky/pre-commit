@@ -1,0 +1,6 @@
+npx lint-staged
+
+if git diff --cached --name-only | xargs grep -l -E "(password|secret|api_key|private_key)\s*[:=]" 2>/dev/null; then
+  echo "ERROR: Potential secret detected in staged files"
+  exit 1
+fi

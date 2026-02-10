@@ -1,0 +1,122 @@
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.mainArea {
+    padding: var(--spacers-dp24);
+    flex: 1;
+    max-height: 100vh;
+    overflow: auto;
+    background-color: var(--colors-grey100);
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--colors-grey900);
+    min-width: 220px;
+    max-width: 220px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #0c0f13;
+    margin: 0;
+    color: white;
+    font-size: 14px;
+    line-height: 1.3;
+    font-weight: 500;
+    padding: 16px 12px;
+}
+
+.logo {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.navlist {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-top: var(--spacers-dp8);
+}
+
+.navlist :global(a) {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 10px 12px;
+    color: var(--colors-grey300);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 150ms ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+.navlist :global(a):hover {
+    color: var(--colors-white);
+    background-color: var(--colors-grey800);
+}
+
+.navlist :global(a.active) {
+    color: var(--colors-white);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-color: var(--colors-teal400);
+}
+
+.sectionLabel {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--colors-grey500);
+    padding: var(--spacers-dp12) 12px var(--spacers-dp4) 12px;
+    margin-top: var(--spacers-dp4);
+}
+
+.navLabel {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp8);
+}
+
+.navLabel svg {
+    width: 20px;
+    height: 20px;
+    opacity: 0.8;
+}
+
+.userSection {
+    margin-top: auto;
+    padding: var(--spacers-dp12);
+    border-top: 1px solid var(--colors-grey800);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp8);
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp2);
+}
+
+.userEmail {
+    font-size: 0.8125rem;
+    color: var(--colors-grey300);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.userRole {
+    font-size: 0.6875rem;
+    color: var(--colors-grey500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}

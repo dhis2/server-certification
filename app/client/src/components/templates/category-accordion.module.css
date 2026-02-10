@@ -1,0 +1,112 @@
+.accordion {
+    border: 1px solid var(--colors-grey300);
+    border-radius: 4px;
+    background: var(--colors-white);
+    overflow: hidden;
+}
+
+.accordion + .accordion {
+    margin-top: var(--spacers-dp8);
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacers-dp16);
+    background: var(--colors-grey050);
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.15s ease;
+}
+
+.header:hover {
+    background: var(--colors-grey100);
+}
+
+.header:focus {
+    outline: 2px solid var(--colors-blue600);
+    outline-offset: -2px;
+}
+
+.headerContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp4);
+    flex: 1;
+    min-width: 0;
+}
+
+.titleSection {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacers-dp8);
+}
+
+.index {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--colors-grey600);
+}
+
+.title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--colors-grey900);
+}
+
+.metadata {
+    display: flex;
+    gap: var(--spacers-dp16);
+}
+
+.metaItem {
+    display: flex;
+    gap: var(--spacers-dp4);
+}
+
+.metaLabel {
+    font-size: 0.75rem;
+    color: var(--colors-grey600);
+}
+
+.metaValue {
+    font-size: 0.75rem;
+    color: var(--colors-grey800);
+    font-weight: 500;
+}
+
+.chevron {
+    flex-shrink: 0;
+    color: var(--colors-grey600);
+    display: flex;
+    align-items: center;
+}
+
+.panel {
+    padding: var(--spacers-dp16);
+    border-top: 1px solid var(--colors-grey200);
+}
+
+.description {
+    margin: 0 0 var(--spacers-dp16) 0;
+    font-size: 0.875rem;
+    color: var(--colors-grey700);
+}
+
+.criteriaList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp8);
+}
+
+.emptyState {
+    margin: 0;
+    padding: var(--spacers-dp24);
+    text-align: center;
+    color: var(--colors-grey600);
+    font-size: 0.875rem;
+}

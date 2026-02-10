@@ -1,0 +1,136 @@
+.preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp16);
+}
+
+.notice {
+    margin-bottom: var(--spacers-dp8);
+}
+
+.errorList {
+    margin: var(--spacers-dp8) 0 0 0;
+    padding-left: var(--spacers-dp16);
+}
+
+.errorItem {
+    margin-bottom: var(--spacers-dp4);
+    font-size: 0.875rem;
+}
+
+.errorPath {
+    font-family: monospace;
+    background: var(--colors-grey100);
+    padding: 1px 4px;
+    border-radius: 2px;
+    font-size: 0.75rem;
+}
+
+.header {
+    padding-bottom: var(--spacers-dp16);
+    border-bottom: 1px solid var(--colors-grey200);
+}
+
+.titleRow {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp12);
+    flex-wrap: wrap;
+}
+
+.name {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--colors-grey900);
+}
+
+.description {
+    margin: var(--spacers-dp8) 0 0 0;
+    font-size: 0.875rem;
+    color: var(--colors-grey700);
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacers-dp12);
+}
+
+@media (max-width: 600px) {
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.statCard {
+    background: var(--colors-grey050);
+    padding: var(--spacers-dp16);
+    border-radius: 4px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp4);
+}
+
+.statValue {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--colors-blue700);
+}
+
+.statLabel {
+    font-size: 0.75rem;
+    color: var(--colors-grey600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.categoriesList {
+    padding-top: var(--spacers-dp8);
+}
+
+.sectionTitle {
+    margin: 0 0 var(--spacers-dp12) 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--colors-grey700);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.categoryItem {
+    padding: var(--spacers-dp12);
+    background: var(--colors-grey050);
+    border-radius: 4px;
+    margin-bottom: var(--spacers-dp8);
+}
+
+.categoryItem:last-child {
+    margin-bottom: 0;
+}
+
+.categoryHeader {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacers-dp8);
+    flex-wrap: wrap;
+}
+
+.categoryIndex {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--colors-grey600);
+}
+
+.categoryName {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--colors-grey900);
+}
+
+.categoryMeta {
+    font-size: 0.75rem;
+    color: var(--colors-grey600);
+    margin-left: auto;
+}

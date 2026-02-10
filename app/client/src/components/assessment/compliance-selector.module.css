@@ -1,0 +1,71 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp8);
+}
+
+.radioGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp4);
+}
+
+.optionWrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp8);
+    padding: var(--spacers-dp4) 0;
+}
+
+.radioLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacers-dp8);
+}
+
+.helpSection {
+    margin-top: var(--spacers-dp8);
+    padding: var(--spacers-dp12);
+    background: var(--colors-grey100);
+    border-radius: 4px;
+}
+
+.helpText {
+    margin: 0 0 var(--spacers-dp4) 0;
+    font-size: 12px;
+    color: var(--colors-grey700);
+}
+
+.helpText:last-child {
+    margin-bottom: 0;
+}
+
+/* Status colors */
+.positive {
+    background-color: var(--colors-green100) !important;
+    color: var(--colors-green900) !important;
+    border-color: var(--colors-green500) !important;
+}
+
+.warning {
+    background-color: var(--colors-yellow100) !important;
+    color: var(--colors-yellow900) !important;
+    border-color: var(--colors-yellow500) !important;
+}
+
+.negative {
+    background-color: var(--colors-red100) !important;
+    color: var(--colors-red900) !important;
+    border-color: var(--colors-red500) !important;
+}
+
+.default {
+    background-color: var(--colors-grey200) !important;
+    color: var(--colors-grey800) !important;
+}
+
+.info {
+    background-color: var(--colors-blue100) !important;
+    color: var(--colors-blue900) !important;
+    border-color: var(--colors-blue500) !important;
+}

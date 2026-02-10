@@ -1,0 +1,175 @@
+.card {
+    padding: var(--spacers-dp16);
+    margin-bottom: var(--spacers-dp16);
+    border-left: 4px solid var(--colors-grey400);
+    transition: border-color 0.2s ease;
+}
+
+.card:hover {
+    border-left-color: var(--colors-blue500);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacers-dp16);
+    flex-wrap: wrap;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp12);
+    flex: 1;
+}
+
+.code {
+    font-family: monospace;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--colors-grey700);
+    background: var(--colors-grey100);
+    padding: var(--spacers-dp4) var(--spacers-dp8);
+    border-radius: 4px;
+}
+
+.name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--colors-grey900);
+}
+
+.badges {
+    display: flex;
+    gap: var(--spacers-dp8);
+    flex-wrap: wrap;
+}
+
+.dscp1Badge {
+    background-color: var(--colors-blue100) !important;
+    color: var(--colors-blue800) !important;
+}
+
+.technicalBadge {
+    background-color: var(--colors-grey200) !important;
+    color: var(--colors-grey800) !important;
+}
+
+.orgBadge {
+    background-color: var(--colors-yellow100) !important;
+    color: var(--colors-yellow800) !important;
+}
+
+.mandatoryBadge {
+    background-color: var(--colors-red100) !important;
+    color: var(--colors-red800) !important;
+}
+
+.description {
+    margin: var(--spacers-dp12) 0;
+    color: var(--colors-grey700);
+    line-height: 1.5;
+}
+
+.expandButton {
+    background: none;
+    border: none;
+    color: var(--colors-blue600);
+    cursor: pointer;
+    padding: var(--spacers-dp4) 0;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.expandButton:hover {
+    color: var(--colors-blue800);
+}
+
+.details {
+    margin-top: var(--spacers-dp16);
+    padding: var(--spacers-dp12);
+    background: var(--colors-grey050);
+    border-radius: 4px;
+}
+
+.guidanceSection {
+    margin-bottom: var(--spacers-dp12);
+}
+
+.sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp8);
+    margin: 0 0 var(--spacers-dp8) 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--colors-grey800);
+}
+
+.guidance {
+    margin: 0;
+    color: var(--colors-grey700);
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.mappingSection {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp8);
+    margin-top: var(--spacers-dp8);
+    font-size: 13px;
+}
+
+.mappingLabel {
+    font-weight: 500;
+    color: var(--colors-grey600);
+}
+
+.mappingValue {
+    color: var(--colors-grey700);
+    font-family: monospace;
+}
+
+.assessmentSection {
+    margin-top: var(--spacers-dp24);
+    padding-top: var(--spacers-dp16);
+    border-top: 1px solid var(--colors-grey200);
+}
+
+.complianceRow {
+    margin-bottom: var(--spacers-dp16);
+}
+
+.fieldsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp16);
+}
+
+.requiredLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacers-dp4);
+}
+
+.requiredIndicator {
+    color: var(--colors-red600);
+    font-weight: 600;
+}
+
+.remediationSection {
+    margin-top: var(--spacers-dp16);
+    padding: var(--spacers-dp16);
+    background: var(--colors-yellow050);
+    border: 1px solid var(--colors-yellow200);
+    border-radius: 4px;
+}
+
+.remediationGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacers-dp16);
+}

@@ -1,0 +1,110 @@
+.container {
+    padding: var(--spacers-dp24);
+}
+
+.title {
+    margin: 0 0 var(--spacers-dp16) 0;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--colors-grey900);
+}
+
+.description {
+    margin: 0 0 var(--spacers-dp16) 0;
+    color: var(--colors-grey700);
+    line-height: 1.5;
+}
+
+.disabled {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp16);
+}
+
+.enabled {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp16);
+}
+
+.actions {
+    display: flex;
+    gap: var(--spacers-dp12);
+    flex-wrap: wrap;
+}
+
+.setupForm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp16);
+}
+
+.instruction {
+    margin: 0;
+    color: var(--colors-grey700);
+}
+
+.qrContainer {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacers-dp16);
+    background: var(--colors-white);
+    border: 1px solid var(--colors-grey300);
+    border-radius: 8px;
+}
+
+.qrCode {
+    width: 200px;
+    height: 200px;
+}
+
+.manualEntry {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--colors-grey600);
+}
+
+.secretCode {
+    display: inline-block;
+    padding: var(--spacers-dp4) var(--spacers-dp8);
+    background: var(--colors-grey100);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.875rem;
+    word-break: break-all;
+}
+
+.recoveryCodes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--spacers-dp8);
+    margin: var(--spacers-dp16) 0;
+    padding: var(--spacers-dp16);
+    background: var(--colors-grey100);
+    border-radius: 8px;
+}
+
+.recoveryCode {
+    display: block;
+    padding: var(--spacers-dp8);
+    background: var(--colors-white);
+    border: 1px solid var(--colors-grey300);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.875rem;
+    text-align: center;
+    user-select: all;
+}
+
+.codesWarning {
+    margin: 0;
+    color: var(--colors-grey600);
+    font-size: 0.875rem;
+}
+
+.disableForm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp16);
+    margin-top: var(--spacers-dp16);
+}

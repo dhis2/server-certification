@@ -1,0 +1,25 @@
+.logout {
+    all: unset;
+    cursor: pointer;
+    color: var(--colors-grey400);
+    text-align: center;
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--colors-grey600);
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 13px;
+    transition: all 150ms ease;
+    box-sizing: border-box;
+}
+
+.logout:hover {
+    color: var(--colors-white);
+    border-color: var(--colors-grey400);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.logout:focus {
+    outline: 2px solid var(--colors-teal400);
+    outline-offset: 2px;
+}

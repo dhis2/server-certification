@@ -1,0 +1,202 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacers-dp24);
+    background: linear-gradient(135deg, var(--colors-blue050) 0%, var(--colors-grey050) 100%);
+}
+
+.loadingContainer {
+    text-align: center;
+}
+
+.loadingText {
+    margin-top: var(--spacers-dp16);
+    color: var(--colors-grey600);
+    font-size: 14px;
+}
+
+.card {
+    width: 100%;
+    max-width: 600px;
+    padding: var(--spacers-dp32);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: var(--spacers-dp32);
+}
+
+.title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--colors-grey900);
+}
+
+/* Valid Result */
+.validResult {
+    text-align: center;
+}
+
+.statusIcon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--colors-green500);
+    color: white;
+    font-size: 48px;
+    line-height: 80px;
+    margin: 0 auto var(--spacers-dp16);
+}
+
+.statusTitle {
+    margin: 0 0 var(--spacers-dp8) 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--colors-green700);
+}
+
+.statusDescription {
+    margin: 0 0 var(--spacers-dp32) 0;
+    color: var(--colors-grey600);
+}
+
+/* Invalid Result */
+.invalidResult {
+    text-align: center;
+}
+
+.statusIconInvalid {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--colors-red500);
+    color: white;
+    font-size: 48px;
+    line-height: 80px;
+    margin: 0 auto var(--spacers-dp16);
+}
+
+.statusTitleInvalid {
+    margin: 0 0 var(--spacers-dp8) 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--colors-red700);
+}
+
+/* Certificate Details */
+.certificateDetails {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacers-dp16);
+    text-align: left;
+    padding: var(--spacers-dp24);
+    background: var(--colors-grey050);
+    border-radius: 8px;
+    margin-bottom: var(--spacers-dp24);
+}
+
+@media (max-width: 500px) {
+    .certificateDetails {
+        grid-template-columns: 1fr;
+    }
+}
+
+.detailRow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp4);
+}
+
+.detailLabel {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--colors-grey600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detailValue {
+    font-size: 14px;
+    color: var(--colors-grey900);
+    font-weight: 500;
+}
+
+/* Checks Section */
+.checksSection {
+    text-align: left;
+    padding: var(--spacers-dp24);
+    background: var(--colors-grey050);
+    border-radius: 8px;
+}
+
+.checksTitle {
+    margin: 0 0 var(--spacers-dp12) 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--colors-grey700);
+}
+
+.checksList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.checkItem {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp8);
+    padding: var(--spacers-dp8) 0;
+    color: var(--colors-grey800);
+    font-size: 14px;
+}
+
+.checkItemFailed {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp8);
+    padding: var(--spacers-dp8) 0;
+    color: var(--colors-red700);
+    font-size: 14px;
+}
+
+.checkIcon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--colors-green500);
+    color: white;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.checkIconFailed {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--colors-red500);
+    color: white;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Footer */
+.footer {
+    margin-top: var(--spacers-dp32);
+    padding-top: var(--spacers-dp16);
+    border-top: 1px solid var(--colors-grey200);
+    text-align: center;
+}
+
+.footerText {
+    margin: 0;
+    font-size: 12px;
+    color: var(--colors-grey500);
+}

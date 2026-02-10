@@ -1,0 +1,131 @@
+.container {
+    padding: var(--spacers-dp24);
+    max-width: 1000px;
+}
+
+.notice {
+    margin-bottom: var(--spacers-dp16);
+}
+
+.card {
+    padding: var(--spacers-dp24);
+    margin-bottom: var(--spacers-dp24);
+}
+
+.sectionTitle {
+    margin: 0 0 var(--spacers-dp16) 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--colors-grey800);
+}
+
+/* Drop Zone */
+.dropZone {
+    border: 2px dashed var(--colors-grey300);
+    border-radius: 8px;
+    padding: var(--spacers-dp48);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--colors-grey050);
+}
+
+.dropZone:hover {
+    border-color: var(--colors-blue500);
+    background: var(--colors-blue050);
+}
+
+.dropZone:focus {
+    outline: 2px solid var(--colors-blue600);
+    outline-offset: 2px;
+}
+
+.dropZone.dragging {
+    border-color: var(--colors-blue600);
+    background: var(--colors-blue100);
+}
+
+.dropText {
+    margin: 0 0 var(--spacers-dp8) 0;
+    font-size: 0.9375rem;
+    color: var(--colors-grey700);
+}
+
+.browseLink {
+    color: var(--colors-blue600);
+    text-decoration: underline;
+}
+
+.dropHint {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--colors-grey500);
+}
+
+.hiddenInput {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Editor */
+.editorHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacers-dp16);
+}
+
+.editorHeader .sectionTitle {
+    margin: 0;
+}
+
+.formatSelect {
+    min-width: 100px;
+}
+
+/* Actions */
+.actions {
+    padding-top: var(--spacers-dp8);
+}
+
+/* Success State */
+.successCard {
+    padding: var(--spacers-dp32);
+    text-align: center;
+    background: var(--colors-green050);
+    border: 1px solid var(--colors-green200);
+}
+
+.successContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacers-dp16);
+}
+
+.successTitle {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--colors-green800);
+}
+
+.successMessage {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--colors-grey700);
+}
+
+.successStats {
+    display: flex;
+    gap: var(--spacers-dp24);
+    font-size: 0.875rem;
+    color: var(--colors-grey600);
+}

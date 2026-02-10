@@ -1,0 +1,71 @@
+.card {
+    padding: var(--spacers-dp12);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp8);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp8);
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    color: var(--colors-grey500);
+}
+
+.icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--colors-grey600);
+    letter-spacing: 0.5px;
+}
+
+.value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--colors-grey900);
+    line-height: 1;
+}
+
+.unit {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--colors-grey500);
+    margin-left: 4px;
+}
+
+.progressContainer {
+    width: 100%;
+    height: 6px;
+    background-color: var(--colors-grey200);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progressGreen {
+    background-color: var(--colors-green600);
+}
+
+.progressYellow {
+    background-color: var(--colors-yellow600);
+}
+
+.progressRed {
+    background-color: var(--colors-red600);
+}

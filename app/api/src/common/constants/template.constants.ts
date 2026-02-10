@@ -1,0 +1,28 @@
+export const TEMPLATE_VALIDATION_LIMITS = {
+  MAX_FILE_SIZE: 5 * 1024 * 1024,
+  MAX_CONTENT_LENGTH: 5 * 1024 * 1024,
+  ALLOWED_EXTENSIONS: ['.yaml', '.yml', '.json'] as const,
+  ALLOWED_MIME_TYPES: [
+    'application/x-yaml',
+    'application/yaml',
+    'text/yaml',
+    'text/x-yaml',
+    'application/json',
+    'text/plain',
+  ] as const,
+
+  MAX_NAME_LENGTH: 255,
+  MAX_DESCRIPTION_LENGTH: 4000,
+  MAX_CRITERIA_PER_CATEGORY: 100,
+  MAX_CATEGORIES_PER_TEMPLATE: 50,
+  MAX_CRITERION_CODE_LENGTH: 50,
+  MAX_CRITERION_NAME_LENGTH: 255,
+  MAX_CRITERION_DESCRIPTION_LENGTH: 2000,
+  MAX_GUIDANCE_LENGTH: 4000,
+  MAX_EVIDENCE_DESCRIPTION_LENGTH: 1000,
+  MAX_VERIFICATION_METHOD_LENGTH: 4000,
+  MAX_CIS_MAPPING_LENGTH: 50,
+  MAX_FILENAME_LENGTH: 255,
+} as const;
+
+export type TemplateValidationLimits = typeof TEMPLATE_VALIDATION_LIMITS;

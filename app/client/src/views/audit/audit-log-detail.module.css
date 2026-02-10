@@ -1,0 +1,129 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp16);
+    max-width: 900px;
+}
+
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacers-dp4);
+    color: var(--colors-blue600);
+    text-decoration: none;
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+
+.card {
+    padding: var(--spacers-dp16);
+}
+
+.card h3 {
+    margin: 0 0 var(--spacers-dp12) 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--colors-grey900);
+    padding-bottom: var(--spacers-dp8);
+    border-bottom: 1px solid var(--colors-grey200);
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacers-dp12);
+}
+
+@media (max-width: 600px) {
+    .infoGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp4);
+}
+
+.infoLabel {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--colors-grey600);
+    letter-spacing: 0.5px;
+}
+
+.infoValue {
+    font-size: 0.875rem;
+    color: var(--colors-grey800);
+    word-break: break-word;
+}
+
+.diffContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacers-dp12);
+}
+
+@media (max-width: 600px) {
+    .diffContainer {
+        grid-template-columns: 1fr;
+    }
+}
+
+.diffPane {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp4);
+}
+
+.diffLabel {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--colors-grey600);
+    letter-spacing: 0.5px;
+}
+
+.diffContent {
+    background-color: var(--colors-grey100);
+    border: 1px solid var(--colors-grey200);
+    border-radius: 4px;
+    padding: var(--spacers-dp12);
+    font-family: monospace;
+    font-size: 0.75rem;
+    max-height: 300px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.diffOld {
+    border-color: var(--colors-red200);
+    background-color: var(--colors-red050);
+}
+
+.diffNew {
+    border-color: var(--colors-green200);
+    background-color: var(--colors-green050);
+}
+
+.hashDisplay {
+    font-family: monospace;
+    font-size: 0.75rem;
+    background-color: var(--colors-grey100);
+    padding: var(--spacers-dp8);
+    border-radius: 4px;
+    word-break: break-all;
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacers-dp24);
+}

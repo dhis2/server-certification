@@ -1,0 +1,17 @@
+body {
+    background-color: var(--colors-grey100);
+}
+
+#root {
+    height: 100%;
+    width: 100vw;
+    overflow: auto;
+}
+
+a {
+    color: var(--colors-blue600);
+}
+
+a:hover {
+    color: var(--colors-blue800);
+}

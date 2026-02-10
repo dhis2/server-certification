@@ -1,0 +1,118 @@
+.container {
+    padding: var(--spacers-dp24);
+    max-width: 1400px;
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacers-dp16);
+    margin-bottom: var(--spacers-dp24);
+    flex-wrap: wrap;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp16);
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacers-dp24);
+}
+
+@media (max-width: 1024px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.detailsCard,
+.assessmentsCard {
+    padding: var(--spacers-dp24);
+}
+
+.cardTitle {
+    margin: 0 0 var(--spacers-dp16) 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--colors-grey900);
+}
+
+.detailsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacers-dp16);
+}
+
+.detailRow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp4);
+}
+
+.detailRow.fullWidth {
+    grid-column: 1 / -1;
+}
+
+.detailLabel {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--colors-grey600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detailValue {
+    font-size: 14px;
+    color: var(--colors-grey800);
+}
+
+.link {
+    color: var(--colors-blue600);
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.formActions {
+    margin-top: var(--spacers-dp24);
+    padding-top: var(--spacers-dp16);
+    border-top: 1px solid var(--colors-grey200);
+}
+
+.assessmentsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacers-dp16);
+}
+
+.emptyState {
+    text-align: center;
+    padding: var(--spacers-dp24);
+    color: var(--colors-grey600);
+}
+
+.activeTag {
+    background-color: var(--colors-green100) !important;
+    color: var(--colors-green800) !important;
+}
+
+.inactiveTag {
+    background-color: var(--colors-grey200) !important;
+    color: var(--colors-grey600) !important;
+}

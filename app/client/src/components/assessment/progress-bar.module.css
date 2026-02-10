@@ -1,0 +1,123 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp8);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--colors-grey800);
+}
+
+.percentage {
+    font-size: 13px;
+    color: var(--colors-grey600);
+}
+
+.track {
+    width: 100%;
+    background: var(--colors-grey200);
+    border-radius: 999px;
+    overflow: hidden;
+    display: flex;
+}
+
+.small {
+    height: 4px;
+}
+
+.medium {
+    height: 8px;
+}
+
+.large {
+    height: 12px;
+}
+
+.fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+}
+
+.default {
+    background: var(--colors-blue500);
+}
+
+.success {
+    background: var(--colors-green500);
+}
+
+.warning {
+    background: var(--colors-yellow500);
+}
+
+.error {
+    background: var(--colors-red500);
+}
+
+/* Multi-progress segments */
+.segment {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.segment:first-child {
+    border-radius: 999px 0 0 999px;
+}
+
+.segment:last-child {
+    border-radius: 0 999px 999px 0;
+}
+
+.segment:only-child {
+    border-radius: 999px;
+}
+
+.segmentGreen {
+    background: var(--colors-green500);
+}
+
+.segmentYellow {
+    background: var(--colors-yellow500);
+}
+
+.segmentRed {
+    background: var(--colors-red500);
+}
+
+.segmentGrey {
+    background: var(--colors-grey400);
+}
+
+/* Legend */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacers-dp16);
+    margin-top: var(--spacers-dp4);
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp4);
+}
+
+.legendColor {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.legendLabel {
+    font-size: 12px;
+    color: var(--colors-grey700);
+}

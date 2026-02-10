@@ -1,0 +1,136 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp16);
+    max-width: 1200px;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacers-dp12);
+}
+
+.search {
+    max-width: 320px;
+}
+
+.tableCard {
+    padding: 0;
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    text-align: left;
+    padding: var(--spacers-dp8) var(--spacers-dp12);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--colors-grey600);
+    border-bottom: 1px solid var(--colors-grey300);
+    background-color: var(--colors-grey050);
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    padding: var(--spacers-dp8) var(--spacers-dp12);
+    font-size: 0.8125rem;
+    color: var(--colors-grey800);
+    border-bottom: 1px solid var(--colors-grey200);
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: var(--colors-grey050);
+}
+
+.nameCell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nameCell span:first-child {
+    font-weight: 500;
+    color: var(--colors-grey900);
+}
+
+.nameCell span:last-child {
+    font-size: 0.75rem;
+    color: var(--colors-grey500);
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.badgeActive {
+    background-color: var(--colors-green050);
+    color: var(--colors-green800);
+}
+
+.badgeInactive {
+    background-color: var(--colors-grey100);
+    color: var(--colors-grey600);
+}
+
+.badgeLocked {
+    background-color: var(--colors-red050);
+    color: var(--colors-red800);
+}
+
+.badgeAdmin {
+    background-color: var(--colors-blue050);
+    color: var(--colors-blue800);
+}
+
+.badgeUser {
+    background-color: var(--colors-grey100);
+    color: var(--colors-grey700);
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacers-dp12);
+}
+
+.paginationInfo {
+    font-size: 0.8125rem;
+    color: var(--colors-grey600);
+}
+
+.paginationButtons {
+    display: flex;
+    gap: var(--spacers-dp8);
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacers-dp24);
+}
+
+.emptyState {
+    text-align: center;
+    padding: var(--spacers-dp24);
+    color: var(--colors-grey600);
+    font-size: 0.875rem;
+}
+
+.actionsCell {
+    white-space: nowrap;
+}

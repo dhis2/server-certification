@@ -1,0 +1,86 @@
+.container {
+    padding: var(--spacers-dp24);
+    max-width: 1400px;
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.statsBar {
+    display: flex;
+    gap: var(--spacers-dp24);
+    margin-bottom: var(--spacers-dp24);
+    padding: var(--spacers-dp16);
+    background: var(--colors-grey050);
+    border-radius: 4px;
+    flex-wrap: wrap;
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacers-dp4);
+}
+
+.statValue {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--colors-blue700);
+}
+
+.statLabel {
+    font-size: 0.75rem;
+    color: var(--colors-grey600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card {
+    padding: var(--spacers-dp24);
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--spacers-dp16);
+    margin-bottom: var(--spacers-dp24);
+    flex-wrap: wrap;
+}
+
+.searchWrapper {
+    flex: 1;
+    max-width: 400px;
+    min-width: 200px;
+}
+
+.filterWrapper {
+    min-width: 180px;
+}
+
+.emptyState {
+    text-align: center;
+    padding: var(--spacers-dp48);
+    color: var(--colors-grey600);
+}
+
+.emptyState p {
+    margin-bottom: var(--spacers-dp16);
+}
+
+.templatesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacers-dp16);
+}
+
+.pagination {
+    margin-top: var(--spacers-dp24);
+    display: flex;
+    justify-content: center;
+}

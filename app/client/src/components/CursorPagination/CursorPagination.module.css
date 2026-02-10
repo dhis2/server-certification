@@ -1,0 +1,16 @@
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacers-dp12);
+}
+
+.info {
+    font-size: 0.8125rem;
+    color: var(--colors-grey600);
+}
+
+.buttons {
+    display: flex;
+    gap: var(--spacers-dp8);
+}

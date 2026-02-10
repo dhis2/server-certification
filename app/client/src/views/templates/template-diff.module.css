@@ -1,0 +1,62 @@
+.container {
+    padding: var(--spacers-dp24);
+    max-width: 1200px;
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.selectorCard {
+    padding: var(--spacers-dp24);
+    margin-bottom: var(--spacers-dp24);
+}
+
+.selectors {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacers-dp16);
+    flex-wrap: wrap;
+}
+
+.selectorGroup {
+    flex: 1;
+    min-width: 200px;
+}
+
+.selectorLabel {
+    display: block;
+    margin-bottom: var(--spacers-dp8);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--colors-grey600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.swapButton {
+    flex-shrink: 0;
+    font-size: 1.25rem;
+    padding: var(--spacers-dp8) var(--spacers-dp16);
+}
+
+.warningBox {
+    margin-top: var(--spacers-dp16);
+}
+
+.card {
+    padding: var(--spacers-dp24);
+}
+
+.emptyState {
+    text-align: center;
+    padding: var(--spacers-dp48);
+    color: var(--colors-grey600);
+}
+
+.emptyState p {
+    margin: 0;
+}
