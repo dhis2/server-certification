@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{templateName}}</title>
+  <link rel="stylesheet" href="../style/dscp.css" />
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- =========================
+         HEADER / BRAND
+    ========================== -->
+    <header class="header">
+      <img
+        class="logo"
+        src="https://raw.githubusercontent.com/dhis2/dhis2-identity/master/web/Logo/Default/dhis2-logo-rgb-positive.svg"
+        alt="DHIS2 logo">
+
+      <h1>{{templateName}}</h1>
+      <p>{{templateDescription}}</p>
+
+      <div class="meta">
+        <span class="pill">
+          Version: <code>{{version}}</code>
+        </span>
+      </div>
+    </header>
+
+    <!-- =========================
+         CATEGORIES
+    ========================== -->
+    {{#categories}}
+    <section class="category">
+
+      <div class="category-head">
+        <h2>{{name}}</h2>
+        {{#description}}
+        <p class="muted">{{description}}</p>
+        {{/description}}
+
+        <div class="meta">
+          {{#weight}}
+          <span class="pill">
+            Weight:
+            <code>{{weight}}</code>
+          </span>
+          {{/weight}}
+
+          {{#sortOrder}}
+          <span class="pill">
+            Sort Order:
+            <code>{{sortOrder}}</code>
+          </span>
+          {{/sortOrder}}
+        </div>
+      </div>
+
+      <!-- =========================
+           CRITERIA TABLE
+      ========================== -->
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th class="col-code">Code</th>
+            <th>Name</th>
+            <th class="col-type">Type</th>
+            <th class="col-group">Group</th>
+            <th class="col-cis">CIS</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {{#criteria}}
+          <tr>
+            <td><code>{{code}}</code></td>
+            <td>{{name}}</td>
+            <td>{{controlType}}</td>
+            <td>{{controlGroup}}</td>
+            <td>{{cisMapping}}</td>
+
+            <td>
+              <div class="details">
+
+                {{#description}}
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">{{description}}</div>
+                </details>
+                {{/description}}
+
+                {{#verificationMethod}}
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">{{verificationMethod}}</div>
+                </details>
+                {{/verificationMethod}}
+
+                {{#justification}}
+                <details>
+                  <summary>Justification</summary>
+                  <div class="block">{{justification}}</div>
+                </details>
+                {{/justification}}
+
+              </div>
+            </td>
+          </tr>
+          {{/criteria}}
+
+        </tbody>
+      </table>
+
+    </section>
+    {{/categories}}
+
+    <!-- =========================
+         SCORING SECTION
+    ========================== -->
+    {{#complianceStatusScoring}}
+    <section class="category">
+      <div class="category-head">
+        <h2>Compliance Scoring</h2>
+      </div>
+
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Compliant</td>
+            <td>{{compliant}}</td>
+          </tr>
+          <tr>
+            <td>Partially Compliant</td>
+            <td>{{partially_compliant}}</td>
+          </tr>
+          <tr>
+            <td>Non-Compliant</td>
+            <td>{{non_compliant}}</td>
+          </tr>
+          <tr>
+            <td>Not Applicable</td>
+            <td>{{not_applicable}}</td>
+          </tr>
+          <tr>
+            <td>Not Tested</td>
+            <td>{{not_tested}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    {{/complianceStatusScoring}}
+
+  </div>
+</body>
+</html>
+
