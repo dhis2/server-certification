@@ -18,7 +18,11 @@ categories:
         verificationMethod: >
           Review backup configuration files; verify backup logs from past 30 days;
           confirm retention policy documentation; test backup integrity checksums.
-        justification: ''
+        justification: >
+          Having database backups is a critical safety net when running a DHIS2 instance.
+          Manual backups are not sufficient to guarantee that the right backup will be 
+          available when you need it.  They should be automated to conform to an agreed
+          backup plan.
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "11.2"
