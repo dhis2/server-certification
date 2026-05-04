@@ -1,7 +1,7 @@
 templateName: DHIS2 Server Certification Program (DSCP)
 templateDescription: >
-  Assessment template/checklist for assessing DHIS2 server implementations against
-  security, performance, and deployment best practices. This template can be used
+  Assessment Checklist for assessing DHIS2 server implementations against
+  security, performance and deployment best practices. This checklist can be used
   by DHIS2 implementers and hosting providers to validate their DHIS2 server setups
   for compliance.
 version: 1
