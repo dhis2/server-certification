@@ -1,11 +1,262 @@
 templateName: DHIS2 Server Certification Program (DSCP)
 templateDescription: >
-  Assessment Checklist for assessing DHIS2 server implementations against
-  security, performance and deployment best practices. This checklist can be used
+  Assessment template/checklist for assessing DHIS2 server implementations against
+  security, performance, and deployment best practices. This template can be used
   by DHIS2 implementers and hosting providers to validate their DHIS2 server setups
   for compliance.
 version: 1
 categories:
+  - name: Operating System Security
+    description: Linux server hardening, SSH configuration, patching, and monitoring
+    weight: 0.2
+    criteria:
+      - code: OS-01
+        name: Disable Direct Root SSH Access
+        description: >
+          Direct root login via SSH must be disabled; sudo with individual named accounts
+          required for administrative access.
+        verificationMethod: >
+          Review sshd_config for PermitRootLogin setting; verify sudo configuration;
+          check for individual admin accounts.
+        justification: ''
+        notes: ''
+        score: 5
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.4"
+      - code: OS-02
+        name: SSH Key-Based Authentication
+        description: >
+          SSH key-based authentication must be enforced; keys must be rotated regularly;
+          weak algorithms disabled.
+        verificationMethod: >
+          Verify SSH key configuration; check for password authentication disabled;
+          review authorized_keys; confirm algorithm restrictions.
+        justification: ''
+        notes: ''
+        score: 5
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.2.17"
+      - code: OS-03
+        name: SSH Password Authentication Disabled
+        description: >
+          SSH password authentication must be disabled (PasswordAuthentication no);
+          strong key exchange and MAC algorithms enforced.
+        verificationMethod: >
+          Review sshd_config for PasswordAuthentication, KexAlgorithms, and MACs settings;
+          test password login attempt (should fail).
+        justification: ''
+        notes: ''
+        score: 5
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.2.8"
+      - code: OS-04
+        name: SSH Configuration File Permissions
+        description: >
+          SSH configuration and key files must have restrictive permissions (600/640/660)
+          with proper ownership.
+        verificationMethod: >
+          Audit permissions on /etc/ssh/sshd_config, private keys, authorized_keys;
+          verify ownership; check umask.
+        justification: ''
+        notes:  'How critical is this one?'
+        score: '5'
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.3.1, 5.3.2, 5.3.3"
+      - code: OS-05
+        name: Multiple Administrative Accounts
+        description: >
+          Multiple break-glass admin accounts required (2-3 not more than 4); usage
+          must be monitored and logged.
+        verificationMethod: >
+          Verify number of admin accounts; review admin account usage logs; confirm
+          monitoring and alerting on admin activity.
+        justification: ''
+        notes: > 
+          sudo:x:27:Barns,Jason,Tito,bao-admin,bobj
+
+          Barns            pts/0    41.215.248.161                            Wed Feb 25 08:21:36 +0000 2026
+          Jason            pts/0    90.130.56.140                             Tue Feb 10 06:44:00 +0000 2026
+          Tito             pts/3    197.232.62.233                            Wed Feb 18 07:05:20 +0000 2026
+          bao-admin        pts/1    84.70.86.249                              Thu Feb 26 11:42:12 +0000 2026
+          bobj             pts/0    78.152.255.36                             Mon Mar  2 10:20:14 +0000 2026
+                    
+          Many people helping out in un-coordinated way. Consider disabling and enabling accounts as required.
+        score: 0
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.4"
+      - code: OS-06
+        name: Individual SSH Account Accountability
+        description: >
+          Each SSH user must have a unique, named account; shared credentials prohibited;
+          MFA enforced where possible.
+        verificationMethod: >
+          Review /etc/passwd for user accounts; verify no shared accounts exist; check
+          SSH authentication methods and MFA status.
+        justification: ''
+        notes: >
+          bao-admin account (probably Lars?)
+        score: 2
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.2"
+      - code: OS-07
+        name: OS User Offboarding Procedure
+        description: >
+          System access revocation upon termination; prompt removal from sudoers and
+          privileged groups.
+        verificationMethod: >
+          Review OS offboarding procedures; verify timeline compliance; check removal
+          from groups/sudoers.
+        justification: ''
+        notes: 'Not checked'
+        score: 0
+        controlGroup: DSCP1
+        controlType: organizational
+        cisMapping: "5.3"
+      - code: OS-08
+        name: User Home Directory Hygiene
+        description: >
+          User home directories must not contain sensitive data or unprotected keys;
+          proper permissions enforced.
+        verificationMethod: >
+          Audit home directories for sensitive files; check for SSH keys, credentials,
+          configs; verify directory permissions.
+        justification: ''
+        notes: >
+          Database dumps unprotected
+          sudo ls -lh ../Barns/
+          total 1.4G
+          -rw-rw-r-- 1 Barns Barns    0 Sep 11 12:08 0
+          drwxrwxr-x 5 Barns Barns 4.0K Nov 12  2024 dhis2-server-tools
+          -rw-r--r-- 1 Barns Barns 681M Feb  2 13:52 dhis2.sql.gz
+          -rw-r--r-- 1 Barns Barns 672M Jan 27 11:33 dhis.sql.gz
+          -rw-rw-r-- 1 Barns Barns  960 Sep 11 13:24 ExplainResult.txt
+          -rw-r--r-- 1 root  root  1.4K Sep 11 13:19 explain.sql
+          -rw-r--r-- 1 root  root   524 Jan 30 09:43 outliers.sql
+          -rw-rw-r-- 1 Barns Barns  16K Jan 30 10:04 outliers.txt
+          drwx------ 3 Barns Barns 4.0K Dec  1  2024 snap
+          
+          sudo ls -la ../bao-admin/
+          total 716088
+          drwxr-x--- 6 bao-admin bao-admin      4096 Jan 27 09:18 .
+          drwxr-xr-x 7 root      root           4096 Feb  9 12:31 ..
+          -rw-r--r-- 1 root      root            572 Dec  3 13:22 authorized_keys
+          -rw------- 1 bao-admin bao-admin       556 Feb 26 18:46 .bash_history
+          -rw-r--r-- 1 bao-admin bao-admin       220 Dec  3 13:11 .bash_logout
+          -rw-r--r-- 1 bao-admin bao-admin      3771 Dec  3 13:11 .bashrc
+          drwx------ 2 bao-admin bao-admin      4096 Dec  3 13:13 .cache
+          -rw-rw-r-- 1 bao-admin bao-admin  38588717 Dec  4 10:54 dhis2-superset-gateway.jar
+          -rw-rw-r-- 1 bao-admin bao-admin  52299780 Dec  4 11:05 dhis2-text-query.jar
+          -rw-rw-r-- 1 bao-admin bao-admin 642320239 Jan 27 10:14 dhis.dump
+          drwxrwxr-x 3 bao-admin bao-admin      4096 Dec  3 13:22 .local
+          -rw-r--r-- 1 bao-admin bao-admin       807 Dec  3 13:11 .profile
+          drwx------ 3 bao-admin bao-admin      4096 Dec  4 08:34 snap
+          drwxr-xr-x 2 root      root           4096 Jan 27 09:20 .ssh
+          -rw-r--r-- 1 root      root            553 Dec  3 13:21 sudo
+          -rw-r--r-- 1 bao-admin bao-admin         0 Dec  3 13:14 .sudo_as_admin_successful
+        score: 0 
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "6.1"
+      - code: OS-09
+        name: Automated Security Patching
+        description: >
+          Unattended security updates must be enabled; patch status monitoring required.
+        verificationMethod: >
+          Verify unattended-upgrades or equivalent service; review patch logs; confirm
+          reboot policy.
+        justification: ''
+        notes: >
+          unattended upgrades package configured and working.  Instructions for assessing not very clear.
+          
+          note  *** System restart required ***
+        score: 4
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "7.3"
+      - code: OS-11
+        name: System Monitoring and Alerting
+        description: >
+          Host and service monitoring must be implemented for CPU, memory, disk, web
+          proxy, and database with alerting thresholds.
+        verificationMethod: >
+          Review monitoring platform configuration; verify alert rules and thresholds;
+          confirm notification channels; test alert delivery.
+        justification: ''
+        notes: >
+          default monitoring enabled from ansible tools.  Also grafana?  No alerting.
+        score: 3
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: null
+      - code: OS-12
+        name: Operating System Encryption at Rest
+        description: >
+          Full-disk encryption is enabled on servers and volumes (LUKS/FileVault/BitLocker
+          or equivalent).
+        verificationMethod: >
+          Verify encryption status of system volumes; review key management procedures;
+          confirm encryption is active at boot.
+        justification: ''
+        notes: 'Only required for specific compliance regimes'
+        score:  0
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "3.11"
+      - code: OS-13
+        name: Operating System Least Privilege
+        description: >
+          OS users must be assigned minimum necessary privileges with role separation;
+          periodic access reviews required.
+        verificationMethod: >
+          Review user accounts and group memberships; verify sudo configurations.
+        justification: ''
+        notes: 'This is rarely a concern for DHIS2 installations'
+        score:  0
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.4"
+      - code: OS-14
+        name: Network Service Exposure Control
+        description: >
+          Host and network firewalls must implement default-deny ingress; only required
+          services/ports exposed to internet.
+        verificationMethod: >
+          Review firewall rules; perform port scan from external network; verify only
+          necessary ports accessible; check default policies.
+        justification: ''
+        notes: >
+          PORT     STATE SERVICE
+          22/tcp   open  ssh
+          53/tcp   open  domain
+          80/tcp   open  http
+          443/tcp  open  https
+          5432/tcp open  postgresql
+
+          postgresql port is exposed to the internet.  (presumably this is because of analytics platform)
+        score: 0
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "4.4"
+      - code: OS-15
+        name: Minimal Service Footprint
+        description: >
+          Only required services and daemons must be active; unnecessary services
+          removed/disabled; validation after system updates.
+        verificationMethod: >
+          List running services; compare against approved baseline; verify service
+          necessity.
+        justification: ''
+        notes: 'what approved baseline?'
+        score: 5
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "2.2"
   - name: PostgreSQL Database
     description: Database security, backup, and configuration controls for PostgreSQL
     weight: 0.15
@@ -23,12 +274,12 @@ categories:
           Manual backups are not sufficient to guarantee that the right backup will be 
           available when you need it.  They should be automated to conform to an agreed
           backup plan.
+        notes: >
+          Backup script installed with dhis2 sewrver tools running nightly backup.  No offsite.
+        score: 5
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "11.2"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DB-02
         name: Database Backup Restore Testing
         description: >
@@ -38,12 +289,11 @@ categories:
           Review restore test documentation or logs from past 3 months; verify test
           results and lessons learned; confirm non-production test environment exists.
         justification: ''
+        notes: 'Not assessed'
+        score: 0
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "11.5"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DB-03
         name: Off-Site Backup Storage
         description: >
@@ -51,12 +301,12 @@ categories:
           protect against site-wide disasters.
         verificationMethod: Verify off-site backup location and access controls.
         justification: ''
+        notes: >
+          No evidence of off-site backup
+        score: 0
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "11.4"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DB-04
         name: Database Least Privilege Access
         description: >
@@ -69,9 +319,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "5.4"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DB-05
         name: Database Backup File Permissions
         description: >
@@ -84,9 +331,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
       - code: DB-06
         name: Database Encryption at Rest
         description: >
@@ -99,9 +343,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "3.11"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DB-07
         name: Backup Encryption at Rest
         description: >
@@ -114,9 +355,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "3.11"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DB-08
         name: PostgreSQL Host-Based Access Control
         description: >
@@ -130,9 +368,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "5.1"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DB-09
         name: Supported PostgreSQL Version (Non-EOL)
         description: >
@@ -145,9 +380,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
       - code: DB-10
         name: PostgreSQL Tuning Baseline
         description: >
@@ -161,9 +393,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
   - name: Reverse Proxy
     description: Reverse Proxy configuration
     weight: 0.1
@@ -180,9 +409,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
       - code: DP-02
         name: TLS/SSL Configuration
         description: >
@@ -192,12 +418,10 @@ categories:
           Run SSL Labs scan; verify TLS version and cipher configuration; review certificate
           validity.
         justification: ''
+        notes: 'A+ on ssl labs'
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "3.1"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DP-03
         name: Reverse Proxy Access Control
         description: >
@@ -210,9 +434,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "4.4"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DP-04
         name: Reverse Proxy Access Logging
         description: >
@@ -225,9 +446,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "8.1"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DP-05
         name: Reverse Proxy Least Privilege
         description: >
@@ -240,9 +458,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "5.4"
-        score: null
-        notes: >
-          Assessor notes here
       - code: DP-06
         name: Reverse Proxy Security Updates
         description: >
@@ -254,9 +469,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
       - code: DP-07
         name: Reverse Proxy Security Headers
         description: >
@@ -266,239 +478,11 @@ categories:
           Review reverse proxy configuration for security headers; test header presence
           using browser developer tools; verify correct values.
         justification: ''
+        notes: 'Use securityheaders.com - A'
+        score: 5
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
-  - name: Operating System Security
-    description: Linux server hardening, SSH configuration, patching, and monitoring
-    weight: 0.2
-    criteria:
-      - code: OS-01
-        name: Disable Direct Root SSH Access
-        description: >
-          Direct root login via SSH must be disabled; sudo with individual named accounts
-          required for administrative access.
-        verificationMethod: >
-          Review sshd_config for PermitRootLogin setting; verify sudo configuration;
-          check for individual admin accounts.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.4"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-02
-        name: SSH Key-Based Authentication
-        description: >
-          SSH key-based authentication must be enforced; keys must be rotated regularly;
-          weak algorithms disabled.
-        verificationMethod: >
-          Verify SSH key configuration; check for password authentication disabled;
-          review authorized_keys; confirm algorithm restrictions.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.2.17"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-03
-        name: SSH Password Authentication Disabled
-        description: >
-          SSH password authentication must be disabled (PasswordAuthentication no);
-          strong key exchange and MAC algorithms enforced.
-        verificationMethod: >
-          Review sshd_config for PasswordAuthentication, KexAlgorithms, and MACs settings;
-          test password login attempt (should fail).
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.2.8"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-04
-        name: SSH Configuration File Permissions
-        description: >
-          SSH configuration and key files must have restrictive permissions (600/640/660)
-          with proper ownership.
-        verificationMethod: >
-          Audit permissions on /etc/ssh/sshd_config, private keys, authorized_keys;
-          verify ownership; check umask.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.3.1, 5.3.2, 5.3.3"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-05
-        name: Multiple Administrative Accounts
-        description: >
-          Multiple break-glass admin accounts required (2-3 not more than 4); usage
-          must be monitored and logged.
-        verificationMethod: >
-          Verify number of admin accounts; review admin account usage logs; confirm
-          monitoring and alerting on admin activity.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.4"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-06
-        name: Individual SSH Account Accountability
-        description: >
-          Each SSH user must have a unique, named account; shared credentials prohibited;
-          MFA enforced where possible.
-        verificationMethod: >
-          Review /etc/passwd for user accounts; verify no shared accounts exist; check
-          SSH authentication methods and MFA status.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.2"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-07
-        name: OS User Offboarding Procedure
-        description: >
-          System access revocation upon termination; prompt removal from sudoers and
-          privileged groups.
-        verificationMethod: >
-          Review OS offboarding procedures; verify timeline compliance; check removal
-          from groups/sudoers.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: organizational
-        cisMapping: "5.3"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-08
-        name: User Home Directory Hygiene
-        description: >
-          User home directories must not contain sensitive data or unprotected keys;
-          proper permissions enforced.
-        verificationMethod: >
-          Audit home directories for sensitive files; check for SSH keys, credentials,
-          configs; verify directory permissions.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "6.1"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-09
-        name: Automated Security Patching
-        description: >
-          Unattended security updates must be enabled; patch status monitoring required.
-        verificationMethod: >
-          Verify unattended-upgrades or equivalent service; review patch logs; confirm
-          reboot policy.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "7.3"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-10
-        name: User Home Directory Hygiene
-        description: >
-          User home directories must not contain sensitive data or unprotected keys;
-          proper permissions enforced.
-        verificationMethod: >
-          Audit home directories for sensitive files; check for SSH keys, credentials,
-          configs; verify directory permissions.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "6.1"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-11
-        name: System Monitoring and Alerting
-        description: >
-          Host and service monitoring must be implemented for CPU, memory, disk, web
-          proxy, and database with alerting thresholds.
-        verificationMethod: >
-          Review monitoring platform configuration; verify alert rules and thresholds;
-          confirm notification channels; test alert delivery.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-12
-        name: Operating System Encryption at Rest
-        description: >
-          Full-disk encryption is enabled on servers and volumes (LUKS/FileVault/BitLocker
-          or equivalent).
-        verificationMethod: >
-          Verify encryption status of system volumes; review key management procedures;
-          confirm encryption is active at boot.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "3.11"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-13
-        name: Operating System Least Privilege
-        description: >
-          OS users must be assigned minimum necessary privileges with role separation;
-          periodic access reviews required.
-        verificationMethod: >
-          Review user accounts and group memberships; verify sudo configurations.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.4"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-14
-        name: Network Service Exposure Control
-        description: >
-          Host and network firewalls must implement default-deny ingress; only required
-          services/ports exposed to internet.
-        verificationMethod: >
-          Review firewall rules; perform port scan from external network; verify only
-          necessary ports accessible; check default policies.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "4.4"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-15
-        name: Minimal Service Footprint
-        description: >
-          Only required services and daemons must be active; unnecessary services
-          removed/disabled; validation after system updates.
-        verificationMethod: >
-          List running services; compare against approved baseline; verify service
-          necessity.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "2.2"
-        score: null
-        notes: >
-          Assessor notes here
   - name: DHIS2 Application
     description: DHIS2-specific application security controls including admin access
       and MFA
@@ -516,9 +500,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
       - code: AP-02
         name: Superuser Access Limitation
         description: >
@@ -530,9 +511,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
       - code: AP-03
         name: Multi-Factor Authentication (Superuser accounts)
         description: >
@@ -545,9 +523,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
   - name: DHIS2 Tomcat Application Server
     description: DHIS2 Tomcat/application server security configuration
     weight: 0.1
@@ -564,9 +539,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "10.17"
-        score: null
-        notes: >
-          Assessor notes here
       - code: TC-02
         name: Tomcat Shutdown Port Security
         description: >
@@ -579,9 +551,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "3.2"
-        score: null
-        notes: >
-          Assessor notes here
       - code: TC-03
         name: Application Auto-Deployment Disabled
         description: Tomcat auto-deployment must be disabled.
@@ -591,9 +560,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "9.2"
-        score: null
-        notes: >
-          Assessor notes here
       - code: TC-04
         name: Webapp Modification Prevention
         description: >
@@ -606,9 +572,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "4.7"
-        score: null
-        notes: >
-          Assessor notes here
   - name: Network Security
     description: Network architecture and firewall
     weight: 0.1
@@ -625,9 +588,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "9.1"
-        score: null
-        notes: >
-          Assessor notes here
   - name: Governance & Processes
     description: Organizational security policies, procedures, and governance
     weight: 0.1
@@ -645,9 +605,6 @@ categories:
         controlGroup: DSCP1
         controlType: organizational
         cisMapping: "17.1-17.9"
-        score: null
-        notes: >
-          Assessor notes here
       - code: PS-02
         name: Data Sharing Agreements
         description: >
@@ -660,9 +617,6 @@ categories:
         controlGroup: DSCP1
         controlType: organizational
         cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
       - code: PS-03
         name: DHIS2 User Offboarding Procedure
         description: >
@@ -673,9 +627,6 @@ categories:
         controlGroup: DSCP1
         controlType: organizational
         cisMapping: "5.3"
-        score: null
-        notes: >
-          Assessor notes here
 complianceStatusScoring:
   compliant: 100
   partially_compliant: 50

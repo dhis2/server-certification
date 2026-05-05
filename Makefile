@@ -1,10 +1,10 @@
 all:  json html
 
 json:  controls/dhis2-certification-v1.yml
-	yq -o=json . controls/dhis2-certification-v1.yml > generated/dhis2-certification-v1.json
+	yq . controls/dhis2-certification-v1.yml > generated/dhis2-certification-v1.json
 
 html: controls/dhis2-certification-v1.yml scripts/dscp.mustache
-	yq -o=json . controls/dhis2-certification-v1.yml | mustache - scripts/dscp.mustache > generated/dhis2-certification-v1.html
+	yq . controls/dhis2-certification-v1.yml | mustache - scripts/dscp.mustache > generated/dhis2-certification-v1.html
 
 clean:
 	rm -f generated/*
@@ -13,4 +13,4 @@ clean:
 assessment:
 	mkdir -p $(NAME)_assessment
 	cp controls/dhis2-certification-v1.yml $(NAME)_assessment/$(NAME)_assessment.yml
-
+	yq . togo_assessment/togo_assessment.yml | mustache - scripts/dscp_assessment.mustache > togo_assessment/togo_assessment.html

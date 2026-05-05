@@ -1,0 +1,81 @@
+Actions arising
+===============
+1. Database
+
+1.1 Off-site backups - check volumes of backup and cost a plan to push to linode s3
+   - today: enable linode backups temporarily
+   - end of next week: decide on strategy (dumps vs wal archiving)
+   - file system backups
+
+1.2 Database exposure - fix firewall rules (use lxd forward) to restrict exposure by IP
+1.3 pg_hba.conf - enforce hostssl connection for AP; remove tracker line, adjust firewall rule for AP to keep original IP
+1.4 Tuning - apply standard tuning in postgresql conf.d
+1.5 backups under /var/pgbackups are world readable
+
+2.  AP connector
+- set in separate container
+- fix file permissions on config file
+- ownership of jar file|
+
+3.  Deviation from automated setup
+openresty,grafana, ap
+- document all changes 
+
+============================================================
+Change management:
+
+Use slack channel
+Other tooling : jira? 
+
+Bob changes
+===========
+sudo lxc config set postgres limits.memory=32GB
+
+/etc/postgresql/16/main/pg_hba.conf
+#host     dhis   dhis_ro  172.104.136.14/32  scram-sha-256
+host     dhis    dhis_ro  172.19.2.11/32  scram-sha-256
+
+hostssl     dhis    dhis_ro  172.19.2.1/32  scram-sha-256
+hostssl     dhis    dhis  172.19.2.1/32  scram-sha-256
+
+
+/etc/postgresql/16/main/dhispg1.conf
+# Postgresql settings for DHIS2
+# Assuming memory limit set to 32G for postgres container
+# Adjust depending on number of DHIS2 instances and their pool size
+# By default each instance requires up to 80 connections
+# This might be different if you have set pool in dhis.conf
+
+max_connections = 200
+shared_buffers = 8GB
+work_mem=20MB
+maintenance_work_mem=1GB
+
+# Approx 80% of (Available RAM - maintenance_work_mem - max_connections*work_mem)
+effective_cache_size=25GB
+
+
+
+
+Notes on Controls
+We need a flag for not assessed
+
+Ordering:
+Start with OS rather than database
+
+Missing controls:
+DHIS2 version check
+dhis.conf and DHIS_HOME permissions
+missing control for files backups
+
+Governance and processes
+Access agreement for ssh user accounts
+Control of DNS zone
+Automation of setup (setup script, ansible, docke compose ....).  Worst case, detailed documentation
+  - how to deal with hacking containers (eg ap connector into tomcat container, openresty etc)
+
+Containers
+memory and CPU limits
+Any lxd specific stuff?
+Any docker specific stuff?
+

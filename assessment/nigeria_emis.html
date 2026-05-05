@@ -1,0 +1,2157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DHIS2 Server Certification Program (DSCP)</title>
+  <link rel="stylesheet" href="../style/dscp.css" />
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- =========================
+         HEADER / BRAND
+    ========================== -->
+    <header class="header">
+      <img
+        class="logo"
+        src="https://raw.githubusercontent.com/dhis2/dhis2-identity/master/web/Logo/Default/dhis2-logo-rgb-positive.svg"
+        alt="DHIS2 logo">
+
+      <h1>DHIS2 Server Certification Program (DSCP)</h1>
+      <p>Assessment template&#x2F;checklist for assessing DHIS2 server implementations against security, performance, and deployment best practices. This template can be used by DHIS2 implementers and hosting providers to validate their DHIS2 server setups for compliance.
+</p>
+
+      <div class="meta">
+        <span class="pill">
+          Version: <code>1</code>
+        </span>
+      </div>
+    </header>
+
+    <!-- =========================
+         CATEGORIES
+    ========================== -->
+    <section class="category">
+
+      <div class="category-head">
+        <h2>Operating System Security</h2>
+        <p class="muted">Linux server hardening, SSH configuration, patching, and monitoring</p>
+
+        <div class="meta">
+          <span class="pill">
+            Weight:
+            <code>0.2</code>
+          </span>
+
+        </div>
+      </div>
+
+      <!-- =========================
+           CRITERIA TABLE
+      ========================== -->
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th class="col-code">Code</th>
+            <th>Name</th>
+            <th class="col-type">Type</th>
+            <th class="col-group">Group</th>
+            <th class="col-cis">CIS</th>
+            <th>Details / Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td><code>OS-01</code></td>
+            <td>Disable Direct Root SSH Access</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.4</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Direct root login via SSH must be disabled; sudo with individual named accounts required for administrative access.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review sshd_config for PermitRootLogin setting; verify sudo configuration; check for individual admin accounts.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="5" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-02</code></td>
+            <td>SSH Key-Based Authentication</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.2.17</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">SSH key-based authentication must be enforced; keys must be rotated regularly; weak algorithms disabled.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Verify SSH key configuration; check for password authentication disabled; review authorized_keys; confirm algorithm restrictions.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="5" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-03</code></td>
+            <td>SSH Password Authentication Disabled</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.2.8</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">SSH password authentication must be disabled (PasswordAuthentication no); strong key exchange and MAC algorithms enforced.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review sshd_config for PasswordAuthentication, KexAlgorithms, and MACs settings; test password login attempt (should fail).
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="5" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-04</code></td>
+            <td>SSH Configuration File Permissions</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.3.1, 5.3.2, 5.3.3</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">SSH configuration and key files must have restrictive permissions (600&#x2F;640&#x2F;660) with proper ownership.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Audit permissions on &#x2F;etc&#x2F;ssh&#x2F;sshd_config, private keys, authorized_keys; verify ownership; check umask.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="5" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">How critical is this one?</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-05</code></td>
+            <td>Multiple Administrative Accounts</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.4</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Multiple break-glass admin accounts required (2-3 not more than 4); usage must be monitored and logged.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Verify number of admin accounts; review admin account usage logs; confirm monitoring and alerting on admin activity.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">sudo:x:27:Barns,Jason,Tito,bao-admin,bobj
+Barns            pts&#x2F;0    41.215.248.161                            Wed Feb 25 08:21:36 +0000 2026 Jason            pts&#x2F;0    90.130.56.140                             Tue Feb 10 06:44:00 +0000 2026 Tito             pts&#x2F;3    197.232.62.233                            Wed Feb 18 07:05:20 +0000 2026 bao-admin        pts&#x2F;1    84.70.86.249                              Thu Feb 26 11:42:12 +0000 2026 bobj             pts&#x2F;0    78.152.255.36                             Mon Mar  2 10:20:14 +0000 2026
+          
+Many people helping out in un-coordinated way. Consider disabling and enabling accounts as required.
+</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-06</code></td>
+            <td>Individual SSH Account Accountability</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.2</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Each SSH user must have a unique, named account; shared credentials prohibited; MFA enforced where possible.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review &#x2F;etc&#x2F;passwd for user accounts; verify no shared accounts exist; check SSH authentication methods and MFA status.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="2" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">bao-admin account (probably Lars?)
+</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-07</code></td>
+            <td>OS User Offboarding Procedure</td>
+            <td>organizational</td>
+            <td>DSCP1</td>
+            <td>5.3</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">System access revocation upon termination; prompt removal from sudoers and privileged groups.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review OS offboarding procedures; verify timeline compliance; check removal from groups&#x2F;sudoers.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">Not checked</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-08</code></td>
+            <td>User Home Directory Hygiene</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>6.1</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">User home directories must not contain sensitive data or unprotected keys; proper permissions enforced.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Audit home directories for sensitive files; check for SSH keys, credentials, configs; verify directory permissions.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">Database dumps unprotected sudo ls -lh ..&#x2F;Barns&#x2F; total 1.4G -rw-rw-r-- 1 Barns Barns    0 Sep 11 12:08 0 drwxrwxr-x 5 Barns Barns 4.0K Nov 12  2024 dhis2-server-tools -rw-r--r-- 1 Barns Barns 681M Feb  2 13:52 dhis2.sql.gz -rw-r--r-- 1 Barns Barns 672M Jan 27 11:33 dhis.sql.gz -rw-rw-r-- 1 Barns Barns  960 Sep 11 13:24 ExplainResult.txt -rw-r--r-- 1 root  root  1.4K Sep 11 13:19 explain.sql -rw-r--r-- 1 root  root   524 Jan 30 09:43 outliers.sql -rw-rw-r-- 1 Barns Barns  16K Jan 30 10:04 outliers.txt drwx------ 3 Barns Barns 4.0K Dec  1  2024 snap
+sudo ls -la ..&#x2F;bao-admin&#x2F; total 716088 drwxr-x--- 6 bao-admin bao-admin      4096 Jan 27 09:18 . drwxr-xr-x 7 root      root           4096 Feb  9 12:31 .. -rw-r--r-- 1 root      root            572 Dec  3 13:22 authorized_keys -rw------- 1 bao-admin bao-admin       556 Feb 26 18:46 .bash_history -rw-r--r-- 1 bao-admin bao-admin       220 Dec  3 13:11 .bash_logout -rw-r--r-- 1 bao-admin bao-admin      3771 Dec  3 13:11 .bashrc drwx------ 2 bao-admin bao-admin      4096 Dec  3 13:13 .cache -rw-rw-r-- 1 bao-admin bao-admin  38588717 Dec  4 10:54 dhis2-superset-gateway.jar -rw-rw-r-- 1 bao-admin bao-admin  52299780 Dec  4 11:05 dhis2-text-query.jar -rw-rw-r-- 1 bao-admin bao-admin 642320239 Jan 27 10:14 dhis.dump drwxrwxr-x 3 bao-admin bao-admin      4096 Dec  3 13:22 .local -rw-r--r-- 1 bao-admin bao-admin       807 Dec  3 13:11 .profile drwx------ 3 bao-admin bao-admin      4096 Dec  4 08:34 snap drwxr-xr-x 2 root      root           4096 Jan 27 09:20 .ssh -rw-r--r-- 1 root      root            553 Dec  3 13:21 sudo -rw-r--r-- 1 bao-admin bao-admin         0 Dec  3 13:14 .sudo_as_admin_successful
+</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-09</code></td>
+            <td>Automated Security Patching</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>7.3</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Unattended security updates must be enabled; patch status monitoring required.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Verify unattended-upgrades or equivalent service; review patch logs; confirm reboot policy.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="4" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">unattended upgrades package configured and working.  Instructions for assessing not very clear.
+note  *** System restart required ***
+</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-11</code></td>
+            <td>System Monitoring and Alerting</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Host and service monitoring must be implemented for CPU, memory, disk, web proxy, and database with alerting thresholds.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review monitoring platform configuration; verify alert rules and thresholds; confirm notification channels; test alert delivery.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="3" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">default monitoring enabled from ansible tools.  Also grafana?  No alerting.
+</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-12</code></td>
+            <td>Operating System Encryption at Rest</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>3.11</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Full-disk encryption is enabled on servers and volumes (LUKS&#x2F;FileVault&#x2F;BitLocker or equivalent).
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Verify encryption status of system volumes; review key management procedures; confirm encryption is active at boot.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">Only required for specific compliance regimes</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-13</code></td>
+            <td>Operating System Least Privilege</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.4</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">OS users must be assigned minimum necessary privileges with role separation; periodic access reviews required.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review user accounts and group memberships; verify sudo configurations.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">This is rarely a concern for DHIS2 installations</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-14</code></td>
+            <td>Network Service Exposure Control</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>4.4</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Host and network firewalls must implement default-deny ingress; only required services&#x2F;ports exposed to internet.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review firewall rules; perform port scan from external network; verify only necessary ports accessible; check default policies.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">PORT     STATE SERVICE 22&#x2F;tcp   open  ssh 53&#x2F;tcp   open  domain 80&#x2F;tcp   open  http 443&#x2F;tcp  open  https 5432&#x2F;tcp open  postgresql
+postgresql port is exposed to the internet.  (presumably this is because of analytics platform)
+</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>OS-15</code></td>
+            <td>Minimal Service Footprint</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>2.2</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Only required services and daemons must be active; unnecessary services removed&#x2F;disabled; validation after system updates.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">List running services; compare against approved baseline; verify service necessity.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="5" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">what approved baseline?</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </section>
+    <section class="category">
+
+      <div class="category-head">
+        <h2>PostgreSQL Database</h2>
+        <p class="muted">Database security, backup, and configuration controls for PostgreSQL</p>
+
+        <div class="meta">
+          <span class="pill">
+            Weight:
+            <code>0.15</code>
+          </span>
+
+        </div>
+      </div>
+
+      <!-- =========================
+           CRITERIA TABLE
+      ========================== -->
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th class="col-code">Code</th>
+            <th>Name</th>
+            <th class="col-type">Type</th>
+            <th class="col-group">Group</th>
+            <th class="col-cis">CIS</th>
+            <th>Details / Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td><code>DB-01</code></td>
+            <td>Regular Automated Database Backup</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>11.2</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Automated daily backups must be configured with defined retention policies and integrity verification mechanisms.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review backup configuration files; verify backup logs from past 30 days; confirm retention policy documentation; test backup integrity checksums.
+</div>
+                </details>
+
+                <details>
+                  <summary>Justification</summary>
+                  <div class="block">Having database backups is a critical safety net when running a DHIS2 instance. Manual backups are not sufficient to guarantee that the right backup will be  available when you need it.  They should be automated to conform to an agreed backup plan.
+</div>
+                </details>
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="5" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">Backup script installed with dhis2 sewrver tools running nightly backup.  No offsite.
+</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DB-02</code></td>
+            <td>Database Backup Restore Testing</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>11.5</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Periodic restore tests must be performed to a non-production environment to validate backup integrity and recovery procedures.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review restore test documentation or logs from past 3 months; verify test results and lessons learned; confirm non-production test environment exists.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">Not assessed</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DB-03</code></td>
+            <td>Off-Site Backup Storage</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>11.4</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Backup copies must be stored off-site or in a separate region&#x2F;account to protect against site-wide disasters.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Verify off-site backup location and access controls.</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">No evidence of off-site backup
+</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DB-04</code></td>
+            <td>Database Least Privilege Access</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.4</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Database users must be assigned minimum necessary privileges; administrative and service accounts must be separated; regular access reviews required.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review database user roles and permissions; verify the DHIS2 user only has access to the required DHIS2 database, and from the DHIS2 IP address.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DB-05</code></td>
+            <td>Database Backup File Permissions</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Backup artifacts must inherit restrictive permissions (Unix mode 660) and must not be world-readable.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Audit backup file permissions; verify backup scripts include proper permission settings; check for world-readable backup files.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DB-06</code></td>
+            <td>Database Encryption at Rest</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>3.11</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Full-disk encryption is enabled with secure key management practices separate from data storage.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Verify encryption configuration; review key management procedures; confirm encryption status of all database volumes.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DB-07</code></td>
+            <td>Backup Encryption at Rest</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>3.11</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Backups must be encrypted at rest with encryption keys managed separately from the backup storage location.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Verify backup encryption configuration; confirm key storage separation; test encrypted backup restore procedure.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DB-08</code></td>
+            <td>PostgreSQL Host-Based Access Control</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.1</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">pg_hba.conf must restrict host-based access, enforce TLS connections, and use SCRAM-SHA-256 authentication over MD5.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review pg_hba.conf file; ensure the DHIS2 instance user only has access to the DHIS2 database, and from the DHIS2 IP address. Verify TLS enforcement; confirm SCRAM authentication enabled; check for MD5 usage.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DB-09</code></td>
+            <td>Supported PostgreSQL Version (Non-EOL)</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">PostgreSQL must be a supported version that is not past end-of-life as per the official PostgreSQL support schedule at the time of assessment.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Run SELECT version(); and capture output; compare against the PostgreSQL version support&#x2F;EOL matrix; review OS package source and pinned version.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DB-10</code></td>
+            <td>PostgreSQL Tuning Baseline</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">PostgreSQL configuration must be optimized with the following set max_connections, shared_buffers, work_mem, maintenance_work_mem, effective_cache_size, max_locks_per_transaction set to reasonable values based on the server capacity.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Run SHOW jit; (expect off) and verify corresponding entries in postgresql.conf and effective reload&#x2F;restart logs.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </section>
+    <section class="category">
+
+      <div class="category-head">
+        <h2>Reverse Proxy</h2>
+        <p class="muted">Reverse Proxy configuration</p>
+
+        <div class="meta">
+          <span class="pill">
+            Weight:
+            <code>0.1</code>
+          </span>
+
+        </div>
+      </div>
+
+      <!-- =========================
+           CRITERIA TABLE
+      ========================== -->
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th class="col-code">Code</th>
+            <th>Name</th>
+            <th class="col-type">Type</th>
+            <th class="col-group">Group</th>
+            <th class="col-cis">CIS</th>
+            <th>Details / Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td><code>DP-01</code></td>
+            <td>Reverse Proxy Deployment</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">A reverse proxy (e.g., Nginx, Apache, HAProxy) must be deployed in front of the DHIS2 application server (tomcat) to handle incoming traffic.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review network architecture documentation (if any); verify reverse proxy installation and configuration; confirm traffic routing through proxy.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DP-02</code></td>
+            <td>TLS&#x2F;SSL Configuration</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>3.1</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">TLS 1.2 or higher with modern cipher suites must be enforced; HSTS enabled; SSL Labs rating of A or A+ required.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Run SSL Labs scan; verify TLS version and cipher configuration; review certificate validity.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">A+ on ssl labs</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DP-03</code></td>
+            <td>Reverse Proxy Access Control</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>4.4</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Reverse proxy must restrict access to only required DHIS2 services and endpoints; default-deny policy enforced.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review reverse proxy configuration; perform external port scan; verify only necessary endpoints accessible; check default-deny rules.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DP-04</code></td>
+            <td>Reverse Proxy Access Logging</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>8.1</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Comprehensive access logging must be enabled on the reverse proxy with log retention and integrity protection.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review logging configuration; verify log retention policy; check log integrity mechanisms; confirm log review procedures.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DP-05</code></td>
+            <td>Reverse Proxy Least Privilege</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>5.4</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Reverse proxy service must run under a dedicated non-root user with minimal privileges.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Check reverse proxy process ownership; verify service account configuration; confirm absence of root privileges.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DP-06</code></td>
+            <td>Reverse Proxy Security Updates</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Reverse proxy software must be kept up-to-date with security patches; version must not be end-of-life.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Check reverse proxy version; compare against vendor EOL schedule.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>DP-07</code></td>
+            <td>Reverse Proxy Security Headers</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Security headers such as X-Frame-Options, X-Content-Type-Options, HSTS and Referrer-Policy must be configured (if not set on the DHIS2 backend).
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review reverse proxy configuration for security headers; test header presence using browser developer tools; verify correct values.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="5" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes">Use securityheaders.com - A</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </section>
+    <section class="category">
+
+      <div class="category-head">
+        <h2>DHIS2 Application</h2>
+        <p class="muted">DHIS2-specific application security controls including admin access and MFA</p>
+
+        <div class="meta">
+          <span class="pill">
+            Weight:
+            <code>0.15</code>
+          </span>
+
+        </div>
+      </div>
+
+      <!-- =========================
+           CRITERIA TABLE
+      ========================== -->
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th class="col-code">Code</th>
+            <th>Name</th>
+            <th class="col-type">Type</th>
+            <th class="col-group">Group</th>
+            <th class="col-cis">CIS</th>
+            <th>Details / Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td><code>AP-01</code></td>
+            <td>Default Admin Account Security</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">DHIS2 default &#39;admin&#39; account must be disabled&#x2F;renamed; unique superuser credentials with strong authentication required.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Verify default admin account status; confirm unique superuser usernames; review password complexity requirements.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>AP-02</code></td>
+            <td>Superuser Access Limitation</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">DHIS2 superusers users must be limited to approximately 1% of total user population; quarterly access reviews required.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Query superuser role assignments; calculate percentage of superusers.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>AP-03</code></td>
+            <td>Multi-Factor Authentication (Superuser accounts)</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">MFA must be enforced for all DHIS2 superuser accounts; hardware or app-based tokens preferred.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Verify MFA configuration for admin accounts; review MFA enrollment status; test MFA enforcement at login.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </section>
+    <section class="category">
+
+      <div class="category-head">
+        <h2>DHIS2 Tomcat Application Server</h2>
+        <p class="muted">DHIS2 Tomcat&#x2F;application server security configuration</p>
+
+        <div class="meta">
+          <span class="pill">
+            Weight:
+            <code>0.1</code>
+          </span>
+
+        </div>
+      </div>
+
+      <!-- =========================
+           CRITERIA TABLE
+      ========================== -->
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th class="col-code">Code</th>
+            <th>Name</th>
+            <th class="col-type">Type</th>
+            <th class="col-group">Group</th>
+            <th class="col-cis">CIS</th>
+            <th>Details / Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td><code>TC-01</code></td>
+            <td>Tomcat Service Account</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>10.17</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Tomcat must run under a dedicated service account with minimal privileges; must not run as root.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Check Tomcat process ownership; verify service account configuration; confirm absence of root privileges.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>TC-02</code></td>
+            <td>Tomcat Shutdown Port Security</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>3.2</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Tomcat SHUTDOWN port must be disabled or firewalled; if required, restrict to localhost only.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review server.xml for SHUTDOWN port configuration; verify firewall rules; test external accessibility.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>TC-03</code></td>
+            <td>Application Auto-Deployment Disabled</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>9.2</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Tomcat auto-deployment must be disabled.</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review server.xml and Host configuration for autoDeploy setting.</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>TC-04</code></td>
+            <td>Webapp Modification Prevention</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>4.7</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">File permissions must prevent Tomcat runtime from modifying deployed application artifacts (webapps directory).
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Audit webapps directory permissions; verify Tomcat user cannot write to deployment directories.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </section>
+    <section class="category">
+
+      <div class="category-head">
+        <h2>Network Security</h2>
+        <p class="muted">Network architecture and firewall</p>
+
+        <div class="meta">
+          <span class="pill">
+            Weight:
+            <code>0.1</code>
+          </span>
+
+        </div>
+      </div>
+
+      <!-- =========================
+           CRITERIA TABLE
+      ========================== -->
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th class="col-code">Code</th>
+            <th>Name</th>
+            <th class="col-type">Type</th>
+            <th class="col-group">Group</th>
+            <th class="col-cis">CIS</th>
+            <th>Details / Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td><code>FW-01</code></td>
+            <td>Layered Firewall Architecture</td>
+            <td>technical</td>
+            <td>DSCP1</td>
+            <td>9.1</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Defense-in-depth firewall strategy required: perimeter, host-based, and container-based; default-deny.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review firewall architecture documentation; verify multiple firewall layers; confirm default-deny policies.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </section>
+    <section class="category">
+
+      <div class="category-head">
+        <h2>Governance &amp; Processes</h2>
+        <p class="muted">Organizational security policies, procedures, and governance</p>
+
+        <div class="meta">
+          <span class="pill">
+            Weight:
+            <code>0.1</code>
+          </span>
+
+          <span class="pill">
+            Sort Order:
+            <code>8</code>
+          </span>
+        </div>
+      </div>
+
+      <!-- =========================
+           CRITERIA TABLE
+      ========================== -->
+      <table class="criteria">
+        <thead>
+          <tr>
+            <th class="col-code">Code</th>
+            <th>Name</th>
+            <th class="col-type">Type</th>
+            <th class="col-group">Group</th>
+            <th class="col-cis">CIS</th>
+            <th>Details / Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td><code>PS-01</code></td>
+            <td>Incident Response Plan</td>
+            <td>organizational</td>
+            <td>DSCP1</td>
+            <td>17.1-17.9</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Documented incident response plan with defined roles, runbooks, communication procedures.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review IR plan documentation; verify contact lists current; check runbooks for common scenarios.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>PS-02</code></td>
+            <td>Data Sharing Agreements</td>
+            <td>organizational</td>
+            <td>DSCP1</td>
+            <td></td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Formal data sharing agreements and NDAs with contractual safeguards and retention clauses required for external parties.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review executed data sharing agreements; verify NDA coverage; confirm retention and destruction clauses
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><code>PS-03</code></td>
+            <td>DHIS2 User Offboarding Procedure</td>
+            <td>organizational</td>
+            <td>DSCP1</td>
+            <td>5.3</td>
+
+            <td>
+              <div class="details">
+
+                <details open>
+                  <summary>Description</summary>
+                  <div class="block">Immediate deprovisioning workflow for departing users.
+</div>
+                </details>
+
+                <details>
+                  <summary>Verification</summary>
+                  <div class="block">Review offboarding procedures.
+</div>
+                </details>
+
+
+                <!-- =========================
+                     ASSESSMENT FIELDS
+                ========================== -->
+                <div class="assessment">
+                  <div class="assessment-row">
+                    <div class="assessment-field">
+                      <label>Score (1–5)</label>
+                      <input class="score" type="number" min="1" max="5" value="" />
+                    </div>
+                  </div>
+
+                  <div class="assessment-field">
+                    <label>Notes</label>
+                    <textarea class="notes"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </section>
+
+    <!-- =========================
+         SCORING SECTION
+    ========================== -->
+    <section class="category">
+      <div class="category-head">
+        <h2>Compliance Scoring</h2>
+      </div>
+
+      <table class="criteria criteria-compact">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th class="col-score">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Compliant</td>
+            <td>100</td>
+          </tr>
+          <tr>
+            <td>Partially Compliant</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <td>Non-Compliant</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Not Applicable</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Not Tested</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </div>
+</body>
+</html>
