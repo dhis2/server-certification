@@ -1,2 +1,5 @@
 env/
 venv/
+assessment/
+*_assessment/
+generated/

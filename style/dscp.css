@@ -229,6 +229,66 @@ details[open] summary::before{
   white-space:pre-wrap;
 }
 
+/* =========================
+   Assessment fields (Score + Notes)
+========================== */
+
+.assessment {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fbfcff;
+}
+
+.assessment-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.assessment-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #44546f;
+  margin: 0 0 6px 0;
+}
+
+.assessment-field .score {
+  width: 92px;
+  padding: 7px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+  background: #f7f9fc;
+}
+
+.assessment-field .notes {
+  width: 100%;
+  min-height: 110px;
+  padding: 10px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  resize: vertical;
+  background: #ffffff;
+}
+
+.assessment-field .score:focus,
+.assessment-field .notes:focus {
+  outline: none;
+  border-color: var(--dhis2-blue);
+  box-shadow: 0 0 0 2px rgba(31, 111, 178, 0.18);
+}
+
+
+
 /* ==============================
    LINKS
 ================================ */

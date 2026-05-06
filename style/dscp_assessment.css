@@ -1,0 +1,316 @@
+/* =========================
+   DSCP / DHIS2-style theme
+========================== */
+
+:root {
+  --dhis2-blue: #1f6fb2;
+  --text: #172b4d;
+  --muted: #5e6c84;
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --border: #e5e9f2;
+  --border-strong: #c7cfdd;
+  --code-bg: #eef3fb;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Roboto", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+}
+
+/* =========================
+   Layout
+========================== */
+
+.container {
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 0 16px 48px 16px;
+}
+
+/* =========================
+   Header
+========================== */
+
+.header {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 1px 2px rgba(9, 30, 66, 0.06);
+}
+
+.logo {
+  height: 36px;
+  width: auto;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.header h1 {
+  margin: 0 0 6px 0;
+  font-size: 24px;
+  color: var(--dhis2-blue);
+}
+
+.header p {
+  margin: 0 0 12px 0;
+  color: var(--muted);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eff4fb;
+  border: 1px solid var(--border);
+  color: #334e68;
+  font-size: 13px;
+}
+
+.pill code {
+  background: transparent;
+  padding: 0;
+  font-weight: 700;
+}
+
+/* =========================
+   Category
+========================== */
+
+.category {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 18px 10px 18px;
+  margin: 18px 0;
+  box-shadow: 0 1px 2px rgba(9, 30, 66, 0.05);
+}
+
+.category-head h2 {
+  margin: 0 0 6px 0;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.muted {
+  margin: 0 0 12px 0;
+  color: var(--muted);
+}
+
+/* =========================
+   Table
+========================== */
+
+.criteria {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.criteria thead th {
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #44546f;
+  background: #f0f4fa;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 10px;
+  vertical-align: bottom;
+}
+
+.criteria tbody td {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 10px;
+  vertical-align: top;
+  font-size: 13.5px;
+}
+
+.criteria tbody tr:hover td {
+  background: #fbfcff;
+}
+
+.col-code { width: 90px; }
+.col-type { width: 110px; }
+.col-group { width: 140px; }
+.col-cis { width: 90px; }
+.col-score { width: 110px; }
+
+.criteria-compact tbody td {
+  padding: 9px 10px;
+}
+
+/* =========================
+   Code / Inline
+========================== */
+
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12.5px;
+}
+
+/* =========================
+   Details blocks
+========================== */
+
+.details details {
+  margin: 0 0 10px 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.details details[open] {
+  box-shadow: 0 1px 1px rgba(9, 30, 66, 0.05);
+}
+
+.details summary {
+  cursor: pointer;
+  user-select: none;
+  padding: 9px 10px;
+  font-weight: 700;
+  color: #253858;
+  background: #f7f9fc;
+  border-bottom: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.details summary::-webkit-details-marker {
+  display: none;
+}
+
+.details summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--dhis2-blue);
+  transform: translateY(-1px);
+}
+
+.details details[open] summary::before {
+  content: "▾";
+}
+
+.block {
+  padding: 10px 12px;
+  color: #253858;
+  white-space: pre-wrap; /* keep newlines from YAML text */
+}
+
+/* =========================
+   Assessment fields (Score + Notes)
+========================== */
+
+.assessment {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fbfcff;
+}
+
+.assessment-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.assessment-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #44546f;
+  margin: 0 0 6px 0;
+}
+
+.assessment-field .score {
+  width: 92px;
+  padding: 7px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+  background: #f7f9fc;
+}
+
+.assessment-field .notes {
+  width: 100%;
+  min-height: 110px;
+  padding: 10px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  resize: vertical;
+  background: #ffffff;
+}
+
+.assessment-field .score:focus,
+.assessment-field .notes:focus {
+  outline: none;
+  border-color: var(--dhis2-blue);
+  box-shadow: 0 0 0 2px rgba(31, 111, 178, 0.18);
+}
+
+/* =========================
+   Print Friendly
+========================== */
+
+@media print {
+  body {
+    background: #ffffff;
+  }
+
+  .container {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header, .category {
+    box-shadow: none !important;
+  }
+
+  /* Prevent awkward splits */
+  tr, td, th { page-break-inside: avoid; }
+  .details details { page-break-inside: avoid; }
+
+  /* Ensure form fields print as boxes */
+  input, textarea {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Slightly larger notes box on paper */
+  .assessment-field .notes {
+    min-height: 140px;
+  }
+}
