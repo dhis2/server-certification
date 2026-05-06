@@ -13,4 +13,4 @@ clean:
 assessment:
 	mkdir -p $(NAME)_assessment
 	cp controls/dhis2-certification-v1.yml $(NAME)_assessment/$(NAME)_assessment.yml
-	yq . togo_assessment/togo_assessment.yml | mustache - scripts/dscp_assessment.mustache > togo_assessment/togo_assessment.html
+	yq . $(NAME)_assessment/$(NAME)_assessment.yml | mustache - scripts/dscp_assessment.mustache > $(NAME)_assessment/$(NAME)_assessment.html
