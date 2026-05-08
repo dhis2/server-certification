@@ -6,6 +6,280 @@ templateDescription: >
   for compliance.
 version: 1
 categories:
+  - name: Governance & Processes
+    description: Organizational security policies, procedures, and governance
+    weight: 0.1
+    criteria:
+      - code: PS-01
+        name: Incident Response Plan
+        description: >
+          Documented incident response plan with defined roles, runbooks, communication
+          procedures.
+        verificationMethod: >
+          Review IR plan documentation; verify contact lists current; check runbooks
+          for common scenarios.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: organizational
+        cisMapping: "17.1-17.9"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: PS-02
+        name: Data Sharing Agreements
+        description: >
+          Formal data sharing agreements and NDAs with contractual safeguards and
+          retention clauses required for external parties.
+        verificationMethod: >
+          Review executed data sharing agreements; verify NDA coverage; confirm retention
+          and destruction clauses
+        justification: ''
+        controlGroup: DSCP1
+        controlType: organizational
+        cisMapping: null
+        score: null
+        notes: >
+          Assessor notes here
+      - code: PS-03
+        name: DHIS2 User Offboarding Procedure
+        description: >
+          Immediate deprovisioning workflow for departing users.
+        verificationMethod: >
+          Review offboarding procedures.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: organizational
+        cisMapping: "5.3"
+        score: null
+        notes: >
+          Assessor notes here
+  - name: Operating System Security
+    description: Linux server hardening, SSH configuration, patching, and monitoring
+    weight: 0.2
+    criteria:
+      - code: OS-01
+        name: Disable Direct Root SSH Access
+        description: >
+          Direct root login via SSH must be disabled; sudo with individual named accounts
+          required for administrative access.
+        verificationMethod: >
+          Review sshd_config for PermitRootLogin setting; verify sudo configuration;
+          check for individual admin accounts.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.4"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-02
+        name: SSH Key-Based Authentication
+        description: >
+          SSH key-based authentication must be enforced; keys must be rotated regularly;
+          weak algorithms disabled.
+        verificationMethod: >
+          Verify SSH key configuration; check for password authentication disabled;
+          review authorized_keys; confirm algorithm restrictions.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.2.17"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-03
+        name: SSH Password Authentication Disabled
+        description: >
+          SSH password authentication must be disabled (PasswordAuthentication no);
+          strong key exchange and MAC algorithms enforced.
+        verificationMethod: >
+          Review sshd_config for PasswordAuthentication, KexAlgorithms, and MACs settings;
+          test password login attempt (should fail).
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.2.8"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-04
+        name: SSH Configuration File Permissions
+        description: >
+          SSH configuration and key files must have restrictive permissions (600/640/660)
+          with proper ownership.
+        verificationMethod: >
+          Audit permissions on /etc/ssh/sshd_config, private keys, authorized_keys;
+          verify ownership; check umask.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.3.1, 5.3.2, 5.3.3"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-05
+        name: Multiple Administrative Accounts
+        description: >
+          Multiple break-glass admin accounts required (2-3 not more than 4); usage
+          must be monitored and logged.
+        verificationMethod: >
+          Verify number of admin accounts; review admin account usage logs; confirm
+          monitoring and alerting on admin activity.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.4"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-06
+        name: Individual SSH Account Accountability
+        description: >
+          Each SSH user must have a unique, named account; shared credentials prohibited;
+          MFA enforced where possible.
+        verificationMethod: >
+          Review /etc/passwd for user accounts; verify no shared accounts exist; check
+          SSH authentication methods and MFA status.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.2"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-07
+        name: OS User Offboarding Procedure
+        description: >
+          System access revocation upon termination; prompt removal from sudoers and
+          privileged groups.
+        verificationMethod: >
+          Review OS offboarding procedures; verify timeline compliance; check removal
+          from groups/sudoers.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: organizational
+        cisMapping: "5.3"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-08
+        name: User Home Directory Hygiene
+        description: >
+          User home directories must not contain sensitive data or unprotected keys;
+          proper permissions enforced.
+        verificationMethod: >
+          Audit home directories for sensitive files; check for SSH keys, credentials,
+          configs; verify directory permissions.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "6.1"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-09
+        name: Automated Security Patching
+        description: >
+          Unattended security updates must be enabled; patch status monitoring required.
+        verificationMethod: >
+          Verify unattended-upgrades or equivalent service; review patch logs; confirm
+          reboot policy.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "7.3"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-10
+        name: User Home Directory Hygiene
+        description: >
+          User home directories must not contain sensitive data or unprotected keys;
+          proper permissions enforced.
+        verificationMethod: >
+          Audit home directories for sensitive files; check for SSH keys, credentials,
+          configs; verify directory permissions.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "6.1"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-11
+        name: System Monitoring and Alerting
+        description: >
+          Host and service monitoring must be implemented for CPU, memory, disk, web
+          proxy, and database with alerting thresholds.
+        verificationMethod: >
+          Review monitoring platform configuration; verify alert rules and thresholds;
+          confirm notification channels; test alert delivery.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: null
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-12
+        name: Operating System Encryption at Rest
+        description: >
+          Full-disk encryption is enabled on servers and volumes (LUKS/FileVault/BitLocker
+          or equivalent).
+        verificationMethod: >
+          Verify encryption status of system volumes; review key management procedures;
+          confirm encryption is active at boot.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "3.11"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-13
+        name: Operating System Least Privilege
+        description: >
+          OS users must be assigned minimum necessary privileges with role separation;
+          periodic access reviews required.
+        verificationMethod: >
+          Review user accounts and group memberships; verify sudo configurations.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "5.4"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-14
+        name: Network Service Exposure Control
+        description: >
+          Host and network firewalls must implement default-deny ingress; only required
+          services/ports exposed to internet.
+        verificationMethod: >
+          Review firewall rules; perform port scan from external network; verify only
+          necessary ports accessible; check default policies.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "4.4"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: OS-15
+        name: Minimal Service Footprint
+        description: >
+          Only required services and daemons must be active; unnecessary services
+          removed/disabled; validation after system updates.
+        verificationMethod: >
+          List running services; compare against approved baseline; verify service
+          necessity.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "2.2"
+        score: null
+        notes: >
+          Assessor notes here
   - name: PostgreSQL Database
     description: Database security, backup, and configuration controls for PostgreSQL
     weight: 0.15
@@ -20,7 +294,7 @@ categories:
           confirm retention policy documentation; test backup integrity checksums.
         justification: >
           Having database backups is a critical safety net when running a DHIS2 instance.
-          Manual backups are not sufficient to guarantee that the right backup will be 
+          Manual backups are not sufficient to guarantee that the right backup will be
           available when you need it.  They should be automated to conform to an agreed
           backup plan.
         controlGroup: DSCP1
@@ -272,282 +546,6 @@ categories:
         score: null
         notes: >
           Assessor notes here
-  - name: Operating System Security
-    description: Linux server hardening, SSH configuration, patching, and monitoring
-    weight: 0.2
-    criteria:
-      - code: OS-01
-        name: Disable Direct Root SSH Access
-        description: >
-          Direct root login via SSH must be disabled; sudo with individual named accounts
-          required for administrative access.
-        verificationMethod: >
-          Review sshd_config for PermitRootLogin setting; verify sudo configuration;
-          check for individual admin accounts.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.4"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-02
-        name: SSH Key-Based Authentication
-        description: >
-          SSH key-based authentication must be enforced; keys must be rotated regularly;
-          weak algorithms disabled.
-        verificationMethod: >
-          Verify SSH key configuration; check for password authentication disabled;
-          review authorized_keys; confirm algorithm restrictions.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.2.17"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-03
-        name: SSH Password Authentication Disabled
-        description: >
-          SSH password authentication must be disabled (PasswordAuthentication no);
-          strong key exchange and MAC algorithms enforced.
-        verificationMethod: >
-          Review sshd_config for PasswordAuthentication, KexAlgorithms, and MACs settings;
-          test password login attempt (should fail).
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.2.8"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-04
-        name: SSH Configuration File Permissions
-        description: >
-          SSH configuration and key files must have restrictive permissions (600/640/660)
-          with proper ownership.
-        verificationMethod: >
-          Audit permissions on /etc/ssh/sshd_config, private keys, authorized_keys;
-          verify ownership; check umask.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.3.1, 5.3.2, 5.3.3"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-05
-        name: Multiple Administrative Accounts
-        description: >
-          Multiple break-glass admin accounts required (2-3 not more than 4); usage
-          must be monitored and logged.
-        verificationMethod: >
-          Verify number of admin accounts; review admin account usage logs; confirm
-          monitoring and alerting on admin activity.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.4"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-06
-        name: Individual SSH Account Accountability
-        description: >
-          Each SSH user must have a unique, named account; shared credentials prohibited;
-          MFA enforced where possible.
-        verificationMethod: >
-          Review /etc/passwd for user accounts; verify no shared accounts exist; check
-          SSH authentication methods and MFA status.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.2"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-07
-        name: OS User Offboarding Procedure
-        description: >
-          System access revocation upon termination; prompt removal from sudoers and
-          privileged groups.
-        verificationMethod: >
-          Review OS offboarding procedures; verify timeline compliance; check removal
-          from groups/sudoers.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: organizational
-        cisMapping: "5.3"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-08
-        name: User Home Directory Hygiene
-        description: >
-          User home directories must not contain sensitive data or unprotected keys;
-          proper permissions enforced.
-        verificationMethod: >
-          Audit home directories for sensitive files; check for SSH keys, credentials,
-          configs; verify directory permissions.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "6.1"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-09
-        name: Automated Security Patching
-        description: >
-          Unattended security updates must be enabled; patch status monitoring required.
-        verificationMethod: >
-          Verify unattended-upgrades or equivalent service; review patch logs; confirm
-          reboot policy.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "7.3"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-10
-        name: User Home Directory Hygiene
-        description: >
-          User home directories must not contain sensitive data or unprotected keys;
-          proper permissions enforced.
-        verificationMethod: >
-          Audit home directories for sensitive files; check for SSH keys, credentials,
-          configs; verify directory permissions.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "6.1"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-11
-        name: System Monitoring and Alerting
-        description: >
-          Host and service monitoring must be implemented for CPU, memory, disk, web
-          proxy, and database with alerting thresholds.
-        verificationMethod: >
-          Review monitoring platform configuration; verify alert rules and thresholds;
-          confirm notification channels; test alert delivery.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-12
-        name: Operating System Encryption at Rest
-        description: >
-          Full-disk encryption is enabled on servers and volumes (LUKS/FileVault/BitLocker
-          or equivalent).
-        verificationMethod: >
-          Verify encryption status of system volumes; review key management procedures;
-          confirm encryption is active at boot.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "3.11"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-13
-        name: Operating System Least Privilege
-        description: >
-          OS users must be assigned minimum necessary privileges with role separation;
-          periodic access reviews required.
-        verificationMethod: >
-          Review user accounts and group memberships; verify sudo configurations.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "5.4"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-14
-        name: Network Service Exposure Control
-        description: >
-          Host and network firewalls must implement default-deny ingress; only required
-          services/ports exposed to internet.
-        verificationMethod: >
-          Review firewall rules; perform port scan from external network; verify only
-          necessary ports accessible; check default policies.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "4.4"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: OS-15
-        name: Minimal Service Footprint
-        description: >
-          Only required services and daemons must be active; unnecessary services
-          removed/disabled; validation after system updates.
-        verificationMethod: >
-          List running services; compare against approved baseline; verify service
-          necessity.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: "2.2"
-        score: null
-        notes: >
-          Assessor notes here
-  - name: DHIS2 Application
-    description: DHIS2-specific application security controls including admin access
-      and MFA
-    weight: 0.15
-    criteria:
-      - code: AP-01
-        name: Default Admin Account Security
-        description: >
-          DHIS2 default 'admin' account must be disabled/renamed; unique superuser
-          credentials with strong authentication required.
-        verificationMethod: >
-          Verify default admin account status; confirm unique superuser usernames;
-          review password complexity requirements.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
-      - code: AP-02
-        name: Superuser Access Limitation
-        description: >
-          DHIS2 superusers users must be limited to approximately 1% of total user
-          population; quarterly access reviews required.
-        verificationMethod: >
-          Query superuser role assignments; calculate percentage of superusers.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
-      - code: AP-03
-        name: Multi-Factor Authentication (Superuser accounts)
-        description: >
-          MFA must be enforced for all DHIS2 superuser accounts; hardware or app-based
-          tokens preferred.
-        verificationMethod: >
-          Verify MFA configuration for admin accounts; review MFA enrollment status;
-          test MFA enforcement at login.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: technical
-        cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
   - name: DHIS2 Tomcat Application Server
     description: DHIS2 Tomcat/application server security configuration
     weight: 0.1
@@ -609,6 +607,55 @@ categories:
         score: null
         notes: >
           Assessor notes here
+  - name: DHIS2 Application
+    description: DHIS2-specific application security controls including admin access
+      and MFA
+    weight: 0.15
+    criteria:
+      - code: AP-01
+        name: Default Admin Account Security
+        description: >
+          DHIS2 default 'admin' account must be disabled/renamed; unique superuser
+          credentials with strong authentication required.
+        verificationMethod: >
+          Verify default admin account status; confirm unique superuser usernames;
+          review password complexity requirements.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: null
+        score: null
+        notes: >
+          Assessor notes here
+      - code: AP-02
+        name: Superuser Access Limitation
+        description: >
+          DHIS2 superusers users must be limited to approximately 1% of total user
+          population; quarterly access reviews required.
+        verificationMethod: >
+          Query superuser role assignments; calculate percentage of superusers.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: null
+        score: null
+        notes: >
+          Assessor notes here
+      - code: AP-03
+        name: Multi-Factor Authentication (Superuser accounts)
+        description: >
+          MFA must be enforced for all DHIS2 superuser accounts; hardware or app-based
+          tokens preferred.
+        verificationMethod: >
+          Verify MFA configuration for admin accounts; review MFA enrollment status;
+          test MFA enforcement at login.
+        justification: ''
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: null
+        score: null
+        notes: >
+          Assessor notes here
   - name: Network Security
     description: Network architecture and firewall
     weight: 0.1
@@ -625,54 +672,6 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "9.1"
-        score: null
-        notes: >
-          Assessor notes here
-  - name: Governance & Processes
-    description: Organizational security policies, procedures, and governance
-    weight: 0.1
-    sortOrder: 8
-    criteria:
-      - code: PS-01
-        name: Incident Response Plan
-        description: >
-          Documented incident response plan with defined roles, runbooks, communication
-          procedures.
-        verificationMethod: >
-          Review IR plan documentation; verify contact lists current; check runbooks
-          for common scenarios.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: organizational
-        cisMapping: "17.1-17.9"
-        score: null
-        notes: >
-          Assessor notes here
-      - code: PS-02
-        name: Data Sharing Agreements
-        description: >
-          Formal data sharing agreements and NDAs with contractual safeguards and
-          retention clauses required for external parties.
-        verificationMethod: >
-          Review executed data sharing agreements; verify NDA coverage; confirm retention
-          and destruction clauses
-        justification: ''
-        controlGroup: DSCP1
-        controlType: organizational
-        cisMapping: null
-        score: null
-        notes: >
-          Assessor notes here
-      - code: PS-03
-        name: DHIS2 User Offboarding Procedure
-        description: >
-          Immediate deprovisioning workflow for departing users.
-        verificationMethod: >
-          Review offboarding procedures.
-        justification: ''
-        controlGroup: DSCP1
-        controlType: organizational
-        cisMapping: "5.3"
         score: null
         notes: >
           Assessor notes here
