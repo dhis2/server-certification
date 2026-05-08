@@ -660,15 +660,33 @@ categories:
     description: Network architecture and firewall
     weight: 0.1
     criteria:
-      - code: FW-01
-        name: Layered Firewall Architecture
+      - code: NET-01
+        name: Perimeter security
         description: >
-          Defense-in-depth firewall strategy required: perimeter, host-based, and
-          container-based; default-deny.
+          Where host is acting as hypervisor for containers (eg lxd, docker) ensure that only http ports 80/443 
+          and ssh port are exposed on external interface.  Any additional ports should be listed and accounted 
+          for.  
         verificationMethod: >
-          Review firewall architecture documentation; verify multiple firewall layers;
-          confirm default-deny policies.
-        justification: ''
+          Review fw config.  Test with nmap
+        justification: 'Keep attack surface minimal.  Protect database.'
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "9.1"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: NET-02
+        name: Componenent isolation
+        description: >
+          Components (vms or containers) should be isolated from one another, either via
+          
+          1.  network micro-segmentation; or
+          2.  firewall rules
+
+        verificationMethod: >
+          Test connectivity with telnet between containers.  Proxy should not be able to reach 5432 on database,
+          dhis2 containers should not be able to reach each other etc.
+        justification: 'Damage control if one component becomes compromised'
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "9.1"
