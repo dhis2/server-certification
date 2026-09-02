@@ -18,6 +18,16 @@ categories:
         verificationMethod: >
           Review backup configuration files; verify backup logs from past 30 days;
           confirm retention policy documentation; test backup integrity checksums.
+        verificationCommands: |
+          # Scheduled backup jobs (cron + systemd timers)
+          sudo crontab -l; ls -l /etc/cron.d/ /etc/cron.daily/
+          systemctl list-timers --all | grep -Ei 'backup|dump|pgbackrest|barman'
+          # Backup tool config and catalogue
+          sudo -u postgres pgbackrest info 2>/dev/null || true
+          sudo ls -lh /var/backups/postgresql/ /var/lib/pgbackrest/ /var/lib/barman/ 2>/dev/null
+          # Last 30 days of backup activity
+          sudo journalctl -u '*backup*' --since '30 days ago' --no-pager | tail -n 50
+          sudo ls -l /var/log/pgbackrest/ /var/log/barman/ 2>/dev/null
         justification: >
           Having database backups is a critical safety net when running a DHIS2 instance.
           Manual backups are not sufficient to guarantee that the right backup will be 
@@ -37,6 +47,12 @@ categories:
         verificationMethod: >
           Review restore test documentation or logs from past 3 months; verify test
           results and lessons learned; confirm non-production test environment exists.
+        verificationCommands: |
+          # Evidence of restore / verify runs
+          sudo -u postgres pgbackrest --stanza=<stanza> check 2>/dev/null || true
+          sudo grep -rniE 'restore|verify' /var/log/pgbackrest/ /var/log/barman/ 2>/dev/null | tail -n 20
+          # Non-production restore target on this host, if any
+          sudo -u postgres psql -l | grep -Ei 'test|restore|staging'
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -50,6 +66,12 @@ categories:
           Backup copies must be stored off-site or in a separate region/account to
           protect against site-wide disasters.
         verificationMethod: Verify off-site backup location and access controls.
+        verificationCommands: |
+          # Off-site sync jobs / tooling
+          sudo grep -rniE 'rclone|aws s3|gsutil|azcopy|rsync .*@' /etc/cron* /etc/systemd/system 2>/dev/null
+          rclone listremotes 2>/dev/null; aws configure list 2>/dev/null
+          # Most recent object pushed off-site (rclone example)
+          rclone lsl <remote>:<bucket>/ 2>/dev/null | tail -n 5
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -65,6 +87,12 @@ categories:
         verificationMethod: >
           Review database user roles and permissions; verify the DHIS2 user only has
           access to the required DHIS2 database, and from the DHIS2 IP address.
+        verificationCommands: |
+          sudo -u postgres psql -c '\du+'
+          sudo -u postgres psql -c '\l'
+          sudo -u postgres psql -Atc "SELECT grantee, table_catalog, privilege_type FROM information_schema.role_table_grants WHERE grantee NOT IN ('postgres') LIMIT 50;"
+          # The DHIS2 role must not be a superuser
+          sudo -u postgres psql -Atc "SELECT rolname, rolsuper, rolcreatedb, rolcreaterole FROM pg_roles WHERE rolname='<dhis2-db-user>';"
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -80,6 +108,11 @@ categories:
         verificationMethod: >
           Audit backup file permissions; verify backup scripts include proper permission
           settings; check for world-readable backup files.
+        verificationCommands: |
+          sudo find /var/backups/postgresql /var/lib/pgbackrest /var/lib/barman -type f \( -name '*.backup' -o -name '*.gz' -o -name '*.zst' -o -name '*.sql*' \) -printf '%m %u:%g %p\n' 2>/dev/null
+          # Flag anything group/other readable (expect 0640/0660)
+          sudo find /var/backups/postgresql -type f -perm /0007 -printf 'WORLD-READABLE: %p\n' 2>/dev/null
+          sudo stat -c '%a %U:%G %n' /var/backups/postgresql 2>/dev/null
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -95,6 +128,12 @@ categories:
         verificationMethod: >
           Verify encryption configuration; review key management procedures; confirm
           encryption status of all database volumes.
+        verificationCommands: |
+          lsblk -o NAME,FSTYPE,MOUNTPOINT,TYPE
+          sudo dmsetup ls --target crypt
+          for d in $(sudo dmsetup ls --target crypt 2>/dev/null | awk '{print $1}'); do sudo cryptsetup status "$d"; done
+          DD=$(sudo -u postgres psql -Atc 'SHOW data_directory;'); findmnt -no SOURCE,FSTYPE "$DD"
+          # Cloud volumes: confirm encryption flag in the provider console
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -110,6 +149,12 @@ categories:
         verificationMethod: >
           Verify backup encryption configuration; confirm key storage separation;
           test encrypted backup restore procedure.
+        verificationCommands: |
+          # pgBackRest cipher settings
+          sudo grep -Ei 'cipher-type|cipher-pass|repo.*-cipher' /etc/pgbackrest/pgbackrest.conf /etc/pgbackrest.conf 2>/dev/null
+          # Inspect an actual backup artifact
+          sudo find /var/backups/postgresql /var/lib/pgbackrest -type f | head -n1 | xargs -r sudo file
+          sudo grep -rniE 'gpg|openssl enc|age -e' /etc/cron* /etc/systemd/system 2>/dev/null
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -126,6 +171,12 @@ categories:
           Review pg_hba.conf file; ensure the DHIS2 instance user only has access
           to the DHIS2 database, and from the DHIS2 IP address. Verify TLS enforcement;
           confirm SCRAM authentication enabled; check for MD5 usage.
+        verificationCommands: |
+          HBA=$(sudo -u postgres psql -Atc 'SHOW hba_file;'); echo "$HBA"
+          sudo grep -vE '^\s*#|^\s*$' "$HBA"
+          sudo -u postgres psql -Atc 'SHOW ssl;'
+          sudo -u postgres psql -Atc 'SHOW password_encryption;'   # expect scram-sha-256
+          sudo grep -vE '^\s*#|^\s*$' "$HBA" | grep -i md5   # expect no rows
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -141,6 +192,11 @@ categories:
         verificationMethod: >
           Run SELECT version(); and capture output; compare against the PostgreSQL
           version support/EOL matrix; review OS package source and pinned version.
+        verificationCommands: |
+          sudo -u postgres psql -c 'SELECT version();'
+          pg_lsclusters
+          apt policy 'postgresql-1*' 2>/dev/null | grep -A1 -Ei 'postgresql-[0-9]'
+          # Compare against https://www.postgresql.org/support/versioning/
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -157,6 +213,11 @@ categories:
         verificationMethod: >
           Run SHOW jit; (expect off) and verify corresponding entries in postgresql.conf
           and effective reload/restart logs.
+        verificationCommands: |
+          sudo -u postgres psql -Atc "SELECT name, setting, unit FROM pg_settings WHERE name IN ('max_connections','shared_buffers','work_mem','maintenance_work_mem','effective_cache_size','max_locks_per_transaction','jit');"
+          sudo -u postgres psql -c 'SHOW jit;'   # expect off
+          sudo grep -EnR 'max_connections|shared_buffers|work_mem|maintenance_work_mem|effective_cache_size|max_locks_per_transaction|jit' /etc/postgresql/*/main/ 2>/dev/null
+          free -h; nproc
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -176,6 +237,11 @@ categories:
         verificationMethod: >
           Review network architecture documentation (if any); verify reverse proxy
           installation and configuration; confirm traffic routing through proxy.
+        verificationCommands: |
+          nginx -v 2>&1 || apache2 -v 2>&1 || haproxy -v 2>&1
+          systemctl status nginx apache2 haproxy 2>/dev/null | grep -E 'Loaded|Active'
+          sudo ss -tulpn | grep -E ':80|:443'
+          sudo nginx -T 2>/dev/null | grep -E 'proxy_pass|upstream|server_name|listen'
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -191,6 +257,13 @@ categories:
         verificationMethod: >
           Run SSL Labs scan; verify TLS version and cipher configuration; review certificate
           validity.
+        verificationCommands: |
+          # From the assessor host:
+          nmap --script ssl-enum-ciphers -p 443 <domain>
+          echo | openssl s_client -connect <domain>:443 -servername <domain> 2>/dev/null | openssl x509 -noout -dates -issuer -subject
+          curl -sI https://<domain> | grep -i strict-transport-security
+          sudo nginx -T 2>/dev/null | grep -Ei 'ssl_protocols|ssl_ciphers|ssl_prefer_server_ciphers'
+          # Full grade: run SSL Labs (https://www.ssllabs.com/ssltest/) or testssl.sh
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -206,6 +279,11 @@ categories:
         verificationMethod: >
           Review reverse proxy configuration; perform external port scan; verify only
           necessary endpoints accessible; check default-deny rules.
+        verificationCommands: |
+          sudo nginx -T 2>/dev/null | grep -Ei 'location|allow |deny |limit_except|auth_basic|internal;|return 40'
+          # External surface from the assessor host:
+          nmap -Pn -p- <server-ip>
+          curl -sk -o /dev/null -w '%{http_code}\n' https://<domain>/api/
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -221,6 +299,11 @@ categories:
         verificationMethod: >
           Review logging configuration; verify log retention policy; check log integrity
           mechanisms; confirm log review procedures.
+        verificationCommands: |
+          sudo nginx -T 2>/dev/null | grep -Ei 'access_log|error_log|log_format'
+          sudo ls -l /var/log/nginx/
+          cat /etc/logrotate.d/nginx
+          sudo tail -n 5 /var/log/nginx/access.log
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -236,6 +319,11 @@ categories:
         verificationMethod: >
           Check reverse proxy process ownership; verify service account configuration;
           confirm absence of root privileges.
+        verificationCommands: |
+          ps -o pid,user,group,args -C nginx 2>/dev/null || ps aux | grep -E '[n]ginx'
+          grep -E '^\s*user\s' /etc/nginx/nginx.conf
+          id www-data
+          systemctl show nginx -p User -p Group -p PrivateTmp -p ProtectSystem 2>/dev/null
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -250,6 +338,11 @@ categories:
           must not be end-of-life.
         verificationMethod: >
           Check reverse proxy version; compare against vendor EOL schedule.
+        verificationCommands: |
+          nginx -v 2>&1
+          apt policy nginx 2>/dev/null
+          apt list --upgradable 2>/dev/null | grep -i nginx
+          # Check version against vendor EOL (nginx.org) / distro support window
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -265,6 +358,9 @@ categories:
         verificationMethod: >
           Review reverse proxy configuration for security headers; test header presence
           using browser developer tools; verify correct values.
+        verificationCommands: |
+          curl -sI https://<domain> | grep -iE 'strict-transport-security|x-frame-options|x-content-type-options|referrer-policy|content-security-policy'
+          sudo nginx -T 2>/dev/null | grep -i 'add_header'
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -284,6 +380,10 @@ categories:
         verificationMethod: >
           Review sshd_config for PermitRootLogin setting; verify sudo configuration;
           check for individual admin accounts.
+        verificationCommands: |
+          sudo sshd -T | grep -i '^permitrootlogin'   # expect: no
+          sudo grep -riE '^\s*PermitRootLogin' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/ 2>/dev/null
+          sudo grep -rvE '^\s*#|^\s*$' /etc/sudoers /etc/sudoers.d/ 2>/dev/null
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -299,6 +399,10 @@ categories:
         verificationMethod: >
           Verify SSH key configuration; check for password authentication disabled;
           review authorized_keys; confirm algorithm restrictions.
+        verificationCommands: |
+          sudo sshd -T | grep -iE '^(pubkeyauthentication|authorizedkeysfile|hostbasedauthentication)'
+          sudo sshd -T | grep -iE '^(kexalgorithms|ciphers|macs|hostkeyalgorithms|pubkeyacceptedalgorithms)'
+          sudo find /home /root -name authorized_keys -exec ls -l {} \; -exec cat {} \;
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -314,6 +418,11 @@ categories:
         verificationMethod: >
           Review sshd_config for PasswordAuthentication, KexAlgorithms, and MACs settings;
           test password login attempt (should fail).
+        verificationCommands: |
+          sudo sshd -T | grep -iE '^(passwordauthentication|kbdinteractiveauthentication|challengeresponseauthentication|permitemptypasswords)'
+          sudo sshd -T | grep -iE '^(kexalgorithms|macs)'
+          # Negative test from the assessor host (must be rejected):
+          ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no <user>@<server-ip>
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -329,6 +438,10 @@ categories:
         verificationMethod: >
           Audit permissions on /etc/ssh/sshd_config, private keys, authorized_keys;
           verify ownership; check umask.
+        verificationCommands: |
+          sudo stat -c '%a %U:%G %n' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/* /etc/ssh/ssh_host_*_key /etc/ssh/ssh_host_*_key.pub 2>/dev/null
+          sudo find /home /root -name 'id_*' ! -name '*.pub' -exec stat -c '%a %U:%G %n' {} \;
+          grep -E '^UMASK' /etc/login.defs
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -344,6 +457,11 @@ categories:
         verificationMethod: >
           Verify number of admin accounts; review admin account usage logs; confirm
           monitoring and alerting on admin activity.
+        verificationCommands: |
+          getent group sudo admin adm | awk -F: '{print $1": "$4}'
+          sudo awk -F: '($3>=1000 && $3<65534){print $1}' /etc/passwd
+          sudo grep -rE '^[^#].*ALL=\(ALL' /etc/sudoers /etc/sudoers.d/ 2>/dev/null
+          grep -E 'sudo:|COMMAND=' /var/log/auth.log 2>/dev/null | tail -n 20
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -359,6 +477,11 @@ categories:
         verificationMethod: >
           Review /etc/passwd for user accounts; verify no shared accounts exist; check
           SSH authentication methods and MFA status.
+        verificationCommands: |
+          getent passwd | awk -F: '$3>=1000 && $3<65534'
+          sudo lastlog | grep -vE 'Never logged in'
+          sudo sshd -T | grep -iE '^(authenticationmethods|permitrootlogin)'
+          getent passwd | grep -iE 'admin|deploy|ops|shared|dhis'   # look for generic/shared names
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -374,6 +497,7 @@ categories:
         verificationMethod: >
           Review OS offboarding procedures; verify timeline compliance; check removal
           from groups/sudoers.
+        verificationCommands: ""
         justification: ''
         controlGroup: DSCP1
         controlType: organizational
@@ -389,6 +513,10 @@ categories:
         verificationMethod: >
           Audit home directories for sensitive files; check for SSH keys, credentials,
           configs; verify directory permissions.
+        verificationCommands: |
+          sudo find /home /root -maxdepth 3 -type f \( -name 'id_rsa' -o -name 'id_ed25519' -o -name '*.pem' -o -name '*.key' -o -name '.pgpass' -o -name '.my.cnf' -o -name '*.env' \) -exec ls -l {} \;
+          sudo find /home -maxdepth 1 -mindepth 1 -type d -exec stat -c '%a %U:%G %n' {} \;
+          sudo grep -rlE 'PASSWORD|SECRET|TOKEN|API_KEY' /home/*/ 2>/dev/null | head
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -403,6 +531,12 @@ categories:
         verificationMethod: >
           Verify unattended-upgrades or equivalent service; review patch logs; confirm
           reboot policy.
+        verificationCommands: |
+          systemctl status unattended-upgrades 2>/dev/null | grep -E 'Loaded|Active'
+          cat /etc/apt/apt.conf.d/20auto-upgrades
+          apt-config dump | grep -Ei 'Unattended-Upgrade::(Allowed-Origins|Automatic-Reboot|Origins-Pattern)'
+          sudo tail -n 20 /var/log/unattended-upgrades/unattended-upgrades.log 2>/dev/null
+          apt list --upgradable 2>/dev/null
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -418,6 +552,10 @@ categories:
         verificationMethod: >
           Audit home directories for sensitive files; check for SSH keys, credentials,
           configs; verify directory permissions.
+        verificationCommands: |
+          # NOTE: OS-10 duplicates OS-08 in this control set; use the same checks.
+          sudo find /home /root -maxdepth 3 -type f \( -name 'id_rsa' -o -name 'id_ed25519' -o -name '*.pem' -o -name '*.key' -o -name '.pgpass' -o -name '*.env' \) -exec ls -l {} \;
+          sudo find /home -maxdepth 1 -mindepth 1 -type d -exec stat -c '%a %U:%G %n' {} \;
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -433,6 +571,11 @@ categories:
         verificationMethod: >
           Review monitoring platform configuration; verify alert rules and thresholds;
           confirm notification channels; test alert delivery.
+        verificationCommands: |
+          systemctl list-units --type=service --state=running | grep -Ei 'prometheus|node_exporter|grafana|zabbix|netdata|telegraf|collectd|nagios|datadog|newrelic'
+          sudo ss -tulpn | grep -E ':9100|:9090|:3000|:19999'
+          sudo find /etc -iname '*alert*' -o -iname '*.rules' 2>/dev/null | grep -Ei 'prometheus|alertmanager'
+          # Confirm alert destinations (email/Slack/PagerDuty) and trigger a test alert
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -448,6 +591,12 @@ categories:
         verificationMethod: >
           Verify encryption status of system volumes; review key management procedures;
           confirm encryption is active at boot.
+        verificationCommands: |
+          lsblk -o NAME,FSTYPE,MOUNTPOINT,TYPE
+          sudo dmsetup ls --target crypt
+          for d in $(sudo dmsetup ls --target crypt 2>/dev/null | awk '{print $1}'); do sudo cryptsetup status "$d"; done
+          sudo blkid | grep -i crypto_LUKS
+          # Cloud: confirm root/data volume encryption in the provider console
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -462,6 +611,10 @@ categories:
           periodic access reviews required.
         verificationMethod: >
           Review user accounts and group memberships; verify sudo configurations.
+        verificationCommands: |
+          getent group | grep -E 'sudo|adm|docker|wheel|lxd'
+          for u in $(awk -F: '$3>=1000 && $3<65534{print $1}' /etc/passwd); do echo "== $u =="; sudo -lU "$u" 2>/dev/null | grep -E 'may run|NOPASSWD|ALL'; done
+          sudo grep -rvE '^\s*#|^\s*$' /etc/sudoers /etc/sudoers.d/ 2>/dev/null
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -477,6 +630,12 @@ categories:
         verificationMethod: >
           Review firewall rules; perform port scan from external network; verify only
           necessary ports accessible; check default policies.
+        verificationCommands: |
+          sudo ufw status verbose
+          sudo nft list ruleset 2>/dev/null || { sudo iptables -S; sudo ip6tables -S; }
+          sudo ss -tulpn | grep -vE '127.0.0.1|::1'
+          # External view from the assessor host:
+          nmap -Pn -sS -p- <server-ip>
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -492,6 +651,11 @@ categories:
         verificationMethod: >
           List running services; compare against approved baseline; verify service
           necessity.
+        verificationCommands: |
+          systemctl list-unit-files --state=enabled --type=service
+          systemctl list-units --type=service --state=running
+          sudo ss -tulpn
+          apt list --installed 2>/dev/null | grep -Ei 'apache|samba|vsftpd|telnet|rpcbind|nfs-|cups|avahi|snmpd'
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -512,6 +676,11 @@ categories:
         verificationMethod: >
           Verify default admin account status; confirm unique superuser usernames;
           review password complexity requirements.
+        verificationCommands: |
+          # Adjust -d <dhis2-db>; column names vary slightly by DHIS2 version
+          sudo -u postgres psql -d <dhis2-db> -Atc "SELECT username, disabled, lastlogin FROM userinfo WHERE username IN ('admin','system') OR username ILIKE 'admin%';"
+          sudo -u postgres psql -d <dhis2-db> -Atc "SELECT ui.username, ur.name FROM userinfo ui JOIN userrolemembers urm ON ui.userinfoid=urm.userid JOIN userrole ur ON ur.userroleid=urm.userroleid WHERE ur.name ILIKE '%superuser%';"
+          sudo -u postgres psql -d <dhis2-db> -Atc "SELECT name, value FROM systemsetting WHERE name IN ('keyMinPasswordLength','credentialsExpires');"
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -526,6 +695,13 @@ categories:
           population; quarterly access reviews required.
         verificationMethod: >
           Query superuser role assignments; calculate percentage of superusers.
+        verificationCommands: |
+          sudo -u postgres psql -d <dhis2-db> -Atc "
+          WITH su AS (SELECT DISTINCT urm.userid FROM userroleauthorities ura
+            JOIN userrolemembers urm ON urm.userroleid=ura.userroleid WHERE ura.authorities='ALL')
+          SELECT (SELECT count(*) FROM su) AS superusers,
+                 (SELECT count(*) FROM userinfo) AS total_users,
+                 round(100.0*(SELECT count(*) FROM su)/NULLIF((SELECT count(*) FROM userinfo),0),2) AS pct;"
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -541,6 +717,13 @@ categories:
         verificationMethod: >
           Verify MFA configuration for admin accounts; review MFA enrollment status;
           test MFA enforcement at login.
+        verificationCommands: |
+          # 2FA column differs by version: userinfo.secret (older) / twofa_secret / uses_two_factor
+          sudo -u postgres psql -d <dhis2-db> -Atc "SELECT column_name FROM information_schema.columns WHERE table_name='userinfo' AND column_name ~* 'twofa|secret|two_factor';"
+          sudo -u postgres psql -d <dhis2-db> -Atc "
+          SELECT ui.username, (ui.secret IS NOT NULL) AS twofa_enabled
+          FROM userinfo ui JOIN userrolemembers urm ON ui.userinfoid=urm.userid
+          JOIN userroleauthorities ura ON ura.userroleid=urm.userroleid WHERE ura.authorities='ALL';"
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -560,6 +743,10 @@ categories:
         verificationMethod: >
           Check Tomcat process ownership; verify service account configuration; confirm
           absence of root privileges.
+        verificationCommands: |
+          ps -o pid,user,group,args -C java | grep -i catalina || ps aux | grep -E '[c]atalina'
+          systemctl show tomcat9 tomcat dhis2 2>/dev/null -p User -p Group -p ExecStart
+          id "$(ps -o user= -C java | head -n1)"   # expect a dedicated non-root account
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -575,6 +762,10 @@ categories:
         verificationMethod: >
           Review server.xml for SHUTDOWN port configuration; verify firewall rules;
           test external accessibility.
+        verificationCommands: |
+          sudo grep -E '<Server .*port=' $CATALINA_BASE/conf/server.xml /etc/tomcat*/server.xml /opt/*/conf/server.xml 2>/dev/null
+          sudo ss -tlpn | grep 8005
+          # expect port="-1" (disabled), or bound to 127.0.0.1 only and firewalled
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -587,6 +778,9 @@ categories:
         description: Tomcat auto-deployment must be disabled.
         verificationMethod: Review server.xml and Host configuration for autoDeploy
           setting.
+        verificationCommands: |
+          sudo grep -E 'autoDeploy|deployOnStartup|unpackWARs' $CATALINA_BASE/conf/server.xml /etc/tomcat*/server.xml 2>/dev/null
+          # expect autoDeploy="false" and deployOnStartup="false"
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -602,6 +796,11 @@ categories:
         verificationMethod: >
           Audit webapps directory permissions; verify Tomcat user cannot write to
           deployment directories.
+        verificationCommands: |
+          CB=${CATALINA_BASE:-/var/lib/tomcat9}
+          sudo ls -ld "$CB/webapps" "$CB"/webapps/*
+          sudo stat -c '%a %U:%G %n' "$CB/webapps" "$CB"/webapps/*.war 2>/dev/null
+          ps -o user= -C java | head -n1   # this user should NOT be able to write webapps/
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -621,6 +820,14 @@ categories:
         verificationMethod: >
           Review firewall architecture documentation; verify multiple firewall layers;
           confirm default-deny policies.
+        verificationCommands: |
+          # Host firewall
+          sudo ufw status verbose || sudo nft list ruleset
+          # Container layer, if Docker is used
+          docker network ls 2>/dev/null; sudo iptables -t nat -S DOCKER 2>/dev/null
+          # Perimeter (cloud security groups / edge firewall): verify in the provider console, capture screenshot
+          # External confirmation from the assessor host:
+          nmap -Pn -p- <server-ip>
         justification: ''
         controlGroup: DSCP1
         controlType: technical
@@ -641,6 +848,7 @@ categories:
         verificationMethod: >
           Review IR plan documentation; verify contact lists current; check runbooks
           for common scenarios.
+        verificationCommands: ""
         justification: ''
         controlGroup: DSCP1
         controlType: organizational
@@ -656,6 +864,7 @@ categories:
         verificationMethod: >
           Review executed data sharing agreements; verify NDA coverage; confirm retention
           and destruction clauses
+        verificationCommands: ""
         justification: ''
         controlGroup: DSCP1
         controlType: organizational
@@ -669,6 +878,7 @@ categories:
           Immediate deprovisioning workflow for departing users.
         verificationMethod: >
           Review offboarding procedures.
+        verificationCommands: ""
         justification: ''
         controlGroup: DSCP1
         controlType: organizational

@@ -43,6 +43,10 @@
                 "verificationMethod": {
                   "type": "string"
                 },
+                "verificationCommands": {
+                  "type": "string",
+                  "description": "Concrete shell commands (Ubuntu) an assessor can run to gather evidence for this control. Empty string when the control is document-review only."
+                },
                 "justification": {
                   "type": "string"
                 },

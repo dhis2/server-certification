@@ -229,6 +229,18 @@ details[open] summary::before{
   white-space:pre-wrap;
 }
 
+.block.code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  font-size:12.5px;
+  line-height:1.5;
+  background:#0f1b2d;
+  color:#e6edf3;
+  padding:12px 14px;
+  border-radius:var(--radius-sm);
+  overflow-x:auto;
+  white-space:pre;
+}
+
 /* =========================
    Assessment fields (Score + Notes)
 ========================== */
