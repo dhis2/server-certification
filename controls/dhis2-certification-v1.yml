@@ -808,9 +808,10 @@ categories:
         score: null
         notes: >
           Assessor notes here
-  - name: Network Security
-    description: Network architecture and firewall
-    weight: 0.1
+  - name: Network & Container Security
+    description: Network architecture, firewall layering, and container platform
+      (Docker / Compose) isolation and host-boundary controls
+    weight: 0.2
     criteria:
       - code: FW-01
         name: Layered Firewall Architecture
@@ -832,6 +833,243 @@ categories:
         controlGroup: DSCP1
         controlType: technical
         cisMapping: "9.1"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: FW-02
+        name: Middleware and Intermediary Component Review
+        description: >
+          Any middleware or intermediary component in the path between clients and
+          DHIS2, or between DHIS2 and its dependencies (for example load balancers,
+          API gateways, web application firewalls, authentication or OIDC proxies,
+          message brokers, caches, or integration / ETL layers) must be identified and
+          its setup documented. For each component the deployment records its purpose,
+          where it runs, how it communicates with DHIS2 (protocol, network path,
+          authentication, TLS), and whether it is reachable beyond the host. If no such
+          middleware is present this is stated explicitly with a short justification.
+        verificationMethod: >
+          Interview the operators and review the architecture diagram and component
+          inventory. For each intermediary component review its configuration and the
+          matching DHIS2 settings (dhis.conf, reverse proxy configuration) and confirm
+          the documented data flow matches the running system. This is a descriptive
+          control: the objective is an accurate picture of what sits in the request
+          path and how it is wired, not a pass / fail threshold.
+        verificationCommands: ""
+        justification: >
+          A component that is not known cannot be secured or assessed. An accurate
+          picture of what sits between users and DHIS2, and how each hop is
+          authenticated and encrypted, is the basis for the network and application
+          controls.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "12.4"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: CN-01
+        name: Declarative Container Orchestration
+        description: >
+          Where DHIS2 runs in containers, the deployment is defined declaratively in
+          version-controlled files (Docker Compose or equivalent) rather than ad-hoc
+          docker run commands. Images are pinned to specific version tags or digests
+          (no floating latest tag), a restart policy is set, and no secrets are
+          hard-coded in the compose file: credentials come from an environment file or
+          secret store that is not world-readable and is excluded from version control.
+        verificationMethod: >
+          Locate the compose project and review it under version control; confirm image
+          references are pinned; confirm restart policies are set; confirm secrets are
+          externalised and that the environment or secret files have restrictive
+          permissions and are ignored by version control.
+        verificationCommands: |
+          find /opt /srv /home /root /etc -maxdepth 4 \( -name 'docker-compose*.y*ml' -o -name 'compose*.y*ml' \) 2>/dev/null
+          cd <compose-dir> && docker compose config
+          docker compose config | grep -E 'image:'          # expect explicit versions/digests, no :latest
+          grep -nEi 'password|secret|token' docker-compose*.y*ml compose*.y*ml 2>/dev/null
+          ls -l .env && git -C <compose-dir> check-ignore .env
+          git -C <compose-dir> log -1 --stat
+        justification: >
+          A declarative, version-controlled definition makes the deployment reviewable,
+          reproducible and auditable. Floating tags and inline secrets make it
+          impossible to know what is actually running or to rotate credentials cleanly.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "4.1"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: CN-02
+        name: Host Port Exposure Limited to the Reverse Proxy
+        description: >
+          Only the reverse-proxy container publishes ports to the host (80 and 443,
+          alongside the host's own SSH port). Application (Tomcat / DHIS2), database,
+          cache and broker containers must not publish ports to 0.0.0.0; they are
+          reachable only over the internal container network. No container exposes
+          PostgreSQL (5432), the Tomcat HTTP / AJP / shutdown ports, or management
+          interfaces on the host's public interface.
+        verificationMethod: >
+          Review published ports in the compose configuration and on the running
+          containers; confirm only the proxy has host port mappings; confirm every
+          other service uses expose or no mapping; confirm host listening sockets on
+          the public interface are limited to 22 / 80 / 443; confirm with an external
+          scan.
+        verificationCommands: |
+          docker compose config | grep -nE 'ports:|expose:'
+          docker ps --format 'table {{.Names}}\t{{.Ports}}'
+          docker inspect -f '{{.Name}} {{json .NetworkSettings.Ports}}' $(docker ps -q)
+          sudo ss -tulpn | grep -vE '127.0.0.1|::1'          # expect only 22/80/443 on the public IP
+          nmap -Pn -p- <server-ip>                            # external view from the assessor host
+        justification: >
+          The reverse proxy is the single intended entry point. Every other published
+          port is extra attack surface; a stray 5432:5432 or 8080:8080 puts the
+          database or the application container straight on the internet.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "4.4"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: CN-03
+        name: Container Network Segmentation
+        description: >
+          Container tiers are separated onto distinct user-defined networks: a
+          front-side network joining the reverse proxy and the application, and a
+          back-side network joining the application and its data stores (database,
+          cache, broker). The reverse proxy is not attached to the back-side network
+          and the database is not attached to the front-side network. The back-side
+          network is marked internal so it has no route off the host, and the default
+          bridge network is not used.
+        verificationMethod: >
+          List container networks and inspect each one's attached containers; confirm
+          the proxy and the database do not share a network; confirm the back-side
+          network is internal; test that the proxy cannot open a connection to the
+          database port while the application can.
+        verificationCommands: |
+          docker network ls
+          for n in $(docker network ls --format '{{.Name}}' | grep -vE '^(host|none)$'); do \
+            echo "== $n =="; \
+            docker network inspect -f 'internal={{.Internal}} attached={{range .Containers}}{{.Name}} {{end}}' "$n"; done
+          docker compose config | sed -n '/^networks:/,/^[^ ]/p'
+          docker compose exec <proxy-svc> sh -c 'nc -zv <db-svc> 5432' || echo 'proxy->db blocked (expected)'
+          docker compose exec <app-svc>  sh -c 'nc -zv <db-svc> 5432' && echo 'app->db ok (expected)'
+        justification: >
+          Flat container networking means a compromise of the proxy is a compromise of
+          the database. Segmentation with an internal back-side network contains
+          lateral movement and keeps data stores off any internet-facing path.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "12.2"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: CN-04
+        name: Container Port Publishing Does Not Bypass the Host Firewall
+        description: >
+          Docker port publishing must not silently override the host firewall. By
+          default Docker inserts its own iptables rules ahead of the host INPUT chain,
+          so a UFW deny can be bypassed by a published container port. The deployment
+          mitigates this: published ports bind to 127.0.0.1 where a host reverse proxy
+          fronts them, and / or an explicit default-deny is enforced in the DOCKER-USER
+          chain (or the nftables equivalent), so that only 80 / 443 and the host SSH
+          port are reachable from outside.
+        verificationMethod: >
+          Review the DOCKER-USER chain and the NAT DOCKER chain; check port bindings
+          for a 127.0.0.1 prefix; confirm the host firewall posture; confirm with an
+          external scan that no container port other than the intended proxy ports is
+          reachable.
+        verificationCommands: |
+          sudo iptables -S DOCKER-USER
+          sudo iptables -t nat -S DOCKER
+          sudo nft list ruleset 2>/dev/null | sed -n '/chain DOCKER/,/}/p'
+          docker compose config | grep -E '127\.0\.0\.1:|0\.0\.0\.0:|ports:'
+          sudo ufw status verbose
+          nmap -Pn -p- <server-ip>                            # authoritative external check
+        justification: >
+          Operators routinely add UFW rules and assume the database is protected while
+          a ports: 5432:5432 has already punched through. Verifying at the DOCKER-USER
+          chain and with an external scan is the only reliable confirmation.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "4.5"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: CN-05
+        name: Containers Run Unprivileged and Hardened
+        description: >
+          Application containers do not run with privileged mode, run as a non-root
+          user, drop all Linux capabilities and add back only those required, set
+          no-new-privileges, and use a read-only root filesystem where feasible. The
+          Docker socket (/var/run/docker.sock) is never bind-mounted into an
+          application container.
+        verificationMethod: >
+          Inspect the runtime configuration of each container for privileged mode,
+          user, capabilities, security options and root filesystem mode; search the
+          compose project for docker.sock mounts.
+        verificationCommands: |
+          for c in $(docker ps -q); do \
+            docker inspect -f '{{.Name}} priv={{.HostConfig.Privileged}} user={{.Config.User}} ro={{.HostConfig.ReadonlyRootfs}} secopt={{.HostConfig.SecurityOpt}} capdrop={{.HostConfig.CapDrop}} capadd={{.HostConfig.CapAdd}}' "$c"; done
+          grep -RnE 'docker\.sock|privileged:\s*true' <compose-dir>
+        justification: >
+          A privileged or root container that is breached is a host compromise.
+          Dropping capabilities and privileges limits what an attacker can do after
+          exploiting the application.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "4.1"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: CN-06
+        name: Docker Daemon and Socket Hardening
+        description: >
+          The Docker daemon does not expose a TCP socket (ports 2375 / 2376 are not
+          listening). /var/run/docker.sock is owned root:docker with mode 660 and
+          membership of the docker group is limited to trusted administrators (it is
+          equivalent to root). daemon.json enables live-restore and log rotation
+          (max-size / max-file) and sets sensible defaults.
+        verificationMethod: >
+          Check for a daemon TCP socket; review socket ownership and permissions;
+          review docker group membership; review /etc/docker/daemon.json and the output
+          of docker info.
+        verificationCommands: |
+          sudo ss -tlpn | grep -E '2375|2376' || echo 'no docker TCP socket (expected)'
+          ls -l /var/run/docker.sock
+          getent group docker
+          sudo cat /etc/docker/daemon.json 2>/dev/null
+          docker info --format 'logging={{.LoggingDriver}} live-restore={{.LiveRestore}}'
+        justification: >
+          An exposed daemon socket is unauthenticated root on the host, and
+          uncontrolled docker-group membership is the same risk by another route. Log
+          rotation keeps a busy host from filling its disk.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "4.6"
+        score: null
+        notes: >
+          Assessor notes here
+      - code: CN-07
+        name: Container Image Currency and Provenance
+        description: >
+          Container images come from trusted sources (official DHIS2 and PostgreSQL
+          images or an organisation registry) and are pinned to known versions or
+          digests. Images are rebuilt or re-pulled on a schedule so base-OS CVE fixes
+          are picked up, and a vulnerability scan shows no unfixed critical findings.
+          Base images are not end-of-life.
+        verificationMethod: >
+          List images and their sources and digests; review the update cadence
+          (documentation, or registry / pull history); run or review an image
+          vulnerability scan; confirm base image versions are still supported.
+        verificationCommands: |
+          docker image ls --digests
+          for c in $(docker ps -q); do docker inspect -f '{{.Name}} <- {{.Config.Image}}' "$c"; done
+          docker scout cves <image> 2>/dev/null || trivy image --severity CRITICAL,HIGH <image>
+        justification: >
+          Containers freeze their userland at build time; without a refresh cycle a
+          long-running deployment accumulates known, unpatched vulnerabilities in the
+          base image even when the host is patched.
+        controlGroup: DSCP1
+        controlType: technical
+        cisMapping: "7.3"
         score: null
         notes: >
           Assessor notes here
